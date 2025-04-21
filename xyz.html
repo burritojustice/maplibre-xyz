@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MapLibre + GeoJSON Tile Layer</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: {
+      version: 8,
+      sources: {
+        hexbinSource: {
+          type: 'geojson',
+          tiles: [
+            'https://api.think-with-me.com/hub/spaces/0Las7nUr/tile/web/{z}_{x}_{y}?clip=true&clustering=hexbin'
+          ]
+        }
+      },
+      layers: [
+        {
+          id: 'hexbin-layer',
+          type: 'fill',
+          source: 'hexbinSource',
+          paint: {
+            'fill-color': '#FF5722',
+            'fill-opacity': 0.6,
+            'fill-outline-color': '#333'
+          }
+        }
+      ]
+    },
+    center: [0, 0],
+    zoom: 2
+  });
+</script>
+</body>
+</html>
