@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>MapLibre + GeoJSON Tile Layer</title>
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
-  <style>
-    body { margin: 0; padding: 0; }
-    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-  </style>
+    <title>hexbins</title>
+    <meta property="og:description" content="Add a vector source to a map." />
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.css' />
+    <script src='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js'></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        html, body, #map { height: 100%; }
+    </style>
 </head>
 <body>
 <div id="map"></div>
 <script>
-  const map = new maplibregl.Map({
-    container: 'map',
-    style: {
-      version: 8,
-      sources: {
-        hexbinSource: {
-          type: 'vector',
-          tiles: [
-            'https://api.think-with-me.com/hub/spaces/stXc82l8/tile/web/{z}_{x}_{y}.mvt?clip=true&clustering=hexbin'
-          ]
-        }
-      },
-      layers: [
-        {
-          id: 'hexbin-layer',
-          type: 'fill',
-          source: 'hexbinSource',
-          'source-layer': 'default',
-          paint: {
+    const map = new maplibregl.Map({
+        container: 'map',
+        // style:
+        //     'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+        zoom: 6,
+        center: [-122.447303, 37.753574]
+    });
+
+    map.on('load', () => {
+        map.addSource('hexbins', {
+            type: 'vector',
+            url:
+                'https://api.think-with-me.com/hub/spaces/stXc82l8/tile/web/{z}_{x}_{y}.mvt?clip=true&clustering=hexbin'
+        });
+        map.addLayer({
+            'id': 'hexbin-layer',
+            'type': 'fill',
+            'source': 'hexbins',
+            'source-layer': 'default',
+            // 'layout': {
+            //     'line-join': 'round',
+            //     'line-cap': 'round'
+            // },
+            paint: {
             'fill-color': '#FF5722',
             'fill-opacity': 0.6,
             'fill-outline-color': '#333'
           }
-        }
-      ]
-    },
-    center: [0, 0],
-    zoom: 2
-  });
+        });
+    });
 </script>
 </body>
 </html>
+
