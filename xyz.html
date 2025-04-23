@@ -28,7 +28,7 @@
     if (urlParams.get('hubApi')) {
         hubApi = urlParams.get('hubApi');
     }
-    var xyz_url = `https://{hubAPI}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt`
+    var xyz_url = `https://${hubAPI}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt`
     console.log({xyz_url});
     if (urlParams.get('clustering')){
         clustering = clusteringurlParams.get('clustering');
