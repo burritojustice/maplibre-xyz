@@ -64,10 +64,11 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-            'fill-color': '#FF5722',
+            'fill-color': '#0000ff',
             'fill-opacity': 0.6,
             'fill-outline-color': '#333'
-          }
+          },
+            'filter': ['==', '$type', 'Polygon']
         });
         map.addLayer({
           id: 'points',
@@ -78,7 +79,8 @@
             'circle-radius': 5,
             'circle-color': '#FF0000',
             'circle-opacity': 0.6
-          }
+          },
+            'filter': ['==', '$type', 'Point']
         });
     });
 </script>
