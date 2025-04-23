@@ -66,10 +66,21 @@
           paint: {
             'fill-color': '#0000ff',
             'fill-opacity': 0.2,
-            'fill-outline-color': '#cccccc'
+            // 'fill-outline-color': '#cccccc',
           },
             'filter': ['==', '$type', 'Polygon']
         });
+        map.addLayer({
+          id: 'outlines',
+          type: 'line',
+          source: 'xyz',
+          'source-layer': spaceID,
+          paint: {
+            'line-color': '#cccccc',
+            'line-width': 1
+          },
+            'filter': ['==', '$type', 'Polygon']
+        });        
         map.addLayer({
           id: 'points',
           type: 'circle',
