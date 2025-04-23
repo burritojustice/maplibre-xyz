@@ -36,10 +36,10 @@
     }
     console.log({spaceID},{hubApi},{clustering});
     
-    // replace with URLSearchParams later
     if clustering {
-        var x = `?clustering=${clustering}`
-        xyz_url += x
+        xyz_url.search = new URLSearchParams({
+            clustering: "clustering"
+        });
     }
     
     const map = new maplibregl.Map({
