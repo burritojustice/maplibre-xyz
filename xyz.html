@@ -1,51 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>hexbins</title>
-    <meta property="og:description" content="Add a vector source to a map." />
-    <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.css' />
-    <script src='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js'></script>
-    <style>
-        body { margin: 0; padding: 0; }
-        html, body, #map { height: 100%; }
-    </style>
-</head>
-<body>
-<div id="map"></div>
-<script>
-    const map = new maplibregl.Map({
-        container: 'map',
-        style:
-            'https://demotiles.maplibre.org/style.json',
-        zoom: 6,
-        center: [-122.447303, 37.753574]
-    });
+<html>
+    <head>
+        <title>Protomaps Basemaps Example</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" crossorigin="anonymous">
+        <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/pmtiles@4.2.1/dist/pmtiles.js"></script>
+        <script src="https://unpkg.com/@protomaps/basemaps@5.3.0/dist/basemaps.js"></script>
+        <style>
+            body {
+                margin: 0;
+            }
+            #map {
+                height:100%; width:100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript">
+            let protocol = new pmtiles.Protocol();
+            maplibregl.addProtocol("pmtiles", protocol.tile);
 
-    map.on('load', () => {
-        map.addSource('hexbins', {
-            type: 'vector',
-            url:
-                'https://xyz2.think-with-me.com/hub/spaces/stXc82l8/tile/web/{z}_{x}_{y}.mvt?clip=true&clustering=hexbin'
-        });
-        map.addLayer({
-            'id': 'hexbin-layer',
-            'type': 'fill',
-            'source': 'hexbins',
-            'source-layer': 'default',
-            // 'layout': {
-            //     'line-join': 'round',
-            //     'line-cap': 'round'
-            // },
-            paint: {
-            'fill-color': '#FF5722',
-            'fill-opacity': 0.6,
-            'fill-outline-color': '#333'
-          }
-        });
-    });
-</script>
-</body>
+            const map = new maplibregl.Map({
+              container: "map",
+              zoom: 13,
+              center: [-0.12,51.5],
+              style: {
+                version: 8,
+                glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+                sprite: `https://protomaps.github.io/basemaps-assets/sprites/v4/light`,
+                sources: {
+                  example_source: {
+                    type: "vector",
+                    url: "pmtiles://https://demo-bucket.protomaps.com/v4.pmtiles",
+                    attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
+                  },
+                },
+                layers: basemaps.layers("example_source", basemaps.namedFlavor("light"), {lang:"en"})
+              },
+            });
+
+            let marker = new maplibregl.Marker()
+            .setLngLat([-0.12,51.5])
+            .setPopup(new maplibregl.Popup().setHTML("<h1>Hello World!</h1>"))
+            .addTo(map);
+        </script>
+    </body>
 </html>
-
