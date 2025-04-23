@@ -35,8 +35,35 @@
                     url: "pmtiles://https://demo-bucket.protomaps.com/v4.pmtiles",
                     attribution: "<a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
                   },
+                  overture_places: {
+                    type: "vector",
+                    url: "pmtiles://https://overturemaps-tiles-us-west-2-beta.s3.amazonaws.com/2024-12-18/places.pmtiles",
+                    attribution: "<a href='https://overturemaps.org'>Overture Maps Foundation</a>"
+                  }
                 },
-                layers: basemaps.layers("example_source", basemaps.namedFlavor("light"), {lang:"en"})
+                layers: [
+                  ...basemaps.layers("example_source", basemaps.namedFlavor("grayscale")),
+                  {
+                    "id": "overture_places",
+                    "source": "overture_places",
+                    "source-layer": "place",
+                    "type": "circle",
+                    "paint": {
+                      "circle-color": "#2525A4",
+                      "circle-opacity": 0.2,
+                      "circle-radius": [
+                        "step",
+                        ["zoom"],
+                        1,
+                        13, 2,
+                        14, 3,
+                        15, 6,
+                        16, 8
+                      ]
+                    }
+                  },
+                  ...basemaps.layers("example_source", basemaps.namedFlavor("grayscale"), {lang:"en", labelsOnly: true})
+                ]
               },
             });
 
