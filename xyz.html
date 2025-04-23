@@ -38,7 +38,8 @@
     
     // replace with URLSearchParams later
     if clustering {
-        xyz_url += `?clustering=${clustering}`
+        var x = `?clustering=${clustering}`
+        xyz_url += x
     }
     
     const map = new maplibregl.Map({
