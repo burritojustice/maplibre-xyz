@@ -17,8 +17,7 @@
 <script>
     var spaceID = 'stXc82l8'; 
     var hubApi = 'xyz2.think-with-me.com'
-    var clustering = null;
-    var hubParams;
+    var clustering;
 
     // look for space, hubAPI in urlParams
     const urlParams = new URLSearchParams(window.location.search);
@@ -33,14 +32,12 @@
     console.log({xyz_url});
     if (urlParams.get('clustering')){
         clustering = clusteringurlParams.get('clustering');
-    }
-    console.log({spaceID},{hubApi},{clustering});
-    
-    if (clustering) {
         xyz_url.search = new URLSearchParams({
-            clustering: "clustering"
+            clustering: "hexbin"
         });
     }
+    console.log({spaceID},{hubApi},{clustering});
+
     
     const map = new maplibregl.Map({
         container: 'map',
