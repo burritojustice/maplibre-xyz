@@ -87,11 +87,11 @@
             "source": "xyz",
             "layout": {
                 "symbol-placement": "point",
-                "text-field": [get,'aggregation', [get, 'qty']],
+                "text-field": [get,'qty', [get, 'aggregation']],
                 "text-size": 40,
                 "text-justify": "center",
                 "text-allow-overlap": false
-              }
+              }, 
         });
         map.addLayer({
           id: 'points',
