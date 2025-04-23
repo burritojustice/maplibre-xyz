@@ -66,13 +66,14 @@
           }
         });
         map.addLayer({
-          id: 'lines',
-          type: 'line',
+          id: 'points',
+          type: 'cirlce',
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
+            'circle-radius': 5,
             'circle-color': '#FF0000',
-            'circle-opacity': 0.6,
+            'circle-opacity': 0.6
           }
         });
     });
