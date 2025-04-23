@@ -28,13 +28,15 @@
     if (urlParams.get('hubApi')) {
         hubApi = urlParams.get('hubApi');
     }
-    var xyz_url = new URL(`https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt`)
+
+    
+    var xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt`
     console.log({xyz_url});
+    
     if (urlParams.get('clustering')){
         clustering = urlParams.get('clustering');
-        xyz_url.search = new URLSearchParams({
-            clustering: "hexbin"
-        });
+        const clustering_param = `?clustering=${clustering}`
+        xyz_url += clustering_param;
         console.log({xyz_url});
     }
     console.log({spaceID},{hubApi},{clustering});
@@ -42,6 +44,7 @@
     
     const map = new maplibregl.Map({
         container: 'map',
+        hash: true,
         style:
             'https://api.protomaps.com/styles/v5/light/en.json?key=ffc24a4325d458ce',
         zoom: 13,
