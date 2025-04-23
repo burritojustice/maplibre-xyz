@@ -31,7 +31,7 @@
     var xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt`
     console.log({xyz_url});
     if (urlParams.get('clustering')){
-        clustering = clusteringurlParams.get('clustering');
+        clustering = urlParams.get('clustering');
         xyz_url.search = new URLSearchParams({
             clustering: "hexbin"
         });
