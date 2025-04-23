@@ -65,7 +65,7 @@
           'source-layer': spaceID,
           paint: {
             'fill-color': '#0000ff',
-            'fill-opacity': 0.6,
+            'fill-opacity': 0.2,
             'fill-outline-color': '#333'
           },
             'filter': ['==', '$type', 'Polygon']
@@ -78,7 +78,10 @@
           paint: {
             'circle-radius': 5,
             'circle-color': '#FF0000',
-            'circle-opacity': 0.6
+            'circle-opacity': 0.6,
+            'circle-stroke-width': 1,
+            'circle-stroke-color'; '000000',
+            'cirlce-stroke-opacity': '0.5'
           },
             'filter': ['==', '$type', 'Point']
         });
