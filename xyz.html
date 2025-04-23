@@ -80,7 +80,19 @@
             'line-width': 10
           },
             'filter': ['==', '$type', 'Polygon']
-        });        
+        });
+        map.addLayer({
+            "id": "symbols",
+            "type": "symbol",
+            "source": "xyz",
+            "layout": {
+                "symbol-placement": "point",
+                "text-field": [get,'aggregation', [get, 'qty]],
+                "text-size": 40,
+                "text-justify": "center",
+                "text-allow-overlap": false
+              }
+        });
         map.addLayer({
           id: 'points',
           type: 'circle',
