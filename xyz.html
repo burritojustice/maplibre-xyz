@@ -77,7 +77,7 @@
           'source-layer': spaceID,
           paint: {
             'line-color': '#cccccc',
-            'line-width': 10
+            'line-width': 4
           },
             'filter': ['==', '$type', 'Polygon']
         });
@@ -87,7 +87,7 @@
             "source": "xyz",
             "layout": {
                 "symbol-placement": "point",
-                "text-field": [get,'aggregation', [get, 'qty]],
+                "text-field": [get,'aggregation', [get, 'qty']],
                 "text-size": 40,
                 "text-justify": "center",
                 "text-allow-overlap": false
