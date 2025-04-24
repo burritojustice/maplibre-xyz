@@ -86,14 +86,18 @@
             type: "symbol",
             source: "xyz",
             'source-layer': spaceID,
-
-            "layout": {
+            layout: {
                 "symbol-placement": "point",
-                "text-field": ['get','qty', ['get', 'aggregation']],
-                "text-size": 40,
+                "text-field": ["get", "qty", ["get", "aggregation"]],
+                "text-size": 16,
                 "text-justify": "center",
                 "text-allow-overlap": false
-              }, 
+            },
+            paint: {
+                "text-color": "#000",
+                "text-halo-color": "#fff",
+                "text-halo-width": 1.5
+            }
         });
         map.addLayer({
           id: 'points',
