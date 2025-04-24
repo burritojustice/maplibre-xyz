@@ -39,7 +39,7 @@
         if (clustering == 'h3')
             {clustering_param = '?clustering=$hexbin'}
         if (clustering == 'h3_centroid')
-            {clustering_param = 'clustering=hexbin&clustering.pointmode=true'}
+            {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
         console.log({xyz_url});
     }
