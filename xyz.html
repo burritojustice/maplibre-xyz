@@ -89,7 +89,7 @@
             layout: {
                 "symbol-placement": "point",
                 // "text-field": ["get", "qty", ["get", "aggregation"]],
-                "text-field": "9",
+                "text-field": ["to-string", ["get", "qty", ["get", "aggregation"]]],
                 "text-size": 16,
                 "text-justify": "center",
                 "text-allow-overlap": false
