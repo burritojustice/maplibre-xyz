@@ -82,9 +82,11 @@
             'filter': ['==', '$type', 'Polygon']
         });
         map.addLayer({
-            "id": "symbols",
-            "type": "symbol",
-            "source": "xyz",
+            id: "symbols",
+            type: "symbol",
+            source: "xyz",
+            'source-layer': spaceID,
+
             "layout": {
                 "symbol-placement": "point",
                 "text-field": ['get','qty', ['get', 'aggregation']],
