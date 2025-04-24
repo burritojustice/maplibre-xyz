@@ -85,33 +85,34 @@
           },
             'filter': ['==', '$type', 'Polygon']
         });
-        map.addLayer({
-            id: "symbols",
-            type: "symbol",
-            source: "xyz",
-            'source-layer': spaceID,
-            layout: {
-                "symbol-placement": "point",
-                "text-field": ['get', 'kind_detail'],
-                // "text-field": ["get", "qty", ["get", "aggregation"]],
-                // "text-field": "yo",
-                "text-size": 10,
-                "text-justify": "center",
-                "text-allow-overlap": false
-            },
-            paint: {
-                "text-color": "#000",
-                "text-halo-color": "#fff",
-                "text-halo-width": 1.5
-            }
-        });
+        // map.addLayer({
+        //     id: "symbols",
+        //     type: "symbol",
+        //     source: "xyz",
+        //     'source-layer': spaceID,
+        //     layout: {
+        //         "symbol-placement": "point",
+        //         "text-field": ['get', 'kind_detail'],
+        //         // "text-field": ["get", "qty", ["get", "aggregation"]],
+        //         // "text-field": "yo",
+        //         "text-size": 10,
+        //         "text-justify": "center",
+        //         "text-allow-overlap": false
+        //     },
+        //     paint: {
+        //         "text-color": "#000",
+        //         "text-halo-color": "#fff",
+        //         "text-halo-width": 1.5
+        //     }
+        // });
         map.addLayer({
           id: 'points',
           type: 'circle',
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-            'circle-radius': 5,
+            // 'circle-radius': 5,
+            'circle-radius': ["get", "qty", ["get", "aggregation"]],
             'circle-color': '#FF0000',
             'circle-opacity': 0.6,
             'circle-stroke-width': 1,
