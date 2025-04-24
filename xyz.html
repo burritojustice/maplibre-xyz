@@ -81,27 +81,27 @@
           },
             'filter': ['==', '$type', 'Polygon']
         });
-        // map.addLayer({
-        //     id: "symbols",
-        //     type: "symbol",
-        //     source: "xyz",
-        //     'source-layer': spaceID,
-        //     layout: {
-        //         "symbol-placement": "point",
-        //         // "text-field": ["get", "aggregation"],
-        //         // "text-field": ["get", "qty", ["get", "aggregation"]],
-        //         // "text-field": ["to-string", ["get", "qty", ["get", "aggregation"]]],
-        //         "text-field": "yo",
-        //         "text-size": 16,
-        //         "text-justify": "center",
-        //         "text-allow-overlap": false
-        //     },
-        //     paint: {
-        //         "text-color": "#000",
-        //         "text-halo-color": "#fff",
-        //         "text-halo-width": 1.5
-        //     }
-        // });
+        map.addLayer({
+            id: "symbols",
+            type: "symbol",
+            source: "xyz",
+            'source-layer': spaceID,
+            layout: {
+                "symbol-placement": "point",
+                // "text-field": ["get", "aggregation"],
+                // "text-field": ["get", "qty", ["get", "aggregation"]],
+                // "text-field": ["to-string", ["get", "qty", ["get", "aggregation"]]],
+                "text-field": "yo",
+                "text-size": 10,
+                "text-justify": "center",
+                "text-allow-overlap": false
+            },
+            paint: {
+                "text-color": "#000",
+                "text-halo-color": "#fff",
+                "text-halo-width": 1.5
+            }
+        });
         map.addLayer({
           id: 'points',
           type: 'circle',
