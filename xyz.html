@@ -101,7 +101,7 @@
                 "text-justify": "center",
                 "text-allow-overlap": false,
                 "text-font": ["Noto Sans Regular"],
-                "text-variable-anchor": ["top", "bottom","left","right"]
+                // "text-variable-anchor": ["top", "bottom","left","right"]
             },
             paint: {
                 "text-color": "#000",
@@ -116,7 +116,7 @@
           'source-layer': spaceID,
           paint: {
             'circle-radius': 5,
-            // 'circle-radius': ["get", "qty", ["get", "aggregation"]],
+            'circle-radius': ["get", "qty", ["get", "aggregation"]],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
