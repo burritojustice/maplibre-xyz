@@ -47,90 +47,86 @@
 
     const styleUrl = 'https://api.protomaps.com/styles/v5/light/en.json?key=ffc24a4325d458ce';
 
-    fetch(styleUrl)
-      .then(res => res.json())
-      .then(styleJson => {
-        styleJson.glyphs = 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf';
+    const map = new maplibregl.Map({
+        container: 'map',
+        hash: true,
+        style: styleUrl,
+        zoom: 13,
+        center: [-122.447303, 37.753574]
+    });
 
-        
-        const map = new maplibregl.Map({
-            container: 'map',
-            hash: true,
-            style: styleUrl,
-            zoom: 13,
-            center: [-122.447303, 37.753574]
+    map.on('load', () => {
+        map.addSource('xyz', {
+            type: 'vector',
+            tiles: [
+                xyz_url
+                ]
         });
-    
-        map.on('load', () => {
-            map.addSource('xyz', {
-                type: 'vector',
-                tiles: [
-                    xyz_url
-                    ]
-            });
-            map.addLayer({
-              id: 'polygons',
-              type: 'fill',
-              source: 'xyz',
-              'source-layer': spaceID,
-              paint: {
-                'fill-color': '#0000ff',
-                'fill-opacity': 0.2,
-                // 'fill-outline-color': '#cccccc',
-              },
-                'filter': ['==', '$type', 'Polygon']
-            });
-            map.addLayer({
-              id: 'outlines',
-              type: 'line',
-              source: 'xyz',
-              'source-layer': spaceID,
-              paint: {
-                'line-color': '#cccccc',
-                'line-width': 1
-              },
-                'filter': ['==', '$type', 'Polygon']
-            });
-            map.addLayer({
-                id: "symbols",
-                type: "symbol",
-                // "symbol-placement": "centroid",
-                source: "xyz",
-                'source-layer': spaceID,
-                layout: {
-                    "symbol-placement": "point",
-                    // "text-field": ['get', 'kind_detail'],
-                    // "text-field": ["get", "qty", ["get", "aggregation"]],
-                    "text-field": "yo",
-                    // "text-field": "{kind}",
-                    "text-size": 10,
-                    "text-justify": "center",
-                    "text-allow-overlap": false
-                },
-                paint: {
-                    "text-color": "#000",
-                    "text-halo-color": "#fff",
-                    "text-halo-width": 1.5
-                }
-            });
-            map.addLayer({
-              id: 'points',
-              type: 'circle',
-              source: 'xyz',
-              'source-layer': spaceID,
-              paint: {
-                'circle-radius': 5,
-                // 'circle-radius': ["get", "qty", ["get", "aggregation"]],
-                'circle-color': '#FF0000',
-                'circle-opacity': 0.6,
-                'circle-stroke-width': 1,
-                'circle-stroke-color': '#000000',
-                'circle-stroke-opacity': 0.5
-              },
-                'filter': ['==', '$type', 'Point']
-            });
+        map.addLayer({
+          id: 'polygons',
+          type: 'fill',
+          source: 'xyz',
+          'source-layer': spaceID,
+          paint: {
+            'fill-color': '#0000ff',
+            'fill-opacity': 0.2,
+            // 'fill-outline-color': '#cccccc',
+          },
+            'filter': ['==', '$type', 'Polygon']
         });
-     });
+        map.addLayer({
+          id: 'outlines',
+          type: 'line',
+          source: 'xyz',
+          'source-layer': spaceID,
+          paint: {
+            'line-color': '#cccccc',
+            'line-width': 1
+          },
+            'filter': ['==', '$type', 'Polygon']
+        });
+        map.addLayer({
+            id: "symbols",
+            type: "symbol",
+            // "symbol-placement": "centroid",
+            source: "xyz",
+            'source-layer': spaceID,
+            layout: {
+                "symbol-placement": "point",
+                // "text-field": ['get', 'kind_detail'],
+                // "text-field": ["get", "qty", ["get", "aggregation"]],
+                "text-field": "yo",
+                // "text-field": "{kind}",
+                "text-size": 10,
+                "text-justify": "center",
+                "text-allow-overlap": false
+                'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+
+            },
+            paint: {
+                "text-color": "#000",
+                "text-halo-color": "#fff",
+                "text-halo-width": 1.5
+            }
+        });
+        map.addLayer({
+          id: 'points',
+          type: 'circle',
+          source: 'xyz',
+          'source-layer': spaceID,
+          paint: {
+            'circle-radius': 5,
+            // 'circle-radius': ["get", "qty", ["get", "aggregation"]],
+            'circle-color': '#FF0000',
+            'circle-opacity': 0.6,
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#000000',
+            'circle-stroke-opacity': 0.5
+          },
+            'filter': ['==', '$type', 'Point']
+        });
+    });
+     
 </script>
 </body>
 </html>
