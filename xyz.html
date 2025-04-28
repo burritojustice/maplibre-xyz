@@ -118,7 +118,7 @@
           'source-layer': spaceID,
           paint: {
             // 'circle-radius': 5,
-            'circle-radius': ["to-number", ["get", "qty", "object", [["get", "aggregation"]]]],
+            'circle-radius': ["to-number", ["get", "qty", ["object", [["get", "aggregation"]]]]],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
