@@ -101,7 +101,7 @@
                 // "text-field": "yo",
                 // "text-field": ["to-string", ["length", ["get", "aggregation"]]],
                 "text-field": ["let", "x", ["-","length", ["get", "aggregation"], 1],
-                                ["slice", ["get", "aggregation"], 8, x]
+                                ["slice", ["get", "aggregation"], 8, "x"]
                               ],
                 "text-size": 10,
                 "text-justify": "center",
