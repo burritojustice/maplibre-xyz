@@ -100,12 +100,17 @@
                 // "text-field": ["slice", ["get", "aggregation"], 8,10],
                 // "text-field": "yo",
                 // "text-field": ["to-string", ["length", ["get", "aggregation"]]],
+                // "text-field": [
+                //     "let", "o", ["get", "aggregation"],
+                //     ["slice", 
+                //      "o",
+                //      8, 
+                //      ["-", ["length", "o"], 1]
+                //     ]
+                // ],
                 "text-field": [
                     "let", "o", ["get", "aggregation"],
-                    ["slice", 
-                     "o",
-                     8, 
-                     ["-", ["length", "o"], 1]
+                        "to-string", [["length", "o"]]
                     ]
                 ],
                 "text-size": 10,
