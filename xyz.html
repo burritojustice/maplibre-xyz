@@ -100,19 +100,19 @@
                 // "text-field": ["slice", ["get", "aggregation"], 8,10],
                 // "text-field": "yo",
                 // "text-field": ["to-string", ["length", ["get", "aggregation"]]],
-                // "text-field": [
-                //     "let", "o", ["get", "aggregation"],
-                //     ["slice", 
-                //      "o",
-                //      8, 
-                //      ["-", ["length", "o"], 1]
-                //     ]
-                // ],
                 "text-field": [
-                    "let", "o", ["get", "aggregation"],[
-                        "to-string", ["length", ["var", "o"]]
+                    "let", "o", ["get", "aggregation"],
+                    ["slice", 
+                     "o",
+                     8, 
+                     ["-", ["length", ["var, "o"]], 1]
                     ]
                 ],
+                // "text-field": [
+                //     "let", "o", ["get", "aggregation"],[
+                //         "to-string", ["length", ["var", "o"]]
+                //     ]
+                // ],
                 "text-size": 10,
                 "text-justify": "center",
                 "text-allow-overlap": false,
