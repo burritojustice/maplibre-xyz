@@ -97,7 +97,7 @@
                 // "text-field": ['get', 'kind_detail'],
                 // "text-field": ["get", "qty", ["get", "aggregation"]],
                 // "text-field": ["get", "aggregation"],
-                "text-field": ["to-number", ["get", "aggregation"]],
+                "text-field": ["to-string", ["to-number", ["get", "aggregation"]]],
                 // "text-field": "yo",
                 // "text-field": "{kind}",
                 "text-size": 10,
