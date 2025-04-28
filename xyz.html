@@ -101,11 +101,12 @@
                 // "text-field": "yo",
                 // "text-field": ["to-string", ["length", ["get", "aggregation"]]],
                 "text-field": [
+                    let, "o", ["get", "aggregation"],]
                     ["slice", 
-                     ["get", "aggregation"], 
+                     "o",
                      8, 
-                     ["-", "length", ["get", "aggregation"], 1]]
-                ],
+                     ["-", "length", "o", 1]]
+                ]],
                 "text-size": 10,
                 "text-justify": "center",
                 "text-allow-overlap": false,
