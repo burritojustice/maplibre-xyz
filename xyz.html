@@ -103,7 +103,7 @@
                 "text-field": [
                     "let", "o", ["get", "aggregation"],
                     ["slice", 
-                     "o",
+                     ["var", "o"],
                      8, 
                      ["-", ["length", ["var, "o"]], 1]
                     ]
