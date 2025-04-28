@@ -100,9 +100,12 @@
                 // "text-field": ["slice", ["get", "aggregation"], 8,10],
                 // "text-field": "yo",
                 // "text-field": ["to-string", ["length", ["get", "aggregation"]]],
-                "text-field": ["let", "x", ["-",["length", ["get", "aggregation"]], 1],
-                                ["slice", ["get", "aggregation"], 8, "x"]
-                              ],
+                "text-field": [
+                    ["slice", 
+                     ["get", "aggregation"], 
+                     8, 
+                     ["-", ["length", ["get", "aggregation"]], 1]]
+                ],
                 "text-size": 10,
                 "text-justify": "center",
                 "text-allow-overlap": false,
