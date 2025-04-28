@@ -136,16 +136,16 @@
           paint: {
             // 'circle-radius': 5,
             'circle-radius': [
-                "/",[
+                "sqrt",[
                 "to-number", [
-                "let", "o", ["get", "aggregation"],
-                ["slice", 
-                 ["var", "o"],
-                 8, 
-                 ["-", ["length", ["var", "o"]], 1]
+                    "let", "o", ["get", "aggregation"],
+                        ["slice", 
+                         ["var", "o"],
+                         8, 
+                         ["-", ["length", ["var", "o"]], 1]
+                        ]
                 ]
-                ]
-            ],10,
+            ]
             ],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
