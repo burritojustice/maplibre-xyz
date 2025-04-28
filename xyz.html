@@ -96,7 +96,8 @@
                 "symbol-placement": "point",
                 // "text-field": ['get', 'kind_detail'],
                 // "text-field": ["get", "qty", ["get", "aggregation"]],
-                "text-field": "yo",
+                "text-field": ["get", "aggregation"],
+                // "text-field": "yo",
                 // "text-field": "{kind}",
                 "text-size": 10,
                 "text-justify": "center",
@@ -117,7 +118,7 @@
           'source-layer': spaceID,
           paint: {
             // 'circle-radius': 5,
-            'circle-radius': ["get", "qty", ["object", ["get", "aggregation"]]],
+            'circle-radius': [object, ["get", "qty", ["get", "aggregation"]]],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
