@@ -136,7 +136,7 @@
           paint: {
             // 'circle-radius': 5,
             'circle-radius': [
-                "+", 4, "log2", [
+                ["+", 4, "log2", [
                     "to-number", [
                         "let", "o", ["get", "aggregation"],
                             ["slice", 
@@ -146,7 +146,7 @@
                         ]
                     ]
                 ]
-            ],
+            ]],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
