@@ -136,16 +136,17 @@
           paint: {
             // 'circle-radius': 5,
             'circle-radius': [
-                ["+", 4, "log2", [
-                    "to-number", [
-                        "let", "o", ["get", "aggregation"],
-                            ["slice", 
-                             ["var", "o"],
-                             8, 
-                             ["-", ["length", ["var", "o"]], 1]
+                // ["+", 4, 
+                     "log2", [
+                        "to-number", [
+                            "let", "o", ["get", "aggregation"],
+                                ["slice", 
+                                 ["var", "o"],
+                                 8, 
+                                 ["-", ["length", ["var", "o"]], 1]
+                            ]
                         ]
-                    ]
-                ]
+                // ]
             ]],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
