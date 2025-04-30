@@ -56,9 +56,9 @@
         center: [-122.447303, 37.753574]
     });
 
-    # even after 10 years mapbox/libre still cannot handle a nested object in a vector tile source, so we need to parse the string
-    # we could search for ':' as the delimiter to make a more generic case rather than this fixed hack just for hexbin qty
-    # note that this will come in as a string and wen will need to convert to a number for any data driving stuff
+    // even after 10 years mapbox/libre still cannot handle a nested object in a vector tile source, so we need to parse the string
+    // we could search for ':' as the delimiter to make a more generic case rather than this fixed hack just for hexbin qty
+    // note that this will come in as a string and wen will need to convert to a number for any data driving stuff
     
     const get_nested_qty =  
     [
