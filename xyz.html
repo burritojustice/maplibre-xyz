@@ -41,6 +41,8 @@
         if (clustering == 'h3_centroid')
             {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
+        xyz_url += '?relativeResolution=1'
+        xyz_url += 
         console.log({xyz_url});
     }
     console.log({spaceID},{hubApi},{clustering});
@@ -87,10 +89,10 @@
     const get_nested_value =  
     [
         "let", "o", ["get", "aggregation"],[
-            "let", "i" ["index-of",":"],[
+            "let", "i" ["index-of",":",["var": "o"],[
                 "slice", 
                      ["var", "o"],
-                     ["+",["var", "i"],2],
+                     ["+", ["var", "i"] ,2],
                      ["-", ["length", ["var", "o"]], 1]
             ]
         ]
