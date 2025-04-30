@@ -60,7 +60,7 @@
     // we could search for ':' as the delimiter to make a more generic case rather than this fixed hack just for hexbin qty
     // note that this will come in as a string and wen will need to convert to a number for any data driving stuff
     
-    const get_nested_qty =  
+    const get_nested_hexbin_qty =  
     [
         "let", "o", ["get", "aggregation"],
             ["slice", 
@@ -69,6 +69,20 @@
                  ["-", ["length", ["var", "o"]], 1]
             ]
     ]
+
+    const get_nested_hexbin_qty_test =  
+    [
+        "let", "o", ["get", "aggregation"],
+            ["slice", 
+                 ["var", "o"],
+                 ["index_of", "qty", ["var", "o"]], 
+                 ["-", ["length", ["var", "o"]], 1]
+            ]
+    ]
+    
+    function get_obj_from_string(name) {
+        
+    }
 
     map.on('load', () => {
         map.addSource('xyz', {
@@ -130,7 +144,7 @@
                 //      ["-", ["length", ["var", "o"]], 1]
                 //     ]
                 // ],
-                "text-field": get_nested_qty,            
+                "text-field": get_nested_hexbin_qty_test,            
                 "text-size": 10,
                 "text-justify": "center",
                 "text-allow-overlap": false,
@@ -150,20 +164,14 @@
           'source-layer': spaceID,
           paint: {
             // 'circle-radius': 5,
+
             'circle-radius': [
                 "+", 4, [
                      "log2", [
-                        "to-number", [
-                            "let", "o", ["get", "aggregation"],
-                                ["slice", 
-                                 ["var", "o"],
-                                 8, 
-                                 ["-", ["length", ["var", "o"]], 1]
-                            ]
-                        ]
+                        "to-number", [get_nested_hexbin_qty]
                     ]
-                
-            ]],
+                ]
+            ],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
