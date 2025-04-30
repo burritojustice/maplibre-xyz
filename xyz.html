@@ -42,7 +42,7 @@
             {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
         if (urlParams.get('rez')){
-            {const rez_param = `&relativeResolution=${rez}`}
+            const rez_param = '&relativeResolution=' + urlParams.get('rez')
              xyz_url += rez_param
         }
         console.log({xyz_url});
