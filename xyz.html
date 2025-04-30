@@ -44,7 +44,7 @@
         xyz_url += clustering_param;
         if (urlParams.get('rez')){
             rez = urlParams.get('rez');
-            rez_param = '&relativeResolution=' + rez;
+            rez_param = '&clustering.relativeResolution=' + rez;
             xyz_url += rez_param;
         }
         console.log({xyz_url});
