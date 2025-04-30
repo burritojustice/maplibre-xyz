@@ -60,7 +60,7 @@
     // we could search for ':' as the delimiter to make a more generic case rather than this fixed hack just for hexbin qty
     // note that this will come in as a string and wen will need to convert to a number for any data driving stuff
     
-    const get_nested_hexbin_qty =  
+    const get_nested_hexbin_qty_fixed =  
     [
         "let", "o", ["get", "aggregation"],
             ["slice", 
@@ -69,19 +69,23 @@
                  ["-", ["length", ["var", "o"]], 1]
             ]
     ]
-    //
+    // assume 5 char of delimiters in addition to length of string to get to the start of the numberic value - {"":_ 
     const get_nested_hexbin_qty_test =  
     [
-        "let", "o", ["get", "aggregation"],
-            ["slice", 
-                 ["var", "o"],
-                 ["+", 7, ["index-of", "qty", ["var", "o"]]], 
-                 ["-", ["length", ["var", "o"]], 1]
-            ]
+        "let", "o", ["get", "aggregation"],[
+            "let", "l", ["length", "qty"],[
+                "slice", 
+                     ["var", "o"],
+                     ["+",["var", "l"],5]
+                     ["-", ["length", ["var", "o"]], 1]
+                ]
+        ]
     ]
+    
+    // doing addition and math inside an expression is extraordinarily painful, so jsing it 
     const obj_name = "qty";
     const obj_value_position = obj_name.length + 4 // determine position to slice out the stringed object value {"qty": 345} 
-    const get_nested_hexbin_qty_test_length =  
+    const get_nested_hexbin_qty =  
     [
         "let", "o", ["get", "aggregation"],
             ["slice", 
