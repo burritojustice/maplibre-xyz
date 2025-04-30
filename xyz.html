@@ -69,7 +69,9 @@
                  ["-", ["length", ["var", "o"]], 1]
             ]
     ]
-    // assume 5 char of delimiters in addition to length of string to get to the start of the numberic value - {"":_ 
+    // assume 5 char of delimiters in addition to length of string to get to the start of the mumber - {"":_ 
+    // (note this would nedd to be +6 and -2 if teh value were a string)
+    // you could slice +2 from the start and -2 from the positon of the : to get the object name
     const get_nested_hexbin_qty_test =  
     [
         "let", "o", ["get", "aggregation"],[
@@ -79,6 +81,18 @@
                      ["+",["var", "l"],5],
                      ["-", ["length", ["var", "o"]], 1]
                 ]
+        ]
+    ]
+
+    const get_nested_value =  
+    [
+        "let", "o", ["get", "aggregation"],[
+            "let", "i" ["index-of",":"],[
+                "slice", 
+                     ["var", "o"],
+                     ["+",["var", "i"],2],
+                     ["-", ["length", ["var", "o"]], 1]
+            ]
         ]
     ]
     
@@ -159,7 +173,7 @@
                 //      ["-", ["length", ["var", "o"]], 1]
                 //     ]
                 // ],
-                "text-field": get_nested_hexbin_qty_test,        
+                "text-field": get_nested_value,        
                 "text-size": 10,
                 "text-justify": "center",
                 "text-allow-overlap": false,
