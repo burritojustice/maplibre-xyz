@@ -18,7 +18,7 @@
     var spaceID = 'stXc82l8'; 
     var hubApi = 'xyz2.think-with-me.com'
     var clustering;
-    var rez_param
+    var rez;
 
     // look for space, hubAPI in urlParams
     const urlParams = new URLSearchParams(window.location.search);
@@ -43,12 +43,13 @@
             {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
         if (urlParams.get('rez')){
-             rez_param = '&relativeResolution=' + urlParams.get('rez')
-             xyz_url += rez_param
+            rez = urlParams.get('rez');
+            rez_param = '&relativeResolution=' + rez;
+            xyz_url += rez_param;
         }
         console.log({xyz_url});
     }
-    console.log({spaceID},{hubApi},{clustering},{rez_param});
+    console.log("valid url params:",{spaceID},{hubApi},{clustering},{rez});
 
 
     
