@@ -80,7 +80,7 @@
             ]
     ]
     const obj_name = "qty";
-    const obj_value_position = key_name.length + 4 // determine position to slice out the stringed object value {"qty": 345} 
+    const obj_value_position = obj_name.length + 4 // determine position to slice out the stringed object value {"qty": 345} 
     const get_nested_hexbin_qty_test_length =  
     [
         "let", "o", ["get", "aggregation"],
