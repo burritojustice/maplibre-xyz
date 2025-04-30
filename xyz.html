@@ -37,7 +37,7 @@
         clustering = urlParams.get('clustering');
         var clustering_param;
         if (clustering == 'h3')
-            {clustering_param = '?clustering=$hexbin'}
+            {clustering_param = '?clustering=hexbin'}
         if (clustering == 'h3_centroid')
             {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
