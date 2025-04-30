@@ -135,9 +135,9 @@
           'source-layer': spaceID,
           paint: {
             // 'fill-color': '#0000ff',
-            'fill-color': [
+            'fill-color': ["to-color", [
                 "rbga", ["log2", ["to-number", get_nested_value]], 0, 0, 0.3 
-            ],
+            ]],
             // 'fill-opacity': 0.2,
             // 'fill-outline-color': '#cccccc',
           },
