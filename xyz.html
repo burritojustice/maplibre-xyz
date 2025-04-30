@@ -69,13 +69,13 @@
                  ["-", ["length", ["var", "o"]], 1]
             ]
     ]
-
+    //
     const get_nested_hexbin_qty_test =  
     [
         "let", "o", ["get", "aggregation"],
             ["slice", 
                  ["var", "o"],
-                 ["index-of", "qty", ["var", "o"]], 
+                 ["+", "7", ["index-of", "qty", ["var", "o"]]], 
                  ["-", ["length", ["var", "o"]], 1]
             ]
     ]
@@ -155,7 +155,7 @@
                 //      ["-", ["length", ["var", "o"]], 1]
                 //     ]
                 // ],
-                "text-field": get_nested_hexbin_qty_test_length,        
+                "text-field": get_nested_hexbin_qty_test,        
                 "text-size": 10,
                 "text-justify": "center",
                 "text-allow-overlap": false,
