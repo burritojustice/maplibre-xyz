@@ -41,12 +41,16 @@
         if (clustering == 'h3_centroid')
             {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
-        xyz_url += '&relativeResolution=1'
-        xyz_url += 
+        if (urlParams.get('rez')){
+            {rez_param = `&relativeResolution=${rez}`}
+             xyz_url += rez_param
+        }
         console.log({xyz_url});
     }
     console.log({spaceID},{hubApi},{clustering});
 
+
+    
     // const styleUrl = 'https://api.protomaps.com/styles/v5/light/en.json?key=ffc24a4325d458ce';
     const styleUrl = 'https://api.protomaps.com/styles/v5/white/en.json?key=ffc24a4325d458ce';
 
