@@ -32,16 +32,16 @@
     }
 
     
-    var xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt`
+    var xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`
     // console.log({xyz_url});
     
     if (urlParams.get('clustering')){
         clustering = urlParams.get('clustering');
         var clustering_param;
         if (clustering == 'h3')
-            {clustering_param = '?clustering=hexbin'}
+            {clustering_param = '&clustering=hexbin'}
         if (clustering == 'h3_centroid')
-            {clustering_param = '?clustering=hexbin&clustering.pointmode=true'}
+            {clustering_param = '&clustering=hexbin&clustering.pointmode=true'}
         xyz_url += clustering_param;
         if (urlParams.get('rez')){
             rez = urlParams.get('rez');
