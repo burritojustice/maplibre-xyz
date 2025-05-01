@@ -135,9 +135,11 @@
     function get_obj_from_string(name) {
         
     }
+    map.on('load', () => {
+      console.log(map.getStyle().layers.map(l => l.id));
+    });
 
     map.on('load', () => {
-        console.log(map.getStyle().layers.map(l => l.id));
         map.addSource('xyz', {
             type: 'vector',
             tiles: [
