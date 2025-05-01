@@ -104,6 +104,20 @@
             ]
         ]
     ]
+
+    const get_nested_number =  
+    [
+        "to-number", [
+            "let", "o", ["get", "aggregation"],[
+                "let", "i", ["index-of",":",["var", "o"]],[
+                    "slice", 
+                         ["var", "o"],
+                         ["+", ["var", "i"] ,2],
+                         ["-", ["length", ["var", "o"]], 1]
+                ]
+            ]
+        ]
+    ]
     
     // doing addition and math inside an expression is extraordinarily painful, so jsing it 
     const obj_name = "qty";
@@ -138,7 +152,7 @@
             // 'fill-color': '#0000ff',
             // "rgba", 255,0,0,0.5
             // "rbga", [["to-number", get_nested_hexbin_qty], 0, 0, 0.3 
-            'fill-color':  "rbga", "log2", ["to-number", get_nested_hexbin_qty], 0, 0, 0.3
+            'fill-color':  "rbga", ["log2", get_nested_number], 0, 0, 0.3
           },
             // 'fill-opacity': 0.2,
             // 'fill-outline-color': '#cccccc',
