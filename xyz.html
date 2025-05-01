@@ -136,11 +136,13 @@
           'source-layer': spaceID,
           paint: {
             // 'fill-color': '#0000ff',
+            // "rgba", 255,0,0,0.5
+            // "rbga", [["to-number", get_nested_hexbin_qty], 0, 0, 0.3 
             'fill-color': [
-                // "rbga", [["to-number", get_nested_hexbin_qty], 0, 0, 0.3 ]
-               "rbga", ["log2", ["to-number", get_nested_hexbin_qty]], 0, 0, 0.3 ]
-                // "rgba", 255,0,0,0.5
+               "rbga", ["log2", ["to-number", get_nested_hexbin_qty]], 0, 0, 0.3 
             ],
+
+
             // 'fill-opacity': 0.2,
             // 'fill-outline-color': '#cccccc',
           },
