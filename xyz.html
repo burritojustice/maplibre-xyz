@@ -219,14 +219,18 @@
           'source-layer': spaceID,
           paint: {
             // 'circle-radius': 5,
-
             'circle-radius': [
                 "+", 6, [
-                     "log2", [
-                        "to-number", get_nested_hexbin_qty
-                    ]
+                     "log2", get_nested_number
                 ]
             ],
+            // 'circle-radius': [
+            //     "+", 6, [
+            //          "log2", [
+            //             "to-number", get_nested_hexbin_qty
+            //         ]
+            //     ]
+            // ],
             'circle-color': '#FF0000',
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
