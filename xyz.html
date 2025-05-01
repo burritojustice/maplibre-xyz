@@ -149,13 +149,23 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-            'fill-color': ["rgba", ["min", get_nested_number, 255], 128, 128, 0.3]
+              'fill-color': [
+                  "interpolate",
+                  ["linear"],
+                  ["log2", ["max", get_nested_number, 1]],
+                  0, "#fee5d9",
+                  1, "#fcae91",
+                  3, "#fb6a4a",
+                  5, "#de2d26",
+                  7, "#a50f15"
+                ]
+            // 'fill-color': ["rgba", ["min", get_nested_number, 255], 128, 128, 0.3]
             // 'fill-color': ["rgba", 255, 0, 0, 0.3]
             // 'fill-color': 'rgba(255, 0, 0, 0.2)'
               // 'fill-color': "#ffaaaa"
             // 'fill-color': ["concat", "rgba(", get_nested_number, "0,", "0,", "0.3", ")"]
           },
-            // 'fill-opacity': 0.2,
+            'fill-opacity': 0.4,
             //'fill-outline-color': '#cccccc',
             'filter': ['==', '$type', 'Polygon']
         });
