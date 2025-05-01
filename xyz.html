@@ -149,10 +149,7 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-            // 'fill-color': '#0000ff',
-            // "rgba", 255,0,0,0.5
-            // "rbga", [["to-number", get_nested_hexbin_qty], 0, 0, 0.3 
-            'fill-color': "rbga, ["log2", get_nested_number], 0, 0, 0.3"
+            'fill-color': ["rbga", ["log2", get_nested_number], 0, 0, 0.3]]
           },
             // 'fill-opacity': 0.2,
             // 'fill-outline-color': '#cccccc',
