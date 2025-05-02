@@ -194,29 +194,8 @@
             source: "xyz",
             'source-layer': spaceID,
             layout: {
+                "visible": false,
                 "symbol-placement": "point",
-                // "text-field": ['get', 'kind_detail'],
-                // "text-field": ["get", "qty", ["get", "aggregation"]],
-                // "text-field": ["get", "aggregation"],
-                // "text-field": ["slice", ["get", "aggregation"], 8,10],
-                // "text-field": "yo",
-                // "text-field": ["to-string", ["length", ["get", "aggregation"]]],
-                // "text-field": [
-                //     "let", "o", ["get", "aggregation"],
-                //     ["slice", 
-                //      ["var", "o"],
-                //      8, 
-                //      ["-", ["length", ["get", "aggregation"]], 1]
-                //     ]
-                // ],
-                // "text-field": [
-                //     "let", "o", ["get", "aggregation"],
-                //     ["slice", 
-                //      ["var", "o"],
-                //      8, 
-                //      ["-", ["length", ["var", "o"]], 1]
-                //     ]
-                // ],
                 "text-field": get_nested_value, 
                 "text-size": 10,
                 "text-justify": "center",
