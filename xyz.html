@@ -197,29 +197,6 @@
             'filter': ['==', '$type', 'Polygon']
         });
         map.addLayer({
-            id: "symbols",
-            type: "symbol",
-            // "symbol-placement": "centroid",
-            source: "xyz",
-            'source-layer': spaceID,
-            layout: {
-                // "text-allow-overlap": true,
-                "text-ignore-placement": true,
-                // "visibility": "none",
-                "symbol-placement": "point",
-                "text-field": get_nested_value, 
-                "text-size": 10,
-                "text-justify": "center",
-                "text-font": ["Noto Sans Regular"],
-                "text-variable-anchor": ["top", "bottom","left","right"]
-            },
-            paint: {
-                "text-color": "#000",
-                "text-halo-color": "#fff",
-                "text-halo-width": 1.5
-            }
-        },firstSymbolId);
-        map.addLayer({
           id: 'points',
           type: 'circle',
           source: 'xyz',
@@ -246,6 +223,31 @@
           },
             'filter': ['==', '$type', 'Point']
         }, firstSymbolId);
+        
+        map.addLayer({
+            id: "symbols",
+            type: "symbol",
+            // "symbol-placement": "centroid",
+            source: "xyz",
+            'source-layer': spaceID,
+            layout: {
+                // "text-allow-overlap": true,
+                "text-ignore-placement": true,
+                // "visibility": "none",
+                "symbol-placement": "point",
+                "text-field": get_nested_value, 
+                "text-size": 10,
+                "text-justify": "center",
+                "text-font": ["Noto Sans Regular"],
+                "text-variable-anchor": ["top", "bottom","left","right"]
+            },
+            paint: {
+                "text-color": "#000",
+                "text-halo-color": "#fff",
+                "text-halo-width": 1.5
+            }
+        },firstSymbolId);
+
     });
      
 </script>
