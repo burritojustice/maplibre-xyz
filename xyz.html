@@ -149,7 +149,7 @@
                   7, "#a50f15"
                 ]
         
-    const red_log_ramp = [
+    const red_log_quadbin_ramp = [
                   "interpolate",
                   ["linear"],
                   ["log2", ["max", ["get", "count"], 1]],
@@ -200,7 +200,7 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-              'fill-color': red_log_ramp,
+              'fill-color': red_log_quadbin_ramp,
               'fill-opacity': 0.3
           },
            
