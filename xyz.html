@@ -204,13 +204,14 @@
             'source-layer': spaceID,
             layout: {
                 // "text-allow-overlap": true,
-                "text-ignore-placement": true,
+                // "text-ignore-placement": true,
                 // "visibility": "none",
+                text-variable-anchor: [""center", "top", "bottom", "left", "right'],
                 "symbol-placement": "point",
                 "text-field": get_nested_value, 
                 "text-size": 10,
                 "text-justify": "center",
-                "text-allow-overlap": false,
+                // "text-allow-overlap": false,
                 "text-font": ["Noto Sans Regular"],
                 // "text-variable-anchor": ["top", "bottom","left","right"]
             },
