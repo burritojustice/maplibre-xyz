@@ -135,9 +135,16 @@
     function get_obj_from_string(name) {
         
     }
-    // map.on('styledata', () => {
-    //   console.log(map.getStyle().layers.map(l => l.id));
-    // });
+    const red_log_ramp = [
+                  "interpolate",
+                  ["linear"],
+                  ["log2", ["max", get_nested_number, 1]],
+                  0, "#fee5d9",
+                  1, "#fcae91",
+                  3, "#fb6a4a",
+                  5, "#de2d26",
+                  7, "#a50f15"
+                ],
 
     map.on('load', () => {
         console.log(map.getStyle().layers.map(l => l.id));
@@ -162,16 +169,17 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-              'fill-color': [
-                  "interpolate",
-                  ["linear"],
-                  ["log2", ["max", get_nested_number, 1]],
-                  0, "#fee5d9",
-                  1, "#fcae91",
-                  3, "#fb6a4a",
-                  5, "#de2d26",
-                  7, "#a50f15"
-                ],
+              'fill-color': red_log_ramp,
+              // 'fill-color': [
+              //     "interpolate",
+              //     ["linear"],
+              //     ["log2", ["max", get_nested_number, 1]],
+              //     0, "#fee5d9",
+              //     1, "#fcae91",
+              //     3, "#fb6a4a",
+              //     5, "#de2d26",
+              //     7, "#a50f15"
+              //   ],
                'fill-opacity': 0.3
             // 'fill-color': ["rgba", ["min", get_nested_number, 255], 128, 128, 0.3]
             // 'fill-color': ["rgba", 255, 0, 0, 0.3]
@@ -208,14 +216,8 @@
                      "log2", get_nested_number
                 ]
             ],
-            // 'circle-radius': [
-            //     "+", 6, [
-            //          "log2", [
-            //             "to-number", get_nested_hexbin_qty
-            //         ]
-            //     ]
-            // ],
-            'circle-color': '#FF0000',
+            // 'circle-color': '#FF0000',
+            'circle-color': red_log_ramp,
             'circle-opacity': 0.2,
             'circle-stroke-width': 1,
             'circle-stroke-color': '#000000',
