@@ -141,6 +141,15 @@
 
     map.on('load', () => {
         console.log(map.getStyle().layers.map(l => l.id));
+        const layers = map.getStyle().layers;
+        // Find the index of the first symbol layer in the map style
+        let firstSymbolId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol') {
+                firstSymbolId = layers[i].id;
+                break;
+            }
+        }        
         map.addSource('xyz', {
             type: 'vector',
             tiles: [
@@ -173,7 +182,7 @@
            
             //'fill-outline-color': '#cccccc',
             'filter': ['==', '$type', 'Polygon']
-        });
+        }, "places-locality");
 
         // }, "places-locality");
         map.addLayer({
