@@ -264,6 +264,25 @@
           20, "#a50f15"
         ]
 
+    const clamped_log_count = [
+      "case",
+      ["<", ["log2", ["coalesce", ["get", "count"], 1]], 0], 0,
+      [">", ["log2", ["coalesce", ["get", "count"], 1]], 20], 20,
+      ["log2", ["coalesce", ["get", "count"], 1]]
+    ];
+
+    const red_quad_clamp_ramp = [
+      "interpolate",
+      ["linear"],
+      clamped_log_count,
+      0, "#fee5d9",
+      6, "#fcae91",
+      12, "#fb6a4a",
+      16, "#de2d26",
+      20, "#a50f15"
+    ];
+    
+
     map.on('load', () => {
         // console.log(map.getStyle().layers.map(l => l.id));
         const layers = map.getStyle().layers;
@@ -305,7 +324,7 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-              'fill-color': quad_clamp,
+              'fill-color': red_quad_clamp_ramp,
               'fill-opacity': 0.3
           },
             //'fill-outline-color': '#cccccc',
