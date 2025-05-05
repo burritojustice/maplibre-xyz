@@ -167,7 +167,7 @@
     const red_log_quadbin_ramp = [
                   "interpolate",
                   ["linear"],
-                  ["log2", ["max", ["get", "count"], 1]],
+                  ["log2", ["max", ["coalesce", ["get", "count"], 0], 1]],
                   0, "#fee5d9",
                   2, "#fcae91",
                   4, "#fb6a4a",
