@@ -150,12 +150,12 @@
     ]   
     
     function get_obj_from_string(name) {
-        
+        //                  // ["log2", ["max", get_nested_number, 1]],
+
     }
     const red_log_ramp = [
                   "interpolate",
                   ["linear"],
-                  // ["log2", ["max", get_nested_number, 1]],
                   5, 
                   0, "#fee5d9",
                   1, "#fcae91",
@@ -202,7 +202,7 @@
               'fill-opacity': 0.3
           },
             //'fill-outline-color': '#cccccc',
-            'filter': [
+          'filter': [
                 ['all'],
                 ['==', '$type', 'Polygon'],
                 ["==", "kind", "h3"]
