@@ -191,27 +191,27 @@
             'filter': [
                 
                 ['==', '$type', 'Polygon'],
-                // ["==", "kind", "h3"]
+                ["==", "kind", "h3"]
             ]
         }, firstSymbolId);
 
-        // map.addLayer({
-        //   id: 'quadbins',
-        //   type: 'fill',
-        //   source: 'xyz',
-        //   'source-layer': spaceID,
-        //   paint: {
-        //       'fill-color': red_log_quadbin_ramp,
-        //       'fill-opacity': 0.3
-        //   },
+        map.addLayer({
+          id: 'quadbins',
+          type: 'fill',
+          source: 'xyz',
+          'source-layer': spaceID,
+          paint: {
+              'fill-color': red_log_quadbin_ramp,
+              'fill-opacity': 0.3
+          },
            
-        //     //'fill-outline-color': '#cccccc',
-        //     'filter': [
-        //         'all',
-        //         ['==', '$type', 'Polygon'],
-        //         ["has", "qk"]
-        //     ]
-        // }, firstSymbolId);
+            //'fill-outline-color': '#cccccc',
+            'filter': [
+                'all',
+                ['==', '$type', 'Polygon'],
+                ["has", "qk"]
+            ]
+        }, firstSymbolId);
 
         
         // }, "places_locality");
