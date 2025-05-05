@@ -274,7 +274,9 @@
                 "text-ignore-placement": true,
                 // "visibility": "none",
                 "symbol-placement": "point",
-                "text-field": get_nested_value, 
+                "text-field":   [
+                    "coalesce",["get", "count"],get_nested_value
+                ],
                 "text-size": 10,
                 "text-justify": "center",
                 "text-font": ["Noto Sans Regular"],
