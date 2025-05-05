@@ -107,7 +107,7 @@
             ]
         ]
     ]
-
+    // annoying to have to convert from a strin in the other expressions so converting to a number here
     const get_nested_number =  
     [
         "to-number", [
@@ -154,10 +154,10 @@
                   ["linear"],
                   ["log2", ["max", ["get", "count"], 1]],
                   0, "#fee5d9",
-                  1, "#fcae91",
-                  2, "#fb6a4a",
-                  3, "#de2d26",
-                  4, "#a50f15"
+                  2, "#fcae91",
+                  4, "#fb6a4a",
+                  8, "#de2d26",
+                  16, "#a50f15"
                 ]
 
     map.on('load', () => {
