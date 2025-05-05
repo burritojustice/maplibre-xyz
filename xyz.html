@@ -39,7 +39,7 @@
         clustering = urlParams.get('clustering');
         var clustering_param;
         if (clustering == 'quadbin'){
-            clustering_param = '&quadbin&clustering.countmode=mixed&clustering.resolutionRelative=4'
+            clustering_param = '&quadbin&clustering.countmode=mixed&clustering.relativeResolution=4'
         }
         if (clustering == 'h3')
             {clustering_param = '&clustering=hexbin'}
