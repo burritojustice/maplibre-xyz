@@ -251,9 +251,14 @@
       ]
     ]
 
-    const quad_clamp = 
-        ["interpolate", ["linear"],
-          ["clamp", ["log2", ["coalesce", ["get", "count"], 1]], 0, 20],
+    const quad_clamp = [
+          "interpolate", ["linear"],
+          [
+            "case",
+            ["<", ["log2", ["coalesce", ["get", "count"], 1]], 0], 0,
+            [">", ["log2", ["coalesce", ["get", "count"], 1]], 20], 20,
+            ["log2", ["coalesce", ["get", "count"], 1]]
+          ],
           0, "#fee5d9",
           10, "#fb6a4a",
           20, "#a50f15"
