@@ -152,12 +152,12 @@
     const red_log_quadbin_ramp = [
                   "interpolate",
                   ["linear"],
-                  ["log10", ["max", ["get", "count"], 1]],
+                  ["log2", ["max", ["get", "count"], 1]],
                   0, "#fee5d9",
                   1, "#fcae91",
-                  3, "#fb6a4a",
-                  5, "#de2d26",
-                  7, "#a50f15"
+                  2, "#fb6a4a",
+                  3, "#de2d26",
+                  4, "#a50f15"
                 ]
 
     map.on('load', () => {
@@ -189,7 +189,7 @@
            
             //'fill-outline-color': '#cccccc',
             'filter': [
-                'all',
+                
                 ['==', '$type', 'Polygon'],
                 ["==", "kind", "h3"]
             ]
