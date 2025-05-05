@@ -365,8 +365,8 @@
         },firstSymbolId);
         
         function toggleLayers(selectedLayer) {
-          const bin_layers = ["hexbins", "quadbins", "points"];
-          layers.forEach(bin_layer => {
+          const layers = ["hexbins", "quadbins", "points"];
+          layers.forEach(layer => {
             if (map.getLayer(layer)) {
               map.setLayoutProperty(layer, 'visibility', layer === selectedLayer ? 'visible' : 'none');
             }
