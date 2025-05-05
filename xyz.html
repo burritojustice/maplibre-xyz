@@ -228,7 +228,6 @@
                 ["has", "qk"]
             ]
         }, firstSymbolId);
-        // }, firstSymbolId);
 
         
         // map.addLayer({
@@ -285,7 +284,13 @@
                 "text-color": "#000",
                 "text-halo-color": "#fff",
                 "text-halo-width": 1.5
-            }
+            },
+            'filter': [
+                'any',
+                ["has", 'kind'],
+                ["has", "qk"]
+            ]
+            
         },firstSymbolId);
 
     });
