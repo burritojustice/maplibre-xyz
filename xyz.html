@@ -69,32 +69,6 @@
     });
 
     // even after 10 years mapbox/libre still cannot handle a nested object in a vector tile source, so we need to parse the string
-    // we could search for ':' as the delimiter to make a more generic case rather than this fixed hack just for hexbin qty
-    // note that this will come in as a string and wen will need to convert to a number for any data driving stuff
-    
-    const get_nested_hexbin_qty_fixed =  
-    [
-        "let", "o", ["get", "aggregation"],
-            ["slice", 
-                 ["var", "o"],
-                 8, 
-                 ["-", ["length", ["var", "o"]], 1]
-            ]
-    ]
-    // assume 5 char of delimiters in addition to length of string to get to the start of the mumber - {"":_ 
-    // (note this would nedd to be +6 and -2 if teh value were a string)
-    // you could slice +2 from the start and -2 from the positon of the : to get the object name
-    const get_nested_hexbin_qty_test =  
-    [
-        "let", "o", ["get", "aggregation"],[
-            "let", "l", ["length", "qty"],[
-                "slice", 
-                     ["var", "o"],
-                     ["+",["var", "l"],5],
-                     ["-", ["length", ["var", "o"]], 1]
-                ]
-        ]
-    ]
 
     const get_nested_value =  
     [
@@ -107,20 +81,8 @@
             ]
         ]
     ]
-    // annoying to have to convert from a strin in the other expressions so converting to a number here
-    // const get_nested_number =  
-    // [
-    //     "to-number", [
-    //         "let", "o", ["get", "aggregation"],[
-    //             "let", "i", ["index-of",":",["var", "o"]],[
-    //                 "slice", 
-    //                      ["var", "o"],
-    //                      ["+", ["var", "i"] ,2],
-    //                      ["-", ["length", ["var", "o"]], 1]
-    //             ]
-    //         ]
-    //     ]
-    // ]
+    // annoying to have to convert from a string in the other expressions so converting to a number here, and checking just in case no :
+
     const get_nested_number = [
       "to-number", [
         "let", "o", ["get", "aggregation"],
@@ -133,10 +95,8 @@
           ]
       ]
     ];
-
-
     
-    // doing addition and math inside an expression is extraordinarily painful, so jsing it 
+    // doing addition and math inside an expression is extraordinarily painful, so js-ing it 
     const obj_name = "qty";
     const obj_value_position = obj_name.length + 4 // determine position to slice out the stringed object value {"qty": 345} 
     const get_nested_hexbin_qty =  
@@ -149,10 +109,6 @@
             ]
     ]   
     
-    function get_obj_from_string(name) {
-        //                  // ["log2", ["max", get_nested_number, 1]],
-
-    }
     const red_log_ramp = [
                   "interpolate",
                   ["linear"],
@@ -197,60 +153,6 @@
           ]
         ]
 
-    const red_quad_zoom_ramp_500K = [
-      "interpolate",
-      ["linear"],
-      ["zoom"],
-    
-      // Zoom level 5: wide range
-      5, [
-        "interpolate",
-        ["linear"],
-        ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
-        0, "#fee5d9",
-        10, "#fcae91",    // ~1K
-        15, "#fb6a4a",    // ~32K
-        19, "#de2d26",    // ~500K
-        20, "#a50f15"     // anything over ~1M
-      ],
-    
-      // Zoom level 6: smaller, but still wide
-      6, [
-        "interpolate",
-        ["linear"],
-        ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
-        0, "#fee5d9",
-        9, "#fcae91",     // ~512
-        14, "#fb6a4a",    // ~16K
-        18, "#de2d26",    // ~250K
-        20, "#a50f15"
-      ],
-    
-      // Zoom 8: tighter range
-      8, [
-        "interpolate",
-        ["linear"],
-        ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
-        0, "#fee5d9",
-        6, "#fcae91",     // ~64
-        10, "#fb6a4a",    // ~1K
-        14, "#de2d26",    // ~16K
-        18, "#a50f15"
-      ],
-    
-      // Zoom 13+: small counts only
-      13, [
-        "interpolate",
-        ["linear"],
-        ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
-        0, "#fee5d9",
-        2, "#fcae91",     // ~4
-        4, "#fb6a4a",     // ~16
-        6, "#de2d26",     // ~64
-        8, "#a50f15"
-      ]
-    ]
-
     const quad_clamp = [
           "interpolate", ["linear"],
           [
@@ -281,8 +183,60 @@
       16, "#de2d26",
       20, "#a50f15"
     ];
-    
 
+    const hexbin_clamped_log_nested_aggregation = [
+      "case",
+      // fallback if ":" is not found — treat as 0
+      ["<", ["index-of", ":", ["coalesce", ["get", "aggregation"], ""]], 0], 0,
+    
+      // Otherwise extract, parse and clamp log2(value)
+      [
+        "<", [
+          "log2",
+          ["to-number", [
+            "slice",
+            ["get", "aggregation"],
+            ["+", ["index-of", ":", ["get", "aggregation"]], 2],
+            ["-", ["length", ["get", "aggregation"]], 1]
+          ]]
+        ], 0
+      ], 0,
+    
+      [
+        ">", [
+          "log2",
+          ["to-number", [
+            "slice",
+            ["get", "aggregation"],
+            ["+", ["index-of", ":", ["get", "aggregation"]], 2],
+            ["-", ["length", ["get", "aggregation"]], 1]
+          ]]
+        ], 20
+      ], 20,
+    
+      // Normal case
+      [
+        "log2",
+        ["to-number", [
+          "slice",
+          ["get", "aggregation"],
+          ["+", ["index-of", ":", ["get", "aggregation"]], 2],
+          ["-", ["length", ["get", "aggregation"]], 1]
+        ]]
+      ]
+    ];
+
+    const red_log_clamped_hexbin_ramp = [
+      "interpolate",
+      ["linear"],
+      hexbin_clamped_log_nested_aggregation,
+      0, "#fee5d9",
+      6, "#fcae91",
+      12, "#fb6a4a",
+      16, "#de2d26",
+      20, "#a50f15"
+    ];
+    
     map.on('load', () => {
         // console.log(map.getStyle().layers.map(l => l.id));
         const layers = map.getStyle().layers;
@@ -306,7 +260,7 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-              'fill-color': red_log_ramp,
+              'fill-color': red_log_clamped_hexbin_ramp,
               // 'fill-color': '#de2d26',
               'fill-opacity': 0.3
           },
@@ -370,7 +324,7 @@
         }, firstSymbolId);
         
         map.addLayer({
-            id: "symbols",
+            id: "bin_labels",
             type: "symbol",
             // "symbol-placement": "centroid",
             source: "xyz",
