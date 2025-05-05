@@ -108,19 +108,33 @@
         ]
     ]
     // annoying to have to convert from a strin in the other expressions so converting to a number here
-    const get_nested_number =  
-    [
-        "to-number", [
-            "let", "o", ["get", "aggregation"],[
-                "let", "i", ["index-of",":",["var", "o"]],[
-                    "slice", 
-                         ["var", "o"],
-                         ["+", ["var", "i"] ,2],
-                         ["-", ["length", ["var", "o"]], 1]
-                ]
+    // const get_nested_number =  
+    // [
+    //     "to-number", [
+    //         "let", "o", ["get", "aggregation"],[
+    //             "let", "i", ["index-of",":",["var", "o"]],[
+    //                 "slice", 
+    //                      ["var", "o"],
+    //                      ["+", ["var", "i"] ,2],
+    //                      ["-", ["length", ["var", "o"]], 1]
+    //             ]
+    //         ]
+    //     ]
+    // ]
+    const get_nested_number = [
+      "to-number", [
+        "let", "o", ["get", "aggregation"],
+          ["let", "i", ["index-of", ":", ["var", "o"]],
+            ["case",
+              [">", ["var", "i"], -1],
+              ["slice", ["var", "o"], ["+", ["var", "i"], 2], ["-", ["length", ["var", "o"]], 1]],
+              "0" // fallback if ":" not found
             ]
-        ]
-    ]
+          ]
+      ]
+    ];
+
+
     
     // doing addition and math inside an expression is extraordinarily painful, so jsing it 
     const obj_name = "qty";
