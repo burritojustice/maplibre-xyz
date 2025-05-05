@@ -11,6 +11,13 @@
         body { margin: 0; padding: 0; }
         html, body, #map { height: 100%; }
     </style>
+    <div id="controls" style="position:absolute; top:10px; left:10px; background:#fff; padding:10px; border-radius:4px; font-family:sans-serif; z-index:1;">
+      <strong>Show layer:</strong><br>
+      <label><input type="radio" name="layer-toggle" value="hexbins" checked> Hexbins</label><br>
+      <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
+      <label><input type="radio" name="layer-toggle" value="points"> Points</label>
+    </div>
+
 </head>
 <body>
 <div id="map"></div>
@@ -247,7 +254,9 @@
                 firstSymbolId = layers[i].id;
                 break;
             }
-        }        
+        }   
+
+
         map.addSource('xyz', {
             type: 'vector',
             tiles: [
@@ -354,7 +363,25 @@
             ]
             
         },firstSymbolId);
-
+        
+        function toggleLayers(selectedLayer) {
+          const bin_layers = ["hexbins", "quadbins", "points"];
+          layers.forEach(bin_layer => {
+            if (map.getLayer(layer)) {
+              map.setLayoutProperty(layer, 'visibility', layer === selectedLayer ? 'visible' : 'none');
+            }
+          });
+        }
+        
+        // // Set initial visibility (optional, if not already set)
+        // toggleLayers("hexbins");
+        
+        // Attach event listener to radio buttons
+        document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
+          input.addEventListener('change', (e) => {
+            toggleLayers(e.target.value);
+          });
+        });
     });
      
 </script>
