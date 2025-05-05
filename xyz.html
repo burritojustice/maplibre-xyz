@@ -197,6 +197,60 @@
           ]
         ]
 
+    const red_quad_zoom_ramp_500K = [
+  "interpolate",
+  ["linear"],
+  ["zoom"],
+
+  // Zoom level 5: wide range
+  5, [
+    "interpolate",
+    ["linear"],
+    ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
+    0, "#fee5d9",
+    10, "#fcae91",    // ~1K
+    15, "#fb6a4a",    // ~32K
+    19, "#de2d26",    // ~500K
+    20, "#a50f15"     // anything over ~1M
+  ],
+
+  // Zoom level 6: smaller, but still wide
+  6, [
+    "interpolate",
+    ["linear"],
+    ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
+    0, "#fee5d9",
+    9, "#fcae91",     // ~512
+    14, "#fb6a4a",    // ~16K
+    18, "#de2d26",    // ~250K
+    20, "#a50f15"
+  ],
+
+  // Zoom 8: tighter range
+  8, [
+    "interpolate",
+    ["linear"],
+    ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
+    0, "#fee5d9",
+    6, "#fcae91",     // ~64
+    10, "#fb6a4a",    // ~1K
+    14, "#de2d26",    // ~16K
+    18, "#a50f15"
+  ],
+
+  // Zoom 13+: small counts only
+  13, [
+    "interpolate",
+    ["linear"],
+    ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
+    0, "#fee5d9",
+    2, "#fcae91",     // ~4
+    4, "#fb6a4a",     // ~16
+    6, "#de2d26",     // ~64
+    8, "#a50f15"
+  ]
+]
+
     map.on('load', () => {
         // console.log(map.getStyle().layers.map(l => l.id));
         const layers = map.getStyle().layers;
@@ -240,7 +294,7 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-              'fill-color': red_quad_zoom_ramp,
+              'fill-color': red_quad_zoom_ramp_500K,
               'fill-opacity': 0.3
           },
             //'fill-outline-color': '#cccccc',
