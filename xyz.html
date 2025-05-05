@@ -175,6 +175,28 @@
                   16, "#a50f15"
                 ]
 
+    const red_quad_zoom_ramp =  [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          8, [
+            "interpolate",
+            ["linear"],
+            ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
+            0, "#fee5d9",
+            10, "#fb6a4a",
+            14, "#a50f15"
+          ],
+          14, [
+            "interpolate",
+            ["linear"],
+            ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
+            0, "#fee5d9",
+            3, "#fb6a4a",
+            7, "#a50f15"
+          ]
+        ]
+
     map.on('load', () => {
         // console.log(map.getStyle().layers.map(l => l.id));
         const layers = map.getStyle().layers;
@@ -218,7 +240,7 @@
           source: 'xyz',
           'source-layer': spaceID,
           paint: {
-              'fill-color': red_log_quadbin_ramp,
+              'fill-color': red_quad_zoom_ramp,
               'fill-opacity': 0.3
           },
             //'fill-outline-color': '#cccccc',
