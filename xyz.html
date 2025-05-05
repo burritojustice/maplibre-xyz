@@ -203,7 +203,7 @@
           },
             //'fill-outline-color': '#cccccc',
           'filter': [
-                ['all'],
+                'all',
                 ['==', '$type', 'Polygon'],
                 ["==", "kind", "h3"]
             ]
@@ -218,9 +218,8 @@
               'fill-color': red_log_quadbin_ramp,
               'fill-opacity': 0.3
           },
-           
             //'fill-outline-color': '#cccccc',
-            'filter': [
+          'filter': [
                 'all',
                 ['==', '$type', 'Polygon'],
                 ["has", "qk"]
@@ -228,7 +227,6 @@
         }, firstSymbolId);
 
         
-        // }, "places_locality");
         map.addLayer({
           id: 'outlines',
           type: 'line',
