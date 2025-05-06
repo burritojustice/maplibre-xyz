@@ -11,12 +11,14 @@
         body { margin: 0; padding: 0; }
         html, body, #map { height: 100%; }
     </style>
-    <div id="controls" style="position:absolute; top:10px; left:10px; background:#fff; padding:10px; border-radius:4px; font-family:sans-serif; z-index:1;">
-      <strong>Show layer:</strong><br>
+
+    <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
+      <strong>View Mode:</strong><br>
       <label><input type="radio" name="layer-toggle" value="hexbins" checked> Hexbins</label><br>
       <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
-      <label><input type="radio" name="layer-toggle" value="points"> Points</label>
+      <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
     </div>
+
 
 </head>
 <body>
@@ -62,6 +64,7 @@
     }
     console.log("valid url params:",{spaceID},{hubApi},{clustering},{rez});
 
+    
 
     
     // const styleUrl = 'https://api.protomaps.com/styles/v5/light/en.json?key=ffc24a4325d458ce';
@@ -74,6 +77,95 @@
         zoom: 13,
         center: [-122.447303, 37.753574]
     });
+
+    const xyzLayers = {
+      hexbins: {
+        id: 'hexbins',
+        type: 'fill',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'fill-color': red_log_hexbin_ramp,
+          'fill-opacity': 0.3
+        },
+        filter: [
+          "all",
+          ["==", "$type", "Polygon"],
+          ["==", "kind", "h3"]
+        ]
+      },
+      quadbins: {
+        id: 'quadbins',
+        type: 'fill',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'fill-color': red_log_quadbin_ramp,
+          'fill-opacity': 0.3
+        },
+        filter: [
+          "all",
+          ["==", "$type", "Polygon"],
+          ["has", "qk"]
+        ]
+      },
+      centroids: {
+        id: 'centroids',
+        type: 'circle',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'circle-radius': ["+", 6, ["log2", get_nested_number]],
+          'circle-color': red_log_hexbin_ramp,
+          'circle-opacity': 0.2,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#000000',
+          'circle-stroke-opacity': 0.5
+        },
+        filter: [
+          "all",
+          ["==", "$type", "Point"],
+          ["==", "kind", "h3"]
+        ]
+      },
+      labels: {
+        id: 'cluster-labels',
+        type: 'symbol',
+        source: 'xyz',
+        'source-layer': spaceID,
+        layout: {
+          "text-ignore-placement": true,
+          "symbol-placement": "point",
+          "text-field": ["coalesce", ["to-string", ["get", "count"]], ["get", "kind"]],
+          "text-size": 10,
+          "text-justify": "center",
+          "text-font": ["Noto Sans Regular"],
+          "text-variable-anchor": ["center", "top", "bottom", "left", "right"]
+        },
+        paint: {
+          "text-color": "#000",
+          "text-halo-color": "#fff",
+          "text-halo-width": 1.5
+        },
+        filter: [
+          "any",
+            ["==", "kind", "h3"],
+            ["has", "qk"]
+        ]
+      },
+      outlines: {
+        id: 'outlines',
+        type: 'line',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'line-color': '#cccccc',
+          'line-width': 1
+        },
+        filter: ['==', '$type', 'Polygon']
+      }
+    };
+
 
     // even after 10 years mapbox/libre still cannot handle a nested object in a vector tile source, so we need to parse the string
 
@@ -88,7 +180,7 @@
             ]
         ]
     ]
-    // annoying to have to convert from a string in the other expressions so converting to a number here, and checking just in case no :
+    // annoying to have to convert from a string in the other expressions so converting to a number here, and checking just in case no colon or if qty is missing for some reason
 
     const get_nested_number = [
       "to-number", [
@@ -256,133 +348,171 @@
             }
         }   
 
-
         map.addSource('xyz', {
             type: 'vector',
-            tiles: [
-                xyz_url
-                ]
+            tiles: [xyz_url]
         });
-        map.addLayer({
-          id: 'hexbins',
-          type: 'fill',
-          source: 'xyz',
-          'source-layer': spaceID,
-          paint: {
-              'fill-color': red_log_clamped_hexbin_ramp,
-              // 'fill-color': '#de2d26',
-              'fill-opacity': 0.3
-          },
-            'fill-outline-color': '#cccccc',
-          'filter': [
-                'all',
-                ['==', '$type', 'Polygon'],
-                ["==", "kind", "H3"]
-            ]
-        }, firstSymbolId);
-
-        map.addLayer({
-          id: 'quadbins',
-          type: 'fill',
-          source: 'xyz',
-          'source-layer': spaceID,
-          paint: {
-              'fill-color': red_quad_clamp_ramp,
-              'fill-opacity': 0.3
-          },
-            //'fill-outline-color': '#cccccc',
-          'filter': [
-                'all',
-                ['==', '$type', 'Polygon'],
-                ["has", "qk"]
-            ]
-        }, firstSymbolId);
-
+        
+  // Add all layers, hide initially
+        Object.values(layerDefs).forEach(group => {
+            Object.values(group).forEach(layer => {
+              map.addLayer(layer, firstSymbolId); // firstSymbolId puts place labels above dataviz
+              map.setLayoutProperty(layer.id, 'visibility', 'none');
+            });
+        });
         
         // map.addLayer({
-        //   id: 'outlines',
-        //   type: 'line',
+        //   id: 'hexbins',
+        //   type: 'fill',
         //   source: 'xyz',
         //   'source-layer': spaceID,
         //   paint: {
-        //     'line-color': '#cccccc',
-        //     'line-width': 1
+        //       'fill-color': red_log_clamped_hexbin_ramp,
+        //       // 'fill-color': '#de2d26',
+        //       'fill-opacity': 0.3
         //   },
-        //     'filter': ['==', '$type', 'Polygon']
-        // });
-        map.addLayer({
-          id: 'points',
-          type: 'circle',
-          source: 'xyz',
-          'source-layer': spaceID,
-          paint: {
-            // 'circle-radius': 5,
-            'circle-radius': [
-                "+", 6, [
-                     "log2", get_nested_number
-                ]
-            ],
-            // 'circle-color': '#FF0000',
-            'circle-color': red_log_ramp,
-            'circle-opacity': 0.2,
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#000000',
-            'circle-stroke-opacity': 0.5
-          },
-            'filter': ['==', '$type', 'Point']
-        }, firstSymbolId);
+        //     'fill-outline-color': '#cccccc',
+        //   'filter': [
+        //         'all',
+        //         ['==', '$type', 'Polygon'],
+        //         ["==", "kind", "H3"]
+        //     ]
+        // }, firstSymbolId);
+
+        // map.addLayer({
+        //   id: 'quadbins',
+        //   type: 'fill',
+        //   source: 'xyz',
+        //   'source-layer': spaceID,
+        //   paint: {
+        //       'fill-color': red_quad_clamp_ramp,
+        //       'fill-opacity': 0.3
+        //   },
+        //     //'fill-outline-color': '#cccccc',
+        //   'filter': [
+        //         'all',
+        //         ['==', '$type', 'Polygon'],
+        //         ["has", "qk"]
+        //     ]
+        // }, firstSymbolId);
+
         
-        map.addLayer({
-            id: "bin_labels",
-            type: "symbol",
-            // "symbol-placement": "centroid",
-            source: "xyz",
-            'source-layer': spaceID,
-            layout: {
-                // "text-allow-overlap": true,
-                "text-ignore-placement": true,
-                // "visibility": "none",
-                "symbol-placement": "point",
-                "text-field":   [
-                    "coalesce",["get", "count"],get_nested_value
-                ],
-                "text-size": 10,
-                "text-justify": "center",
-                "text-font": ["Noto Sans Regular"],
-                "text-variable-anchor": ["center","top", "bottom","left","right"]
-            },
-            paint: {
-                "text-color": "#000",
-                "text-halo-color": "#fff",
-                "text-halo-width": 1.5
-            },
-            'filter': [
-                'any',
-                ["has", 'kind'], // for hexbin labels
-                ["has", "count"] // for quadbin labels
-            ]
-            
-        },firstSymbolId);
+        // // map.addLayer({
+        // //   id: 'outlines',
+        // //   type: 'line',
+        // //   source: 'xyz',
+        // //   'source-layer': spaceID,
+        // //   paint: {
+        // //     'line-color': '#cccccc',
+        // //     'line-width': 1
+        // //   },
+        // //     'filter': ['==', '$type', 'Polygon']
+        // // });
+        // map.addLayer({
+        //   id: 'points',
+        //   type: 'circle',
+        //   source: 'xyz',
+        //   'source-layer': spaceID,
+        //   paint: {
+        //     // 'circle-radius': 5,
+        //     'circle-radius': [
+        //         "+", 6, [
+        //              "log2", get_nested_number
+        //         ]
+        //     ],
+        //     // 'circle-color': '#FF0000',
+        //     'circle-color': red_log_ramp,
+        //     'circle-opacity': 0.2,
+        //     'circle-stroke-width': 1,
+        //     'circle-stroke-color': '#000000',
+        //     'circle-stroke-opacity': 0.5
+        //   },
+        //     'filter': ['==', '$type', 'Point']
+        // }, firstSymbolId);
         
-        function toggleLayers(selectedLayer) {
-          const layers = ["hexbins", "quadbins", "points"];
-          layers.forEach(layer => {
-            if (map.getLayer(layer)) {
-              map.setLayoutProperty(layer, 'visibility', layer === selectedLayer ? 'visible' : 'none');
-            }
-          });
-        }
+        // map.addLayer({
+        //     id: "bin_labels",
+        //     type: "symbol",
+        //     // "symbol-placement": "centroid",
+        //     source: "xyz",
+        //     'source-layer': spaceID,
+        //     layout: {
+        //         // "text-allow-overlap": true,
+        //         "text-ignore-placement": true,
+        //         // "visibility": "none",
+        //         "symbol-placement": "point",
+        //         "text-field":   [
+        //             "coalesce",["get", "count"],get_nested_value
+        //         ],
+        //         "text-size": 10,
+        //         "text-justify": "center",
+        //         "text-font": ["Noto Sans Regular"],
+        //         "text-variable-anchor": ["center","top", "bottom","left","right"]
+        //     },
+        //     paint: {
+        //         "text-color": "#000",
+        //         "text-halo-color": "#fff",
+        //         "text-halo-width": 1.5
+        //     },
+        //     'filter': [
+        //         'any',
+        //         ["has", 'kind'], // for hexbin labels
+        //         ["has", "count"] // for quadbin labels
+        //     ]
+        // },firstSymbolId);
         
-        // // Set initial visibility (optional, if not already set)
-        toggleLayers("hexbins");
+
+
         
-        // Attach event listener to radio buttons
+        // Handle layer toggle controls
         document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
-          input.addEventListener('change', (e) => {
-            toggleLayers(e.target.value);
+          input.addEventListener('change', event => {
+            const selectedLayer = event.target.value;
+            toggleToLayer(selectedLayer);
+            reloadLayer(selectedLayer);
           });
         });
-    });
+
+        // Initialize the default view
+        toggleToLayer('quadbins');
+
+    }); // end of map.on('load')
+
+    function toggleToLayer(selectedId) {
+      // Remove all layers defined in xyzLayers from the map
+      Object.values(xyzLayers).forEach(layer => {
+        if (map.getLayer(layer.id)) {
+          map.removeLayer(layer.id);
+        }
+      });
+    
+      // Re-add base polygon outlines
+      if (!map.getLayer(xyzLayers.outlines.id)) {
+        map.addLayer(xyzLayers.outlines);
+      }
+    
+      // Add the selected main layer
+      const mainLayer = xyzLayers[selectedId];
+      if (mainLayer && !map.getLayer(mainLayer.id)) {
+        map.addLayer(mainLayer);
+      }
+    
+      // Add labels layer (if not already added)
+      if (!map.getLayer(xyzLayers.labels.id)) {
+        map.addLayer(xyzLayers.labels);
+      }
+    }
+
+    function reloadLayer(layerId) {
+      const layer = xyzLayers[layerId];
+      if (!layer) return;
+    
+      if (map.getLayer(layer.id)) {
+        map.removeLayer(layer.id);
+      }
+      map.addLayer(layer);
+    }
+
      
 </script>
 </body>
