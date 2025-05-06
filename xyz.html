@@ -180,7 +180,7 @@
         ]
       },
       labels: {
-        id: 'cluster-labels',
+        id: 'bin-labels',
         type: 'symbol',
         source: 'xyz',
         'source-layer': spaceID,
@@ -233,6 +233,8 @@
       });
 
       map.addLayer(xyzLayers.hexbins);
+      map.addLayer(xyzLayers.labels);
+
       // Object.values(xyzLayers).forEach(layer => {
       //   map.addLayer(layer, firstSymbolId);
       //   map.setLayoutProperty(layer.id, 'visibility', 'none');
