@@ -26,12 +26,12 @@
 </head>
 
 <body>
-  <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
+<!--   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
     <strong>View Mode:</strong><br>
     <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
-  </div>
+  </div> -->
 
   <div id="map"></div>
   <script>
@@ -142,7 +142,7 @@
         filter: [
           "all",
           ["==", "$type", "Polygon"],
-          ["==", "kind", "h3"]
+          ["==", "kind", "H3"]
         ]
       },
       quadbins: {
@@ -176,7 +176,7 @@
         filter: [
           "all",
           ["==", "$type", "Point"],
-          ["==", "kind", "h3"]
+          ["==", "kind", "H3"]
         ]
       },
       labels: {
@@ -200,7 +200,7 @@
         },
         filter: [
           "any",
-          ["==", "kind", "h3"],
+          ["==", "kind", "H3"],
           ["has", "qk"]
         ]
       },
@@ -231,7 +231,7 @@
         type: 'vector',
         tiles: [xyz_url]
       });
-      console.log(xyzLayers.hexbins)
+            
       map.addLayer(xyzLayers.hexbins, firstSymbolId);
       map.addLayer(xyzLayers.labels, firstSymbolId);
 
@@ -240,13 +240,13 @@
       //   map.setLayoutProperty(layer.id, 'visibility', 'none');
       // });
 
-      document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
-        input.addEventListener('change', event => {
-          const selectedLayer = event.target.value;
-          toggleToLayer(selectedLayer);
-          reloadLayer(selectedLayer);
-        });
-      });
+      // document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
+      //   input.addEventListener('change', event => {
+      //     const selectedLayer = event.target.value;
+      //     toggleToLayer(selectedLayer);
+      //     reloadLayer(selectedLayer);
+      //   });
+      // });
 
       // toggleToLayer('hexbins');
     });
