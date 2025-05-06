@@ -232,8 +232,8 @@
         tiles: [xyz_url]
       });
 
-      map.addLayer(xyzLayers.hexbins);
-      map.addLayer(xyzLayers.labels);
+      map.addLayer(xyzLayers.hexbins,firstSymbolId);
+      map.addLayer(xyzLayers.label,firstSymbolIds);
 
       // Object.values(xyzLayers).forEach(layer => {
       //   map.addLayer(layer, firstSymbolId);
