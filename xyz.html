@@ -231,9 +231,9 @@
         type: 'vector',
         tiles: [xyz_url]
       });
-
-      map.addLayer(xyzLayers.hexbins,firstSymbolId);
-      map.addLayer(xyzLayers.label,firstSymbolIds);
+      console.log(xyzLayers.hexbins)
+      map.addLayer(xyzLayers.hexbins, firstSymbolId);
+      map.addLayer(xyzLayers.labels, firstSymbolId);
 
       // Object.values(xyzLayers).forEach(layer => {
       //   map.addLayer(layer, firstSymbolId);
