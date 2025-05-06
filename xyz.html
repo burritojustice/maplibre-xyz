@@ -29,7 +29,7 @@
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
     <strong>View Mode:</strong><br>
     <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
-    <label><input type="radio" name="layer-toggle" value="quadbins" checked> Quadbins</label><br>
+    <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
   </div>
 
@@ -45,12 +45,17 @@
 
     let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`;
 
+    // var not const so we can change it later
+    var clustering_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
+    var clustering_hexbin = '&clustering=hexbin';
+    var clustering_centroid = '&clustering=hexbin&clustering.pointmode=true';
+      
     if (urlParams.get('clustering')) {
       clustering = urlParams.get('clustering');
       let clustering_param = '';
-      if (clustering === 'quadbin') clustering_param = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
-      if (clustering === 'h3') clustering_param = '&clustering=hexbin';
-      if (clustering === 'h3_centroid') clustering_param = '&clustering=hexbin&clustering.pointmode=true';
+      if (clustering === 'quadbin') clustering_param = clustering_quadbin;
+      if (clustering === 'h3') clustering_param = clustering_hexbin;
+      if (clustering === 'h3_centroid') clustering_param = clustering_centroid;
       xyz_url += clustering_param;
 
       if (urlParams.get('rez')) {
@@ -182,7 +187,7 @@
         layout: {
           "text-ignore-placement": true,
           "symbol-placement": "point",
-          "text-field": ["coalesce", ["to-string", ["get", "count"]], ["get", "kind"]],
+          "text-field": ["coalesce", ["to-string", ["get", "count"]], get_nested_number],
           "text-size": 10,
           "text-justify": "center",
           "text-font": ["Noto Sans Regular"],
@@ -227,10 +232,11 @@
         tiles: [xyz_url]
       });
 
-      Object.values(xyzLayers).forEach(layer => {
-        map.addLayer(layer, firstSymbolId);
-        map.setLayoutProperty(layer.id, 'visibility', 'none');
-      });
+      map.addLayer(xyzLayers.hexbins);
+      // Object.values(xyzLayers).forEach(layer => {
+      //   map.addLayer(layer, firstSymbolId);
+      //   map.setLayoutProperty(layer.id, 'visibility', 'none');
+      // });
 
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
         input.addEventListener('change', event => {
