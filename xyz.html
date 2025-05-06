@@ -70,15 +70,24 @@
 
     const get_nested_number = [
       "to-number", [
-        "let", "o", ["get", "aggregation"],
-        "let", "i", ["index-of", ":", ["var", "o"]],
-        ["case",
-          [">", ["var", "i"], -1],
-          ["slice", ["var", "o"], ["+", ["var", "i"], 2], ["-", ["length", ["var", "o"]], 1]],
-          "0"
-        ]
+        "slice",
+        ["get", "aggregation"],
+        ["+", ["index-of", ":", ["get", "aggregation"]], 2],
+        ["-", ["length", ["get", "aggregation"]], 1]
       ]
     ];
+      
+    //   [
+    //   "to-number", [
+    //     "let", "o", ["get", "aggregation"],
+    //     "let", "i", ["index-of", ":", ["var", "o"]],
+    //     ["case",
+    //       [">", ["var", "i"], -1],
+    //       ["slice", ["var", "o"], ["+", ["var", "i"], 2], ["-", ["length", ["var", "o"]], 1]],
+    //       "0"
+    //     ]
+    //   ]
+    // ];
 
     const hexbin_clamped_log_nested_aggregation = [
       "case",
