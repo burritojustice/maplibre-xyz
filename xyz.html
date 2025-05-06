@@ -1,193 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Add a vector tile source</title>
-    <meta property="og:description" content="XYZ Explorer." />
-    <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.css' />
-    <script src='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js'></script>
-    <style>
-        body { margin: 0; padding: 0; }
-        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-        #layer-controls {
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          background: white;
-          padding: 10px;
-          z-index: 1;
-          font-family: sans-serif;
-          font-size: 14px;
-          border-radius: 4px;
-          box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
+  <title>XYZ Explorer</title>
+  <meta property="og:description" content="XYZ Explorer." />
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.css' />
+  <script src='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js'></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    #layer-controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: white;
+      padding: 10px;
+      z-index: 1;
+      font-family: sans-serif;
+      font-size: 14px;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
     </style>
 </head>
+
 <body>
-<div id="layer-controls">
-  <strong>View Mode:</strong><br>
-  <label><input type="radio" name="layer-toggle" value="hexbins" checked> Hexbins</label><br>
-  <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
-  <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
-</div>
-<div id="map"></div>
+  <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
+    <strong>View Mode:</strong><br>
+    <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
+    <label><input type="radio" name="layer-toggle" value="quadbins" checked> Quadbins</label><br>
+    <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
+  </div>
 
-    
-<script>
-    var spaceID = 'stXc82l8'; 
-    //var hubApi = 'xyz2.think-with-me.com'
-    var hubApi = 'api.think-with-me.com'    
-    var clustering;
-    var rez;
+  <div id="map"></div>
+  <script>
+    let spaceID = 'stXc82l8';
+    let hubApi = 'api.think-with-me.com';
+    let clustering, rez;
 
-    // look for space, hubAPI in urlParams
     const urlParams = new URLSearchParams(window.location.search);
-    
-    if (urlParams.get('space')) {
-        spaceID = urlParams.get('space');
-    }
-    if (urlParams.get('hubApi')) {
-        hubApi = urlParams.get('hubApi');
+    if (urlParams.get('space')) spaceID = urlParams.get('space');
+    if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
+
+    let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`;
+
+    if (urlParams.get('clustering')) {
+      clustering = urlParams.get('clustering');
+      let clustering_param = '';
+      if (clustering === 'quadbin') clustering_param = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
+      if (clustering === 'h3') clustering_param = '&clustering=hexbin';
+      if (clustering === 'h3_centroid') clustering_param = '&clustering=hexbin&clustering.pointmode=true';
+      xyz_url += clustering_param;
+
+      if (urlParams.get('rez')) {
+        rez = urlParams.get('rez');
+        xyz_url += '&clustering.relativeResolution=' + rez;
+      }
     }
 
-    
-    var xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`
-    // console.log({xyz_url});
-    
-    if (urlParams.get('clustering')){
-        clustering = urlParams.get('clustering');
-        var clustering_param;
-        if (clustering == 'quadbin'){
-            clustering_param = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4'
-        }
-        if (clustering == 'h3')
-            {clustering_param = '&clustering=hexbin'}
-        if (clustering == 'h3_centroid')
-            {clustering_param = '&clustering=hexbin&clustering.pointmode=true'}
-        xyz_url += clustering_param;
-        if (urlParams.get('rez')){
-            rez = urlParams.get('rez');
-            rez_param = '&clustering.relativeResolution=' + rez;
-            xyz_url += rez_param;
-        }
-        console.log({xyz_url});
-    }
-    console.log("valid url params:",{spaceID},{hubApi},{clustering},{rez});
-
-    
-
-    
-    // const styleUrl = 'https://api.protomaps.com/styles/v5/light/en.json?key=ffc24a4325d458ce';
     const styleUrl = 'https://api.protomaps.com/styles/v5/white/en.json?key=ffc24a4325d458ce';
-
     const map = new maplibregl.Map({
-        container: 'map',
-        hash: true,
-        style: styleUrl,
-        zoom: 13,
-        center: [-122.447303, 37.753574]
+      container: 'map',
+      hash: true,
+      style: styleUrl,
+      zoom: 13,
+      center: [-122.447303, 37.753574]
     });
-
-
-
-    // even after 10 years mapbox/libre still cannot handle a nested object in a vector tile source, so we need to parse the string
-
-    const get_nested_value =  
-    [
-        "let", "o", ["get", "aggregation"],[
-            "let", "i", ["index-of",":",["var", "o"]],[
-                "slice", 
-                     ["var", "o"],
-                     ["+", ["var", "i"] ,2],
-                     ["-", ["length", ["var", "o"]], 1]
-            ]
-        ]
-    ]
-    // annoying to have to convert from a string in the other expressions so converting to a number here, and checking just in case no colon or if qty is missing for some reason
 
     const get_nested_number = [
       "to-number", [
         "let", "o", ["get", "aggregation"],
-          ["let", "i", ["index-of", ":", ["var", "o"]],
-            ["case",
-              [">", ["var", "i"], -1],
-              ["slice", ["var", "o"], ["+", ["var", "i"], 2], ["-", ["length", ["var", "o"]], 1]],
-              "0" // fallback if ":" not found
-            ]
-          ]
+        "let", "i", ["index-of", ":", ["var", "o"]],
+        ["case",
+          [">", ["var", "i"], -1],
+          ["slice", ["var", "o"], ["+", ["var", "i"], 2], ["-", ["length", ["var", "o"]], 1]],
+          "0"
+        ]
       ]
     ];
-    
-    // doing addition and math inside an expression is extraordinarily painful, so js-ing it 
-    const obj_name = "qty";
-    const obj_value_position = obj_name.length + 4 // determine position to slice out the stringed object value {"qty": 345} 
-    const get_nested_hexbin_qty =  
-    [
-        "let", "o", ["get", "aggregation"],
-            ["slice", 
-                 ["var", "o"],
-                 obj_value_position, 
-                 ["-", ["length", ["var", "o"]], 1]
-            ]
-    ]   
-    
-    const red_log_ramp = [
-                  "interpolate",
-                  ["linear"],
-                  ["log2", ["max", get_nested_number, 1]],
-                  0, "#fee5d9",
-                  1, "#fcae91",
-                  3, "#fb6a4a",
-                  5, "#de2d26",
-                  7, "#a50f15"
-                ]
-        
-    const red_log_quadbin_ramp = [
-                  "interpolate",
-                  ["linear"],
-                  ["log2", ["max", ["coalesce", ["get", "count"], 0], 1]],
-                  0, "#fee5d9",
-                  2, "#fcae91",
-                  4, "#fb6a4a",
-                  8, "#de2d26",
-                  16, "#a50f15"
-                ]
 
-    const red_quad_zoom_ramp =  [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          8, [
-            "interpolate",
-            ["linear"],
-            ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
-            0, "#fee5d9",
-            10, "#fb6a4a",
-            14, "#a50f15"
-          ],
-          14, [
-            "interpolate",
-            ["linear"],
-            ["log2", ["max", ["coalesce", ["get", "count"], 1], 1]],
-            0, "#fee5d9",
-            3, "#fb6a4a",
-            7, "#a50f15"
-          ]
-        ]
-
-    const quad_clamp = [
-          "interpolate", ["linear"],
-          [
-            "case",
-            ["<", ["log2", ["coalesce", ["get", "count"], 1]], 0], 0,
-            [">", ["log2", ["coalesce", ["get", "count"], 1]], 20], 20,
-            ["log2", ["coalesce", ["get", "count"], 1]]
-          ],
-          0, "#fee5d9",
-          10, "#fb6a4a",
-          20, "#a50f15"
-        ]
+    const hexbin_clamped_log_nested_aggregation = [
+      "case",
+      ["<", ["index-of", ":", ["coalesce", ["get", "aggregation"], ""]], 0], 0,
+      ["<", ["log2", ["to-number", ["slice", ["get", "aggregation"], ["+", ["index-of", ":", ["get", "aggregation"]], 2], ["-", ["length", ["get", "aggregation"]], 1]]]], 0], 0,
+      [">", ["log2", ["to-number", ["slice", ["get", "aggregation"], ["+", ["index-of", ":", ["get", "aggregation"]], 2], ["-", ["length", ["get", "aggregation"]], 1]]]], 20], 20,
+      ["log2", ["to-number", ["slice", ["get", "aggregation"], ["+", ["index-of", ":", ["get", "aggregation"]], 2], ["-", ["length", ["get", "aggregation"]], 1]]]]
+    ];
 
     const clamped_log_count = [
       "case",
@@ -196,62 +95,8 @@
       ["log2", ["coalesce", ["get", "count"], 1]]
     ];
 
-    const red_quad_clamp_ramp = [
-      "interpolate",
-      ["linear"],
-      clamped_log_count,
-      0, "#fee5d9",
-      6, "#fcae91",
-      12, "#fb6a4a",
-      16, "#de2d26",
-      20, "#a50f15"
-    ];
-
-    const hexbin_clamped_log_nested_aggregation = [
-      "case",
-      // fallback if ":" is not found — treat as 0
-      ["<", ["index-of", ":", ["coalesce", ["get", "aggregation"], ""]], 0], 0,
-    
-      // Otherwise extract, parse and clamp log2(value)
-      [
-        "<", [
-          "log2",
-          ["to-number", [
-            "slice",
-            ["get", "aggregation"],
-            ["+", ["index-of", ":", ["get", "aggregation"]], 2],
-            ["-", ["length", ["get", "aggregation"]], 1]
-          ]]
-        ], 0
-      ], 0,
-    
-      [
-        ">", [
-          "log2",
-          ["to-number", [
-            "slice",
-            ["get", "aggregation"],
-            ["+", ["index-of", ":", ["get", "aggregation"]], 2],
-            ["-", ["length", ["get", "aggregation"]], 1]
-          ]]
-        ], 20
-      ], 20,
-    
-      // Normal case
-      [
-        "log2",
-        ["to-number", [
-          "slice",
-          ["get", "aggregation"],
-          ["+", ["index-of", ":", ["get", "aggregation"]], 2],
-          ["-", ["length", ["get", "aggregation"]], 1]
-        ]]
-      ]
-    ];
-
     const red_log_clamped_hexbin_ramp = [
-      "interpolate",
-      ["linear"],
+      "interpolate", ["linear"],
       hexbin_clamped_log_nested_aggregation,
       0, "#fee5d9",
       6, "#fcae91",
@@ -260,6 +105,15 @@
       20, "#a50f15"
     ];
 
+    const red_log_quadbin_ramp = [
+      "interpolate", ["linear"],
+      clamped_log_count,
+      0, "#fee5d9",
+      6, "#fcae91",
+      12, "#fb6a4a",
+      16, "#de2d26",
+      20, "#a50f15"
+    ];
 
     const xyzLayers = {
       hexbins: {
@@ -332,8 +186,8 @@
         },
         filter: [
           "any",
-            ["==", "kind", "h3"],
-            ["has", "qk"]
+          ["==", "kind", "h3"],
+          ["has", "qk"]
         ]
       },
       outlines: {
@@ -349,186 +203,67 @@
       }
     };
 
-
-    
     map.on('load', () => {
-        // console.log(map.getStyle().layers.map(l => l.id));
-        const layers = map.getStyle().layers;
-        // Find the index of the first symbol layer in the map style
-        let firstSymbolId;
-        for (let i = 0; i < layers.length; i++) {
-            if (layers[i].type === 'symbol') {
-                firstSymbolId = layers[i].id;
-                break;
-            }
-        }   
+      const layers = map.getStyle().layers;
+      let firstSymbolId;
+      for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol') {
+          firstSymbolId = layers[i].id;
+          break;
+        }
+      }
 
-        map.addSource('xyz', {
-            type: 'vector',
-            tiles: [xyz_url]
+      map.addSource('xyz', {
+        type: 'vector',
+        tiles: [xyz_url]
+      });
+
+      Object.values(xyzLayers).forEach(layer => {
+        map.addLayer(layer, firstSymbolId);
+        map.setLayoutProperty(layer.id, 'visibility', 'none');
+      });
+
+      document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
+        input.addEventListener('change', event => {
+          const selectedLayer = event.target.value;
+          toggleToLayer(selectedLayer);
+          reloadLayer(selectedLayer);
         });
-        
-  // Add all layers, hide initially
-        Object.values(xyzLayers).forEach(group => {
-            Object.values(group).forEach(layer => {
-              map.addLayer(layer, firstSymbolId); // firstSymbolId puts place labels above dataviz
-              map.setLayoutProperty(layer.id, 'visibility', 'none');
-            });
-        });
-        
-        // map.addLayer({
-        //   id: 'hexbins',
-        //   type: 'fill',
-        //   source: 'xyz',
-        //   'source-layer': spaceID,
-        //   paint: {
-        //       'fill-color': red_log_clamped_hexbin_ramp,
-        //       // 'fill-color': '#de2d26',
-        //       'fill-opacity': 0.3
-        //   },
-        //     'fill-outline-color': '#cccccc',
-        //   'filter': [
-        //         'all',
-        //         ['==', '$type', 'Polygon'],
-        //         ["==", "kind", "H3"]
-        //     ]
-        // }, firstSymbolId);
+      });
 
-        // map.addLayer({
-        //   id: 'quadbins',
-        //   type: 'fill',
-        //   source: 'xyz',
-        //   'source-layer': spaceID,
-        //   paint: {
-        //       'fill-color': red_quad_clamp_ramp,
-        //       'fill-opacity': 0.3
-        //   },
-        //     //'fill-outline-color': '#cccccc',
-        //   'filter': [
-        //         'all',
-        //         ['==', '$type', 'Polygon'],
-        //         ["has", "qk"]
-        //     ]
-        // }, firstSymbolId);
-
-        
-        // // map.addLayer({
-        // //   id: 'outlines',
-        // //   type: 'line',
-        // //   source: 'xyz',
-        // //   'source-layer': spaceID,
-        // //   paint: {
-        // //     'line-color': '#cccccc',
-        // //     'line-width': 1
-        // //   },
-        // //     'filter': ['==', '$type', 'Polygon']
-        // // });
-        // map.addLayer({
-        //   id: 'points',
-        //   type: 'circle',
-        //   source: 'xyz',
-        //   'source-layer': spaceID,
-        //   paint: {
-        //     // 'circle-radius': 5,
-        //     'circle-radius': [
-        //         "+", 6, [
-        //              "log2", get_nested_number
-        //         ]
-        //     ],
-        //     // 'circle-color': '#FF0000',
-        //     'circle-color': red_log_ramp,
-        //     'circle-opacity': 0.2,
-        //     'circle-stroke-width': 1,
-        //     'circle-stroke-color': '#000000',
-        //     'circle-stroke-opacity': 0.5
-        //   },
-        //     'filter': ['==', '$type', 'Point']
-        // }, firstSymbolId);
-        
-        // map.addLayer({
-        //     id: "bin_labels",
-        //     type: "symbol",
-        //     // "symbol-placement": "centroid",
-        //     source: "xyz",
-        //     'source-layer': spaceID,
-        //     layout: {
-        //         // "text-allow-overlap": true,
-        //         "text-ignore-placement": true,
-        //         // "visibility": "none",
-        //         "symbol-placement": "point",
-        //         "text-field":   [
-        //             "coalesce",["get", "count"],get_nested_value
-        //         ],
-        //         "text-size": 10,
-        //         "text-justify": "center",
-        //         "text-font": ["Noto Sans Regular"],
-        //         "text-variable-anchor": ["center","top", "bottom","left","right"]
-        //     },
-        //     paint: {
-        //         "text-color": "#000",
-        //         "text-halo-color": "#fff",
-        //         "text-halo-width": 1.5
-        //     },
-        //     'filter': [
-        //         'any',
-        //         ["has", 'kind'], // for hexbin labels
-        //         ["has", "count"] // for quadbin labels
-        //     ]
-        // },firstSymbolId);
-        
-
-
-        
-        // Handle layer toggle controls
-        document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
-          input.addEventListener('change', event => {
-            const selectedLayer = event.target.value;
-            toggleToLayer(selectedLayer);
-            reloadLayer(selectedLayer);
-          });
-        });
-
-        // Initialize the default view
-        toggleToLayer('quadbins');
-
-    }); // end of map.on('load')
+      toggleToLayer('quadbins');
+    });
 
     function toggleToLayer(selectedId) {
-      // Remove all layers defined in xyzLayers from the map
       Object.values(xyzLayers).forEach(layer => {
         if (map.getLayer(layer.id)) {
-          map.removeLayer(layer.id);
+          map.setLayoutProperty(layer.id, 'visibility', 'none');
         }
       });
-    
-      // Re-add base polygon outlines
-      if (!map.getLayer(xyzLayers.outlines.id)) {
-        map.addLayer(xyzLayers.outlines);
+
+      if (map.getLayer(xyzLayers.outlines.id)) {
+        map.setLayoutProperty(xyzLayers.outlines.id, 'visibility', 'visible');
       }
-    
-      // Add the selected main layer
+
       const mainLayer = xyzLayers[selectedId];
-      if (mainLayer && !map.getLayer(mainLayer.id)) {
-        map.addLayer(mainLayer);
+      if (mainLayer) {
+        map.setLayoutProperty(mainLayer.id, 'visibility', 'visible');
       }
-    
-      // Add labels layer (if not already added)
-      if (!map.getLayer(xyzLayers.labels.id)) {
-        map.addLayer(xyzLayers.labels);
+
+      if (map.getLayer(xyzLayers.labels.id)) {
+        map.setLayoutProperty(xyzLayers.labels.id, 'visibility', 'visible');
       }
     }
 
     function reloadLayer(layerId) {
       const layer = xyzLayers[layerId];
       if (!layer) return;
-    
+
       if (map.getLayer(layer.id)) {
         map.removeLayer(layer.id);
       }
       map.addLayer(layer);
     }
-
-     
-</script>
+  </script>
 </body>
 </html>
