@@ -369,7 +369,7 @@
         });
         
   // Add all layers, hide initially
-        Object.values(layerDefs).forEach(group => {
+        Object.values(xyzLayers).forEach(group => {
             Object.values(group).forEach(layer => {
               map.addLayer(layer, firstSymbolId); // firstSymbolId puts place labels above dataviz
               map.setLayoutProperty(layer.id, 'visibility', 'none');
