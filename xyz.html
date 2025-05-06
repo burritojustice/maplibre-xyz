@@ -240,9 +240,18 @@
         type: 'vector',
         tiles: [xyz_url]
       });
-            
-      map.addLayer(xyzLayers.hexbins, firstSymbolId);
+
+      if (clustering == 'h3'){
+        map.addLayer(xyzLayers.hexbins, firstSymbolId);
+      }
+      if (clustering == 'quadbin'){
+      map.addLayer(xyzLayers.quadbins, firstSymbolId);
+      }
+      if (clustering == h3_'centroid'){
+        map.addLayer(xyzLayers.centroids, firstSymbolId);
+      }      
       map.addLayer(xyzLayers.labels, firstSymbolId);
+
 
       // Object.values(xyzLayers).forEach(layer => {
       //   map.addLayer(layer, firstSymbolId);
