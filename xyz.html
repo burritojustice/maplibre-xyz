@@ -187,7 +187,7 @@
         layout: {
           "text-ignore-placement": true,
           "symbol-placement": "point",
-          "text-field": ["coalesce", ["to-string", ["get", "count"]], get_nested_number],
+          "text-field": ["coalesce", ["to-string", ["get", "count"]], ["to-string", get_nested_number]],
           "text-size": 10,
           "text-justify": "center",
           "text-font": ["Noto Sans Regular"],
@@ -248,7 +248,7 @@
         });
       });
 
-      toggleToLayer('quadbins');
+      // toggleToLayer('hexbins');
     });
 
     function toggleToLayer(selectedId) {
