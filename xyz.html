@@ -81,6 +81,14 @@
         ["-", ["length", ["get", "aggregation"]], 1]
       ]
     ];
+
+    const get_nested_value = [
+        "slice",
+        ["get", "aggregation"],
+        ["+", ["index-of", ":", ["get", "aggregation"]], 2],
+        ["-", ["length", ["get", "aggregation"]], 1]
+
+    ];
       
     //   [
     //   "to-number", [
@@ -187,8 +195,8 @@
         layout: {
           "text-ignore-placement": true,
           "symbol-placement": "point",
-          // "text-field": ["coalesce", ["to-string", ["get", "count"]], ["to-string", get_nested_number]],
-          "text-field":  ["to-string", get_nested_number],
+          "text-field": ["coalesce",["get", "count"],get_nested_value,]
+          // "text-field":  ["to-string", get_nested_number],
           "text-size": 10,
           "text-justify": "center",
           "text-font": ["Noto Sans Regular"],
