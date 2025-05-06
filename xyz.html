@@ -85,7 +85,7 @@
         source: 'xyz',
         'source-layer': spaceID,
         paint: {
-          'fill-color': hexbin_clamped_log_nested_aggregation,
+          'fill-color': red_log_clamped_hexbin_ramp,
           'fill-opacity': 0.3
         },
         filter: [
@@ -116,7 +116,7 @@
         'source-layer': spaceID,
         paint: {
           'circle-radius': ["+", 6, ["log2", get_nested_number]],
-          'circle-color': hexbin_clamped_log_nested_aggregation,
+          'circle-color': red_log_clamped_hexbin_ramp,
           'circle-opacity': 0.2,
           'circle-stroke-width': 1,
           'circle-stroke-color': '#000000',
