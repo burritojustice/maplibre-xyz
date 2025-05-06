@@ -9,20 +9,31 @@
     <script src='https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js'></script>
     <style>
         body { margin: 0; padding: 0; }
-        html, body, #map { height: 100%; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #layer-controls {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background: white;
+          padding: 10px;
+          z-index: 1;
+          font-family: sans-serif;
+          font-size: 14px;
+          border-radius: 4px;
+          box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
     </style>
-
-    <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
-      <strong>View Mode:</strong><br>
-      <label><input type="radio" name="layer-toggle" value="hexbins" checked> Hexbins</label><br>
-      <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
-      <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
-    </div>
-
-
 </head>
 <body>
+<div id="layer-controls">
+  <strong>View Mode:</strong><br>
+  <label><input type="radio" name="layer-toggle" value="hexbins" checked> Hexbins</label><br>
+  <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
+  <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
+</div>
 <div id="map"></div>
+
+    
 <script>
     var spaceID = 'stXc82l8'; 
     //var hubApi = 'xyz2.think-with-me.com'
@@ -78,93 +89,6 @@
         center: [-122.447303, 37.753574]
     });
 
-    const xyzLayers = {
-      hexbins: {
-        id: 'hexbins',
-        type: 'fill',
-        source: 'xyz',
-        'source-layer': spaceID,
-        paint: {
-          'fill-color': red_log_clamped_hexbin_ramp,
-          'fill-opacity': 0.3
-        },
-        filter: [
-          "all",
-          ["==", "$type", "Polygon"],
-          ["==", "kind", "h3"]
-        ]
-      },
-      quadbins: {
-        id: 'quadbins',
-        type: 'fill',
-        source: 'xyz',
-        'source-layer': spaceID,
-        paint: {
-          'fill-color': red_log_quadbin_ramp,
-          'fill-opacity': 0.3
-        },
-        filter: [
-          "all",
-          ["==", "$type", "Polygon"],
-          ["has", "qk"]
-        ]
-      },
-      centroids: {
-        id: 'centroids',
-        type: 'circle',
-        source: 'xyz',
-        'source-layer': spaceID,
-        paint: {
-          'circle-radius': ["+", 6, ["log2", get_nested_number]],
-          'circle-color': red_log_clamped_hexbin_ramp,
-          'circle-opacity': 0.2,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#000000',
-          'circle-stroke-opacity': 0.5
-        },
-        filter: [
-          "all",
-          ["==", "$type", "Point"],
-          ["==", "kind", "h3"]
-        ]
-      },
-      labels: {
-        id: 'cluster-labels',
-        type: 'symbol',
-        source: 'xyz',
-        'source-layer': spaceID,
-        layout: {
-          "text-ignore-placement": true,
-          "symbol-placement": "point",
-          "text-field": ["coalesce", ["to-string", ["get", "count"]], ["get", "kind"]],
-          "text-size": 10,
-          "text-justify": "center",
-          "text-font": ["Noto Sans Regular"],
-          "text-variable-anchor": ["center", "top", "bottom", "left", "right"]
-        },
-        paint: {
-          "text-color": "#000",
-          "text-halo-color": "#fff",
-          "text-halo-width": 1.5
-        },
-        filter: [
-          "any",
-            ["==", "kind", "h3"],
-            ["has", "qk"]
-        ]
-      },
-      outlines: {
-        id: 'outlines',
-        type: 'line',
-        source: 'xyz',
-        'source-layer': spaceID,
-        paint: {
-          'line-color': '#cccccc',
-          'line-width': 1
-        },
-        filter: ['==', '$type', 'Polygon']
-      }
-    };
 
 
     // even after 10 years mapbox/libre still cannot handle a nested object in a vector tile source, so we need to parse the string
@@ -335,6 +259,97 @@
       16, "#de2d26",
       20, "#a50f15"
     ];
+
+
+    const xyzLayers = {
+      hexbins: {
+        id: 'hexbins',
+        type: 'fill',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'fill-color': red_log_clamped_hexbin_ramp,
+          'fill-opacity': 0.3
+        },
+        filter: [
+          "all",
+          ["==", "$type", "Polygon"],
+          ["==", "kind", "h3"]
+        ]
+      },
+      quadbins: {
+        id: 'quadbins',
+        type: 'fill',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'fill-color': red_log_quadbin_ramp,
+          'fill-opacity': 0.3
+        },
+        filter: [
+          "all",
+          ["==", "$type", "Polygon"],
+          ["has", "qk"]
+        ]
+      },
+      centroids: {
+        id: 'centroids',
+        type: 'circle',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'circle-radius': ["+", 6, ["log2", get_nested_number]],
+          'circle-color': red_log_clamped_hexbin_ramp,
+          'circle-opacity': 0.2,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#000000',
+          'circle-stroke-opacity': 0.5
+        },
+        filter: [
+          "all",
+          ["==", "$type", "Point"],
+          ["==", "kind", "h3"]
+        ]
+      },
+      labels: {
+        id: 'cluster-labels',
+        type: 'symbol',
+        source: 'xyz',
+        'source-layer': spaceID,
+        layout: {
+          "text-ignore-placement": true,
+          "symbol-placement": "point",
+          "text-field": ["coalesce", ["to-string", ["get", "count"]], ["get", "kind"]],
+          "text-size": 10,
+          "text-justify": "center",
+          "text-font": ["Noto Sans Regular"],
+          "text-variable-anchor": ["center", "top", "bottom", "left", "right"]
+        },
+        paint: {
+          "text-color": "#000",
+          "text-halo-color": "#fff",
+          "text-halo-width": 1.5
+        },
+        filter: [
+          "any",
+            ["==", "kind", "h3"],
+            ["has", "qk"]
+        ]
+      },
+      outlines: {
+        id: 'outlines',
+        type: 'line',
+        source: 'xyz',
+        'source-layer': spaceID,
+        paint: {
+          'line-color': '#cccccc',
+          'line-width': 1
+        },
+        filter: ['==', '$type', 'Polygon']
+      }
+    };
+
+
     
     map.on('load', () => {
         // console.log(map.getStyle().layers.map(l => l.id));
