@@ -26,42 +26,84 @@
 </head>
 
 <body>
-<!--   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
+  <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
     <strong>View Mode:</strong><br>
     <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
-  </div> -->
+  </div>
 
   <div id="map"></div>
   <script>
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
-    let clustering, rez;
+    let clustering, rez; 
 
+    // check to see if we have clustering options in the urlParams
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('space')) spaceID = urlParams.get('space');
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
-
-    let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`;
-
-    // var not const so we can change it later
-    var clustering_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
-    var clustering_hexbin = '&clustering=hexbin';
-    var clustering_centroid = '&clustering=hexbin&clustering.pointmode=true';
-      
     if (urlParams.get('clustering')) {
-      clustering = urlParams.get('clustering');
-      let clustering_param = '';
-      if (clustering === 'quadbin') clustering_param = clustering_quadbin;
-      if (clustering === 'h3') clustering_param = clustering_hexbin;
-      if (clustering === 'h3_centroid') clustering_param = clustering_centroid;
-      xyz_url += clustering_param;
-
+        clusteringParam = urlParams.get('clustering');
+      
+    // valid clustering types are hexbin ( h3) and quadbin -- normalize params (and provide a shortcut for h3 centroids)
+    if (urlParams.get('clustering')) {
+      clusteringParam = urlParams.get('clustering');
+      if (clusteringParam === 'quadbin') {
+        clustering = 'quadbin'}
+      if (clusteringParam === 'h3' || 'hexbin') {
+        clustering = 'hexbin'}
+      if (clusteringParam === 'h3_centroid' || 'centroid') {
+        clustering = 'centroid'}
       if (urlParams.get('rez')) {
-        rez = urlParams.get('rez');
-        xyz_url += '&clustering.relativeResolution=' + rez;
+        if (Number.isInteger(urlParams.get('rez'))){
+          if (rez <= 3 && rez >= -3){
+            rez = urlParams.get('rez')
+          } else {
+            rez = '';
+            console.log("relative rez of",urlParams.get('rez'),"is a bad idea, keep it between 2 and -2")
+          }
+        } else {
+          rez = '';
+          console.log("rez has to be an integer, unlike",urlParams.get('rez'))
+        } 
       }
+    }
+    console.log("url params",{spaceID},{hubApi},{clustering},{rez});
+
+
+    build_xyz_url(clusterType){
+
+      let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`;
+      // note that protomaps / maplibre doesn't support geojson tiles as a source, just mvt...
+      // this introduces a significant issue as nested properties are presented as strings 
+      // and mapbox/libre expressions can't parse them...
+      
+      // might have a cluster param from reloadLayer or might be getting it from urlParams
+      // could check clustering global or clusterType function parameter better?
+      // will need to be able to change these xyz url paramas later if we add more clustering options 
+      // wanted to use URLSearchParams but need to figure out how to handle hubApi and spaceID and {z}_{x}_{y} in xyz_url path..
+
+      var xyz_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
+      var xyz_hexbin = '&clustering=hexbin';
+      var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
+      
+      if(clusterType){
+        if (clusterType === 'quadbin') {
+          xyz_url += xyz_quadbin};
+        if (clusterType == 'hexbin') {
+          xyz_url += xyz_hexbin};
+        if (clusterType === 'centroid') {
+          xyz_url += clustering_centroid};
+        xyz_url += xyz_centroid;
+  
+        if ('rez') {
+          rez = urlParams.get('rez');
+          xyz_url += '&clustering.relativeResolution=' + rez;
+        }
+      }
+      console.log({xyz_url})
+      return xyz_url
     }
 
     const styleUrl = 'https://api.protomaps.com/styles/v5/white/en.json?key=ffc24a4325d458ce';
@@ -73,6 +115,11 @@
       center: [-122.447303, 37.753574]
     });
 
+    // even after 10 years mapbox/libre expressions still cannot handle a nested object in a vector tile source, so we need to parse the string
+    // this assumes a quoted key and a numeric value
+  
+    
+    // annoying to have to convert from a string in the other expressions so providing number and string options...
     const get_nested_number = [
       "to-number", [
         "slice",
@@ -87,21 +134,9 @@
         ["get", "aggregation"],
         ["+", ["index-of", ":", ["get", "aggregation"]], 2],
         ["-", ["length", ["get", "aggregation"]], 1]
-
     ];
-      
-    //   [
-    //   "to-number", [
-    //     "let", "o", ["get", "aggregation"],
-    //     "let", "i", ["index-of", ":", ["var", "o"]],
-    //     ["case",
-    //       [">", ["var", "i"], -1],
-    //       ["slice", ["var", "o"], ["+", ["var", "i"], 2], ["-", ["length", ["var", "o"]], 1]],
-    //       "0"
-    //     ]
-    //   ]
-    // ];
 
+      
     const hexbin_clamped_log_nested_aggregation = [
       "case",
       ["<", ["index-of", ":", ["coalesce", ["get", "aggregation"], ""]], 0], 0,
@@ -116,6 +151,9 @@
       [">", ["log2", ["coalesce", ["get", "count"], 1]], 20], 20,
       ["log2", ["coalesce", ["get", "count"], 1]]
     ];
+
+
+    // various dataviz color ramp experiments, need to figure out how to bring in colorbrewer
 
     const red_log_clamped_hexbin_ramp = [
       "interpolate", ["linear"],
@@ -137,6 +175,7 @@
       20, "#a50f15"
     ];
 
+    // defining styles -- theses are cluster specific, need to define generic polygon / point / line layers for xyz spaces later
     const xyzLayers = {
       hexbins: {
         id: 'hexbins',
@@ -195,7 +234,7 @@
         layout: {
           "text-ignore-placement": true,
           "symbol-placement": "point",
-          "text-field": ["coalesce",["get", "count"],get_nested_value,],
+          "text-field": ["coalesce",["get", "count"], get_nested_value,], // generic label for both hexbin and quadbin
           // "text-field":  ["to-string", get_nested_number],
           "text-size": 10,
           "text-justify": "center",
@@ -226,49 +265,32 @@
       }
     };
 
+    map.on('error', (e) => {
+        console.log('ERROR', e);
+    });
+      
     map.on('load', () => {
-      const layers = map.getStyle().layers;
-      let firstSymbolId;
-      for (let i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol') {
-          firstSymbolId = layers[i].id;
-          break;
-        }
-      }
-
-      map.addSource('xyz', {
-        type: 'vector',
-        tiles: [xyz_url]
-      });
-
-      if (clustering == 'h3'){
-        map.addLayer(xyzLayers.hexbins, firstSymbolId);
-      }
-      if (clustering == 'quadbin'){
-      map.addLayer(xyzLayers.quadbins, firstSymbolId);
-      }
-      if (clustering == 'h3_centroid'){
-        map.addLayer(xyzLayers.centroids, firstSymbolId);
-      }      
-      map.addLayer(xyzLayers.labels, firstSymbolId);
-
-
+      console.log('using URL with',{clustering})
+      build_xyz_url(clustering)
+      
+      //keeping for reference
       // Object.values(xyzLayers).forEach(layer => {
       //   map.addLayer(layer, firstSymbolId);
       //   map.setLayoutProperty(layer.id, 'visibility', 'none');
       // });
-
-      // document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
-      //   input.addEventListener('change', event => {
-      //     const selectedLayer = event.target.value;
-      //     toggleToLayer(selectedLayer);
-      //     reloadLayer(selectedLayer);
-      //   });
-      // });
-
       // toggleToLayer('hexbins');
-    });
 
+
+      document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
+        input.addEventListener('change', event => {
+          clustering = event.target.value;
+          reloadLayer(clustering);
+        });
+      });
+
+    });
+      
+    // keeping for reference
     function toggleToLayer(selectedId) {
       Object.values(xyzLayers).forEach(layer => {
         if (map.getLayer(layer.id)) {
@@ -290,14 +312,45 @@
       }
     }
 
-    function reloadLayer(layerId) {
-      const layer = xyzLayers[layerId];
-      if (!layer) return;
-
+    function loadXYZSource(clusterType) {
+      // figure out where basemap labels are so we can put dataviz under (I will die on this hill)
+      const layers = map.getStyle().layers;
+      let firstSymbolId;
+      for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol') {
+          firstSymbolId = layers[i].id;
+          break;
+        }
+      }
+      const layer = xyzLayers[clusterType];
+      if (!layer) return; // this may cause problems -- what if we just want to inspect the xyz space w/o clustering
+    
+      // Remove old source and layer
       if (map.getLayer(layer.id)) {
         map.removeLayer(layer.id);
       }
-      map.addLayer(layer);
+      if (map.getSource('xyz')) {
+        map.removeSource('xyz');
+      }
+      tile_url = build_xyz_url(clusterType)
+      map.addSource('xyz', {
+        type: 'vector',
+        tiles: [tile_url]
+      });
+
+      if (clusterType == 'hexbin'){
+        map.addLayer(xyzLayers.hexbins, firstSymbolId);
+      }
+      if (clusterType == 'quadbin'){
+      map.addLayer(xyzLayers.quadbins, firstSymbolId);
+      }
+      if (clusterType == 'centroid'){
+        map.addLayer(xyzLayers.centroids, firstSymbolId);
+      }      
+      // probably need to handle rez
+      map.addLayer(xyzLayers.labels, firstSymbolId);
+      map.addLayer(xyzLayers.outlines, firstSymbolId);
+
     }
   </script>
 </body>
