@@ -72,7 +72,7 @@
     console.log("url params",{spaceID},{hubApi},{clustering},{rez});
 
 
-    build_xyz_url(clusterType){
+    function build_xyz_url(clusterType){
 
       let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`;
       // note that protomaps / maplibre doesn't support geojson tiles as a source, just mvt...
@@ -271,8 +271,7 @@
       
     map.on('load', () => {
       console.log('using URL with',{clustering})
-      build_xyz_url(clustering)
-      
+      loadXYZSource(clustering)
       //keeping for reference
       // Object.values(xyzLayers).forEach(layer => {
       //   map.addLayer(layer, firstSymbolId);
