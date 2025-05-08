@@ -51,21 +51,21 @@
       clusteringParam = urlParams.get('clustering');
       if (clusteringParam === 'quadbin') {
         clustering = 'quadbin'}
-      if (clusteringParam === 'h3' || 'hexbin') {
+      if (clusteringParam === 'h3' || clusteringParam === 'hexbin') {
         clustering = 'hexbin'}
-      if (clusteringParam === 'h3_centroid' || 'centroid') {
+      if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
         clustering = 'centroid'}
-      if (urlParams.get('rez')) {
-        if (Number.isInteger(urlParams.get('rez'))){
-          if (rez <= 3 && rez >= -3){
-            rez = urlParams.get('rez')
+      const rezParam = urlParams.get('rez')
+        if (Number.isInteger(rezParam)){
+          if (rezParam <= 2 && rezParam >= -2){
+            rez = rezParam
           } else {
             rez = '';
-            console.log("relative rez of",urlParams.get('rez'),"is a bad idea, keep it between 2 and -2")
+            console.log("relative rez of",rezParam,"is a bad idea, keep it between 2 and -2")
           }
         } else {
           rez = '';
-          console.log("rez has to be an integer, unlike",urlParams.get('rez'))
+          console.log("rez has to be an integer, unlike",rezParam)
         } 
       }
     }
@@ -94,8 +94,7 @@
         if (clusterType == 'hexbin') {
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroid') {
-          xyz_url += clustering_centroid};
-        xyz_url += xyz_centroid;
+          xyz_url += xyz_centroid};
   
         if ('rez') {
           rez = urlParams.get('rez');
