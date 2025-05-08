@@ -322,7 +322,7 @@
         }
       }
       const layer = xyzLayers[clusterType];
-      if (!layer) return; // this may cause problems -- what if we just want to inspect the xyz space w/o clustering
+      // if (!layer) return; // this may cause problems -- what if we just want to inspect the xyz space w/o clustering
     
       // Remove old source and layer
       if (map.getLayer(layer.id)) {
