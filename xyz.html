@@ -322,6 +322,7 @@
         map.removeSource('xyz');
       }
       const tile_url = build_xyz_url(clusterType)
+      console.log(tile_url)
       map.addSource('xyz', {
         type: 'vector',
         tiles: [tile_url]
