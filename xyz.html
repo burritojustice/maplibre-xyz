@@ -283,6 +283,7 @@
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
         input.addEventListener('change', event => {
           clustering = event.target.value;
+          console.log('clicked',clustering)
           loadXYZSource(clustering);
         });
       });
