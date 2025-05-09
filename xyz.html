@@ -328,6 +328,8 @@
       // Remove old source and layer
       if (map.getLayer(layer.id)) {
         map.removeLayer(layer.id);
+        map.removeLayer('bin-labels')
+        map.removeLayer('outlines')
       }
       if (map.getSource('xyz')) {
         map.removeSource('xyz');
