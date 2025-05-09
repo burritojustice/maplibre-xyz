@@ -45,28 +45,21 @@
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
     if (urlParams.get('clustering')) {
         clusteringParam = urlParams.get('clustering');
-      
-    // valid clustering types are hexbin ( h3) and quadbin -- normalize params (and provide a shortcut for h3 centroids)
-    if (urlParams.get('clustering')) {
-      clusteringParam = urlParams.get('clustering');
-      if (clusteringParam === 'quadbin') {
-        clustering = 'quadbin'}
-      if (clusteringParam === 'h3' || clusteringParam === 'hexbin') {
-        clustering = 'hexbin'}
-      if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
-        clustering = 'centroid'}
-      const rezParam = urlParams.get('rez')
-        if (Number.isInteger(rezParam)){
-          if (rezParam <= 2 && rezParam >= -2){
-            rez = rezParam
-          } else {
-            rez = '';
-            console.log("relative rez of",rezParam,"is a bad idea, keep it between 2 and -2")
-          }
-        } else {
-          rez = '';
-          console.log("rez has to be an integer, unlike",rezParam)
-        } 
+    }
+    if (clusteringParam === 'quadbin') {
+      clustering = 'quadbin'}
+    if (clusteringParam === 'h3' || clusteringParam === 'hexbin') {
+      clustering = 'hexbin'}
+    if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
+      clustering = 'centroid'}
+    const rezParam = parseInt(urlParams.get('rez'));
+      if ((!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
+        rez = rezParam
+      } else {
+        rez = '';
+        console.log("relative rez of",rezParam,"is a bad idea, keep it between 3 and -2 for hexbins and 0 to 4 for quadbins")
+      }
+
       }
     }
     console.log("url params",{spaceID},{hubApi},{clustering},{rez});
@@ -330,7 +323,7 @@
       if (map.getSource('xyz')) {
         map.removeSource('xyz');
       }
-      tile_url = build_xyz_url(clusterType)
+      const tile_url = build_xyz_url(clusterType)
       map.addSource('xyz', {
         type: 'vector',
         tiles: [tile_url]
