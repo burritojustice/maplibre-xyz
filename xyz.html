@@ -43,14 +43,14 @@
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('space')) spaceID = urlParams.get('space');
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
-    const clusteringParam
-    if (urlParams.get('clustering')) {
-      clusteringParam = urlParams.get('clustering')}
-    if (clusteringParam == 'quadbin') {
+    const clusteringParam = = urlParams.get('clustering')
+    // if (urlParams.get('clustering')) {
+    //   clusteringParam = urlParams.get('clustering')}
+    if (clusteringParam == 'quadbin || 'quadbins') {
       clustering = 'quadbins'}
     if (clusteringParam == 'h3' || 'hexbin' || 'hexbins') {
       clustering = 'hexbins'}
-    if (clusteringParam == 'h3_centroid' || clusteringParam == 'centroid') {
+    if (clusteringParam == 'h3_centroid' || 'centroid' || 'centroids') {
       clustering = 'centroids'}
     // const rezParam = parseInt(urlParams.get('rez'));
     if (urlParams.get('rez')) {
