@@ -327,27 +327,23 @@
 
     }
 
-    function removeSourceAndLayers(map, sourceId) {
-      if (!map || !sourceId) return;
-    
-      const style = map.getStyle();
-      if (!style || !style.layers) return;
-      console.log("Removing layers from source:", sourceId);
-      console.log("All layers in style:", style.layers);
-      style.layers
-        .filter(layer => layer.source === sourceId)
-        .forEach(layer => {
-          console.log('layer',layer.id)
-          if (map.getLayer(layer.id)) {
-            console.log('removing',layer.id)
-            map.removeLayer(layer.id);
-          }
-        });
-    
-      if (map.getSource(sourceId)) {
-        map.removeSource(sourceId);
+  function removeSourceAndLayers(map, sourceId) {
+    if (!map || !sourceId) return;
+  
+    const allLayerIds = map.getStyle().layers.map(l => l.id);
+    allLayerIds.forEach(layerId => {
+      const layer = map.getLayer(layerId);
+      if (layer && layer.source === sourceId) {
+        console.log('removing',(layerId))
+        map.removeLayer(layerId);
       }
+    });
+  
+    if (map.getSource(sourceId)) {
+      console.log('removing',(sourceId))
+      map.removeSource(sourceId);
     }
+  }
 
     
   </script>
