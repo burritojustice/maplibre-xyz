@@ -322,24 +322,9 @@
       }
       const layer = xyzLayers[clusterType];
       console.log('layer.id',layer.id)
-      // if (!layer) return; // this may cause problems -- what if we just want to inspect the xyz space w/o clustering
-      // Remove old source and layer
-      // if (map.getLayer(layer.id)) {
-      //   map.removeLayer(layer.id);
-      //   map.removeLayer('bin_labels')
-      //   map.removeLayer('outlines')
-      // }
-      // Dynamically remove all layers defined in xyzLayers
-      Object.values(xyzLayers).forEach(layer => {
-        if (map.getLayer(layer.id)) {
-          map.removeLayer(layerId);
-        }
-      });
-      console.log('source is',map.getSource('xyz'))
-      if (map.getSource('xyz')) {
-        console.log('removing',map.getSource('xyz'))
-        map.removeSource('xyz');
-      }
+
+      removeSourceAndLayers(map, 'xyz')
+
       const tile_url = build_xyz_url(clusterType)
       console.log(tile_url)
       map.addSource('xyz', {
@@ -361,6 +346,27 @@
       map.addLayer(xyzLayers.outlines, firstSymbolId);
 
     }
+
+    function removeSourceAndLayers(map, sourceId) {
+      if (!map || !sourceId) return;
+    
+      const style = map.getStyle();
+      if (!style || !style.layers) return;
+    
+      style.layers
+        .filter(layer => layer.source === sourceId)
+        .forEach(layer => {
+          if (map.getLayer(layer.id)) {
+            map.removeLayer(layer.id);
+          }
+        });
+    
+      if (map.getSource(sourceId)) {
+        map.removeSource(sourceId);
+      }
+    }
+
+    
   </script>
 </body>
 </html>
