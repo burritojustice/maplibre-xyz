@@ -39,26 +39,30 @@
     let hubApi = 'api.think-with-me.com';
     let clustering, rez; 
 
+    const valid_quadbins = ['quadbin','quadbins']
+    const valid_hexbins = ['hexbin','hexbins','h3','H3']
+    const valid_centroids = ['centroid','centroids','h3_centroids']
+
     // check to see if we have clustering options in the urlParams
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('space')) spaceID = urlParams.get('space');
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
     const clusteringParam = urlParams.get('clustering')
     console.log({clusteringParam})
-    // if (urlParams.get('clustering')) {
-    //   clusteringParam = urlParams.get('clustering')}
-    if (clusteringParam == 'quadbin' || 'quadbins') {
+    if (urlParams.get('clustering')) {
+      clusteringParam = urlParams.get('clustering')}
+    if (valid_quadbins.includes(clusteringParam)) {
       clustering = 'quadbins'}
     console.log({clustering})
-    if (clusteringParam == 'h3' || 'hexbin' || 'hexbins') {
+    if (valid_hexbins.includes(clusteringParam)) {
       clustering = 'hexbins'}
     console.log({clustering})
-    if (clusteringParam == 'h3_centroid' || 'centroid' || 'centroids') {
+    if (valid_centroids.includes(clusteringParam)) {
       clustering = 'centroids'}
     console.log({clustering})
     // const rezParam = parseInt(urlParams.get('rez'));
-    if (urlParams.get('rez')) {
-        rez = urlParams.get('rez');
+    // if (urlParams.get('rez')) {
+    //     rezParams = urlParams.get('rez');
     }
     // if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
     //   rez = rezParam
