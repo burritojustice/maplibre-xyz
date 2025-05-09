@@ -322,7 +322,7 @@
         map.addLayer(xyzLayers.centroids, firstSymbolId);
       }      
       // probably need to handle rez
-      map.addLayer(xyzLayers.labels, firstSymbolId);
+      map.addLayer(xyzLayers.bin_labels, firstSymbolId);
       map.addLayer(xyzLayers.outlines, firstSymbolId);
 
     }
@@ -332,7 +332,8 @@
     
       const style = map.getStyle();
       if (!style || !style.layers) return;
-      
+      console.log("Removing layers from source:", sourceId);
+      console.log("All layers in style:", style.layers);
       style.layers
         .filter(layer => layer.source === sourceId)
         .forEach(layer => {
