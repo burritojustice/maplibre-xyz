@@ -53,10 +53,8 @@
     //   clusteringParam = urlParams.get('clustering')}
     if (valid_quadbins.includes(clusteringParam)) {
       clustering = 'quadbins'}
-    console.log({clustering})
     if (valid_hexbins.includes(clusteringParam)) {
       clustering = 'hexbins'}
-    console.log({clustering})
     if (valid_centroids.includes(clusteringParam)) {
       clustering = 'centroids'}
     console.log({clustering})
@@ -344,13 +342,13 @@
         tiles: [tile_url]
       });
 
-      if (clusterType == 'hexbin'){
+      if (clusterType == 'hexbins'){
         map.addLayer(xyzLayers.hexbins, firstSymbolId);
       }
-      if (clusterType == 'quadbin'){
+      if (clusterType == 'quadbins'){
       map.addLayer(xyzLayers.quadbins, firstSymbolId);
       }
-      if (clusterType == 'centroid'){
+      if (clusterType == 'centroids'){
         map.addLayer(xyzLayers.centroids, firstSymbolId);
       }      
       // probably need to handle rez
