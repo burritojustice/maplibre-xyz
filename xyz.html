@@ -331,12 +331,13 @@
       if (!map || !sourceId) return;
     
       const style = map.getStyle();
-      console.log(style)
+      console.log
       if (!style || !style.layers) return;
       
       style.layers
         .filter(layer => layer.source === sourceId)
         .forEach(layer => {
+          console.log(layer.id)
           if (map.getLayer(layer.id)) {
             map.removeLayer(layer.id);
           }
