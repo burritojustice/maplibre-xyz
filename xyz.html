@@ -287,27 +287,7 @@
 
     });
       
-    // keeping for reference
-    function toggleToLayer(selectedId) {
-      Object.values(xyzLayers).forEach(layer => {
-        if (map.getLayer(layer.id)) {
-          map.setLayoutProperty(layer.id, 'visibility', 'none');
-        }
-      });
 
-      if (map.getLayer(xyzLayers.outlines.id)) {
-        map.setLayoutProperty(xyzLayers.outlines.id, 'visibility', 'visible');
-      }
-
-      const mainLayer = xyzLayers[selectedId];
-      if (mainLayer) {
-        map.setLayoutProperty(mainLayer.id, 'visibility', 'visible');
-      }
-
-      if (map.getLayer(xyzLayers.labels.id)) {
-        map.setLayoutProperty(xyzLayers.labels.id, 'visibility', 'visible');
-      }
-    }
 
     function loadXYZSource(clusterType) {
       console.log({clusterType})
@@ -320,11 +300,12 @@
           break;
         }
       }
-      const layer = xyzLayers[clusterType];
-      console.log('layer.id',layer.id)
+    
 
       removeSourceAndLayers(map, 'xyz')
 
+      const layer = xyzLayers[clusterType];
+      console.log('layer.id',layer.id)
       const tile_url = build_xyz_url(clusterType)
       console.log(tile_url)
       map.addSource('xyz', {
