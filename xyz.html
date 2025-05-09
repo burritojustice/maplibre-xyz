@@ -312,7 +312,7 @@
     }
 
     function loadXYZSource(clusterType) {
-      console.log(clusterType)
+      console.log({clusterType})
       // figure out where basemap labels are so we can put dataviz under (I will die on this hill)
       const layers = map.getStyle().layers;
       let firstSymbolId;
@@ -324,7 +324,7 @@
       }
       const layer = xyzLayers[clusterType];
       // if (!layer) return; // this may cause problems -- what if we just want to inspect the xyz space w/o clustering
-      console.log({map.getLayer(layer.id})
+      console.log({map.getLayer(layer.id)}
       // Remove old source and layer
       if (map.getLayer(layer.id)) {
         map.removeLayer(layer.id);
