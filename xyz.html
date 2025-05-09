@@ -49,8 +49,8 @@
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
     const clusteringParam = urlParams.get('clustering')
     console.log({clusteringParam})
-    if (urlParams.get('clustering')) {
-      clusteringParam = urlParams.get('clustering')}
+    // if (urlParams.get('clustering')) {
+    //   clusteringParam = urlParams.get('clustering')}
     if (valid_quadbins.includes(clusteringParam)) {
       clustering = 'quadbins'}
     console.log({clustering})
