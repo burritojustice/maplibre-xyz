@@ -332,7 +332,9 @@
         map.removeLayer('bin-labels')
         map.removeLayer('outlines')
       }
+      console.log('source is',map.getSource('xyz'))
       if (map.getSource('xyz')) {
+        console.log('removing',map.getSource('xyz'))
         map.removeSource('xyz');
       }
       const tile_url = build_xyz_url(clusterType)
