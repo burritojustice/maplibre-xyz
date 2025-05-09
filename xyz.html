@@ -45,12 +45,12 @@
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
     const clusteringParam
     if (urlParams.get('clustering')) {
-      clusteringParam = urlParams.get('clustering');
-    if (clusteringParam === 'quadbin') {
+      clusteringParam = urlParams.get('clustering');}
+    if (clusteringParam == 'quadbin') {
       clustering = 'quadbins'}
-    if (clusteringParam === 'h3' || clusteringParam === 'hexbin') {
+    if (clusteringParam == 'h3' || 'hexbin' || 'hexbins') {
       clustering = 'hexbins'}
-    if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
+    if (clusteringParam == 'h3_centroid' || clusteringParam == 'centroid') {
       clustering = 'centroids'}
     // const rezParam = parseInt(urlParams.get('rez'));
     if (urlParams.get('rez')) {
