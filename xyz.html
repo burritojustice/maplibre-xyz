@@ -53,7 +53,7 @@
     if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
       clustering = 'centroid'}
     const rezParam = parseInt(urlParams.get('rez'));
-      if ((!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
+      if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
         rez = rezParam
       } else {
         rez = '';
@@ -88,8 +88,7 @@
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroid') {
           xyz_url += xyz_centroid};
-        if ('rez') {
-          rez = urlParams.get('rez');
+        if (rez) {
           xyz_url += '&clustering.relativeResolution=' + rez;
         }
       }
@@ -274,7 +273,7 @@
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
         input.addEventListener('change', event => {
           clustering = event.target.value;
-          reloadLayer(clustering);
+          loadXYZSource(clustering);
         });
       });
 
