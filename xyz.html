@@ -80,11 +80,11 @@
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
       if(clusterType){
-        if (clusterType === 'quadbin') {
+        if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin};
-        if (clusterType == 'hexbin') {
+        if (clusterType == 'hexbins') {
           xyz_url += xyz_hexbin};
-        if (clusterType === 'centroid') {
+        if (clusterType === 'centroids') {
           xyz_url += xyz_centroid};
         if (rez) {
           xyz_url += '&clustering.relativeResolution=' + rez;
