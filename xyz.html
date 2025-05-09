@@ -47,11 +47,11 @@
         clusteringParam = urlParams.get('clustering');
     }
     if (clusteringParam === 'quadbin') {
-      clustering = 'quadbin'}
+      clustering = 'quadbins'}
     if (clusteringParam === 'h3' || clusteringParam === 'hexbin') {
-      clustering = 'hexbin'}
+      clustering = 'hexbins'}
     if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
-      clustering = 'centroid'}
+      clustering = 'centroids'}
     const rezParam = parseInt(urlParams.get('rez'));
     if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
       rez = rezParam
@@ -300,6 +300,7 @@
     }
 
     function loadXYZSource(clusterType) {
+      console.log(clusterType)
       // figure out where basemap labels are so we can put dataviz under (I will die on this hill)
       const layers = map.getStyle().layers;
       let firstSymbolId;
