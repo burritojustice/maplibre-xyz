@@ -53,15 +53,13 @@
     if (clusteringParam === 'h3_centroid' || clusteringParam === 'centroid') {
       clustering = 'centroid'}
     const rezParam = parseInt(urlParams.get('rez'));
-      if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
-        rez = rezParam
-      } else {
-        rez = '';
-        console.log("relative rez of",rezParam,"is a bad idea, keep it between 3 and -2 for hexbins and 0 to 4 for quadbins")
-      }
-
-      }
+    if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
+      rez = rezParam
+    } else {
+      rez = '';
+      console.log("relative rez of",rezParam,"is a bad idea, keep it between 2 and -2 for hexbins and 0 to 4 for quadbins")
     }
+    
     console.log("url params",{spaceID},{hubApi},{clustering},{rez});
 
 
