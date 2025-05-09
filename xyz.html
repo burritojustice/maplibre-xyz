@@ -44,14 +44,18 @@
     if (urlParams.get('space')) spaceID = urlParams.get('space');
     if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
     const clusteringParam = urlParams.get('clustering')
+    console.log({clusteringParam})
     // if (urlParams.get('clustering')) {
     //   clusteringParam = urlParams.get('clustering')}
     if (clusteringParam == 'quadbin' || 'quadbins') {
       clustering = 'quadbins'}
+    console.log({clustering})
     if (clusteringParam == 'h3' || 'hexbin' || 'hexbins') {
       clustering = 'hexbins'}
+    console.log({clustering})
     if (clusteringParam == 'h3_centroid' || 'centroid' || 'centroids') {
       clustering = 'centroids'}
+    console.log({clustering})
     // const rezParam = parseInt(urlParams.get('rez'));
     if (urlParams.get('rez')) {
         rez = urlParams.get('rez');
