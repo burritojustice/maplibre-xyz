@@ -269,12 +269,7 @@
     map.on('load', () => {
       console.log('using URL with',{clustering})
       loadXYZSource(clustering)
-      //keeping for reference
-      // Object.values(xyzLayers).forEach(layer => {
-      //   map.addLayer(layer, firstSymbolId);
-      //   map.setLayoutProperty(layer.id, 'visibility', 'none');
-      // });
-      // toggleToLayer('hexbins');
+
 
 
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
@@ -322,8 +317,8 @@
         map.addLayer(xyzLayers.centroids, firstSymbolId);
       }      
       // probably need to handle rez
-      map.addLayer(xyzLayers.bin_labels, firstSymbolId);
-      map.addLayer(xyzLayers.outlines, firstSymbolId);
+      map.addLayer(xyzLayers.bin_labels); //no firstSymbolId here? layer order is weird
+      map.addLayer(xyzLayers.outlines);
 
     }
 
