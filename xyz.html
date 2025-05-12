@@ -289,14 +289,16 @@
       // figure out where basemap labels are so we can put dataviz under (I will die on this hill)
       const layers = map.getStyle().layers;
       let firstSymbolId;
-      for (let i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol') {
-          firstSymbolId = layers[i].id;
-          console.log(firstSymbolId)
-          // break;
-        }
-      }
-      console.log({firstSymbolId})
+      let firstSymbolId = 'address_label';
+
+      // for (let i = 0; i < layers.length; i++) {
+      //   if (layers[i].type === 'symbol') {
+      //     firstSymbolId = layers[i].id;
+      //     // console.log(firstSymbolId)
+      //     break;
+      //   }
+      // }
+      // console.log({firstSymbolId})
       removeSourceAndLayers(map, 'xyz')
 
       const layer = xyzLayers[clusterType];
