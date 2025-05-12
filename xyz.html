@@ -287,10 +287,19 @@
     function loadXYZSource(clusterType) {
       console.log({clusterType})
       // figure out where basemap labels are so we can put dataviz under (I will die on this hill)
+      
       const layers = map.getStyle().layers;
-      // let firstSymbolId;
       let firstSymbolId = 'address_label';
-
+      let layer_ids = [];
+      for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol') {
+          layer_ids.add(layers[i].id);
+        }
+      }
+      console.log({layer_ids})
+      
+      // sometimes bin_labels got interpreted as the first symbol layer which messed up the ordering, more reliable to just set it
+      // let firstSymbolId;
       // for (let i = 0; i < layers.length; i++) {
       //   if (layers[i].type === 'symbol') {
       //     firstSymbolId = layers[i].id;
