@@ -293,7 +293,7 @@
       let layer_ids = [];
       for (let i = 0; i < layers.length; i++) {
         if (layers[i].type === 'symbol') {
-          layer_ids.add(layers[i].id);
+          layer_ids.push(layers[i].id);
         }
       }
       console.log({layer_ids})
