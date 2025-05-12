@@ -282,14 +282,8 @@
 
     });
       
-
-
-    function loadXYZSource(clusterType) {
-      console.log({clusterType})
-      // figure out where basemap labels are so we can put dataviz under (I will die on this hill)
-      
+    function getSymbolLayerOrder(){
       const layers = map.getStyle().layers;
-      let firstSymbolId = 'address_label';
       let layer_ids = [];
       for (let i = 0; i < layers.length; i++) {
         if (layers[i].type === 'symbol') {
@@ -297,8 +291,19 @@
         }
       }
       console.log({layer_ids})
+      return layer_ids;
+    }
+
+    function loadXYZSource(clusterType) {
+      console.log({clusterType})
       
-      // sometimes bin_labels got interpreted as the first symbol layer which messed up the ordering, more reliable to just set it
+      // put place labels above dataviz under (I will die on this hill)
+      // pmtiles symbol layer order for future reference:
+      // layer_ids: ["address_label", "water_waterway_label", "roads_labels_minor", "water_label_ocean", "earth_label_islands", "water_label_lakes", "roads_labels_major", "places_subplace", "places_region", "places_locality", "places_country"] 
+      let firstSymbolId = 'address_label';
+
+      // for reference: sometimes bin_labels got interpreted as the first symbol layer which messed up the ordering, more reliable to just set it
+      // const layers = map.getStyle().layers;
       // let firstSymbolId;
       // for (let i = 0; i < layers.length; i++) {
       //   if (layers[i].type === 'symbol') {
@@ -308,6 +313,8 @@
       //   }
       // }
       // console.log({firstSymbolId})
+
+      
       removeSourceAndLayers(map, 'xyz')
 
       const layer = xyzLayers[clusterType];
