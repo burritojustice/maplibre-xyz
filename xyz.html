@@ -74,7 +74,7 @@
 
     function build_xyz_url(clusterType){
 
-      let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=true`;
+      let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=false`;
       // note that protomaps / maplibre doesn't support geojson tiles as a source, just mvt...
       // this introduces a significant issue as nested properties are presented as strings 
       // and mapbox/libre expressions can't parse them...
