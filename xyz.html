@@ -27,51 +27,65 @@
 
 <body>
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
-    <strong>View Mode:</strong><br>
+    <strong>Clustering:</strong><br>
     <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label>
+    <label><input type="radio" name="layer-toggle" value="none" checked> None</label>
   </div>
 
   <div id="map"></div>
   <script>
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
-    let clustering, rez; 
+    let clustering = 'none'
+    let rez; 
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
     const valid_centroids = ['centroid','centroids','h3_centroids']
 
-    // check to see if we have clustering options in the urlParams
+    // check to see if we have clustering and space and hubApi options in the urlParams
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('space')) spaceID = urlParams.get('space');
-    if (urlParams.get('hubApi')) hubApi = urlParams.get('hubApi');
-    const clusteringParam = urlParams.get('clustering')
-    console.log({clusteringParam})
-    // if (urlParams.get('clustering')) {
+    if (urlParams.get('space')) {spaceID = urlParams.get('space')};
+    if (urlParams.get('hubApi')) {hubApi = urlParams.get('hubApi')};
+    if (urlParams.get('clustering')) {
     //   clusteringParam = urlParams.get('clustering')}
-    if (valid_quadbins.includes(clusteringParam)) {
-      clustering = 'quadbins'}
-    if (valid_hexbins.includes(clusteringParam)) {
-      clustering = 'hexbins'}
-    if (valid_centroids.includes(clusteringParam)) {
-      clustering = 'centroids'}
-    console.log({clustering})
-    // const rezParam = parseInt(urlParams.get('rez'));
-    // if (urlParams.get('rez')) {
-    //     rezParams = urlParams.get('rez');
-    // }
-    // if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
-    //   rez = rezParam
-    // } else {
-    //   rez = '';
-    //   console.log("relative rez of",rezParam,"is a bad idea, keep it between 2 and -2 for hexbins and 0 to 4 for quadbins")
-    // }
+      if (valid_quadbins.includes(clusteringParam)) {
+        clustering = 'quadbins'}
+      if (valid_hexbins.includes(clusteringParam)) {
+        clustering = 'hexbins'}
+      if (valid_centroids.includes(clusteringParam)) {
+        clustering = 'centroids'}
+      console.log({clustering})
+      // const rezParam = parseInt(urlParams.get('rez'));
+      // if (urlParams.get('rez')) {
+      //     rezParams = urlParams.get('rez');
+      // }
+      // if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
+      //   rez = rezParam
+      // } else {
+      //   rez = '';
+      //   console.log("relative rez of",rezParam,"is a bad idea, keep it between 2 and -2 for hexbins and 0 to 4 for quadbins")
+    }
     
     console.log("url params",{spaceID},{hubApi},{clustering},{rez});
 
-
+    function addNonClusterLayers() {
+      const firstSymbolId = 'address_label';
+    
+      const layersToAdd = [
+        xyzLayers.xyz_polygons,
+        xyzLayers.xyz_polygons_outline,
+        xyzLayers.xyz_lines_casing,
+        xyzLayers.xyz_lines,
+        xyzLayers.xyz_points
+      ];
+    
+      for (const layer of layersToAdd) {
+        map.addLayer(layer, firstSymbolId);
+      }
+    }
     function build_xyz_url(clusterType){
 
       let xyz_url = `https://${hubApi}/hub/spaces/${spaceID}/tile/web/{z}_{x}_{y}.mvt?clip=false`;
@@ -88,7 +102,7 @@
       var xyz_hexbin = '&clustering=hexbin';
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
-      if(clusterType){
+      if(clusterType != 'none'){
         if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin};
         if (clusterType == 'hexbins') {
@@ -395,7 +409,10 @@
 
       
       removeSourceAndLayers(map, 'xyz')
-
+      if (clusterType == 'none'){
+        addNonClusterLayers()
+        return
+      }
       const layer = xyzLayers[clusterType];
       console.log('layer.id',layer.id)
       const tile_url = build_xyz_url(clusterType)
