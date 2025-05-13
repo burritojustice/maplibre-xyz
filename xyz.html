@@ -267,7 +267,7 @@
       filter: [
         "all",
         ["!=", ["get", "kind"], "H3"],
-        ["has", "qk"],
+        ["!", ["has", "qk"]],
         ["==", "$type", "Polygon"]
       ],
       paint: {
@@ -282,7 +282,7 @@
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["has", "qk"],
+          ["!", ["has", "qk"]],
           ["==", "$type", "Polygon"]
         ],
         paint: {
@@ -297,7 +297,7 @@
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["has", "qk"],
+          ["!", ["has", "qk"]],
           ["==", "$type", "LineString"]
         ],
         paint: {
@@ -312,7 +312,7 @@
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["has", "qk"],
+          ["!", ["has", "qk"]],
           ["==", "$type", "LineString"]
         ],
         paint: {
@@ -328,7 +328,7 @@
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["has", "qk"],
+          ["!", ["has", "qk"]],
           ["==", "$type", "Point"]
         ],
         paint: {
