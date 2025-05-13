@@ -106,7 +106,7 @@
       var xyz_hexbin = '&clustering=hexbin';
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
-      if(clusterType != 'none'){
+      if (clusterType != 'none'){
         if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin};
         if (clusterType == 'hexbins') {
@@ -411,14 +411,8 @@
       // }
       // console.log({firstSymbolId})
 
-      
       removeSourceAndLayers(map, 'xyz')
-      if (clusterType == 'none'){
-        addNonClusterLayers()
-        return
-      }
-      const layer = xyzLayers[clusterType];
-      console.log('layer.id',layer.id)
+
       const tile_url = build_xyz_url(clusterType)
       console.log(tile_url)
       map.addSource('xyz', {
@@ -426,19 +420,24 @@
         tiles: [tile_url]
       });
 
-      if (clusterType == 'hexbins'){
-        map.addLayer(xyzLayers.hexbins, firstSymbolId);
+      if (clusterType == 'none'){
+        addNonClusterLayers()}
+      else {
+        let layer = xyzLayers[clusterType];
+        console.log('layer.id',layer.id)      
+        if (clusterType == 'hexbins'){
+          map.addLayer(xyzLayers.hexbins, firstSymbolId);
+        }
+        if (clusterType == 'quadbins'){
+        map.addLayer(xyzLayers.quadbins, firstSymbolId);
+        }
+        if (clusterType == 'centroids'){
+          map.addLayer(xyzLayers.centroids, firstSymbolId);
+        }      
+        // probably need to handle rez
+        map.addLayer(xyzLayers.bin_labels, firstSymbolId); //no firstSymbolId here but then below city labels? layer order is weird
+        map.addLayer(xyzLayers.outlines, firstSymbolId);
       }
-      if (clusterType == 'quadbins'){
-      map.addLayer(xyzLayers.quadbins, firstSymbolId);
-      }
-      if (clusterType == 'centroids'){
-        map.addLayer(xyzLayers.centroids, firstSymbolId);
-      }      
-      // probably need to handle rez
-      map.addLayer(xyzLayers.bin_labels, firstSymbolId); //no firstSymbolId here but then below city labels? layer order is weird
-      map.addLayer(xyzLayers.outlines, firstSymbolId);
-
     }
 
   function removeSourceAndLayers(map, sourceId) {
