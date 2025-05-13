@@ -85,6 +85,10 @@
       for (const layer of layersToAdd) {
         map.addLayer(layer, firstSymbolId);
       }
+      map.addSource('xyz', {
+        type: 'vector',
+        tiles: [tile_url]
+      });
     }
     function build_xyz_url(clusterType){
 
