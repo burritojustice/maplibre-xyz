@@ -259,7 +259,86 @@
           'line-width': 1
         },
         filter: ['==', '$type', 'Polygon']
+      },
+      {
+      id: 'xyz_polygons',
+      type: 'fill',
+      source: 'xyz',
+      filter: [
+        "all",
+        ["!=", ["get", "kind"], "H3"],
+        ["has", "qk"],
+        ["==", "$type", "Polygon"]
+      ],
+      paint: {
+        "fill-color": "aqua",
+        "fill-opacity": 0.3
       }
+    },
+    {
+      id: 'xyz_polygons-outline',
+      type: 'line',
+      source: 'xyz',
+      filter: [
+        "all",
+        ["!=", ["get", "kind"], "H3"],
+        ["has", "qk"],
+        ["==", "$type", "Polygon"]
+      ],
+      paint: {
+        "line-color": "blue",
+        "line-width": 1
+      }
+    },
+    {
+      id: 'xyz_lines-casing',
+      type: 'line',
+      source: 'xyz',
+      filter: [
+        "all",
+        ["!=", ["get", "kind"], "H3"],
+        ["has", "qk"],
+        ["==", "$type", "LineString"]
+      ],
+      paint: {
+        "line-color": "darkgrey",
+        "line-width": 3 // casing width = 1px on each side of main line
+      }
+    },
+    {
+      id: 'xyz_lines',
+      type: 'line',
+      source: 'xyz',
+      filter: [
+        "all",
+        ["!=", ["get", "kind"], "H3"],
+        ["has", "qk"],
+        ["==", "$type", "LineString"]
+      ],
+      paint: {
+        "line-color": "red",
+        "line-opacity": 0.5,
+        "line-width": 1
+      }
+    },
+    {
+      id: 'xyz_points',
+      type: 'circle',
+      source: 'xyz',
+      filter: [
+        "all",
+        ["!=", ["get", "kind"], "H3"],
+        ["has", "qk"],
+        ["==", "$type", "Point"]
+      ],
+      paint: {
+        "circle-radius": 5,
+        "circle-color": "white",
+        "circle-opacity": 0.3,
+        "circle-stroke-color": "darkgrey",
+        "circle-stroke-width": 2
+      }
+    }
     };
 
     map.on('error', (e) => {
