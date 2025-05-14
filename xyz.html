@@ -426,7 +426,18 @@
       });
 
       if (clusterType == 'none'){
-        addNonClusterLayers()}
+        const layersToAdd = [
+          xyzLayers.xyz_polygons,
+          xyzLayers.xyz_polygons_outline,
+          xyzLayers.xyz_lines_casing,
+          xyzLayers.xyz_lines,
+          xyzLayers.xyz_points
+        ];
+      
+        for (const layer of layersToAdd) {
+          map.addLayer(layer, firstSymbolId);
+        }
+        // addNonClusterLayers()}
       else {
         let layer = xyzLayers[clusterType];
         console.log('layer.id',layer.id)      
