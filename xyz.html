@@ -272,7 +272,17 @@
           'line-color': '#cccccc',
           'line-width': 1
         },
-        filter: ['==', '$type', 'Polygon']
+        filter: [
+          "all",
+          [
+            ['==', '$type', 'Polygon'],
+            [
+              "any",
+              ["==", "kind", "H3"],
+              ["has", "qk"]
+            ]
+          ]
+        ]
       },
       xyz_polygons: {
         id: 'xyz_polygons',
