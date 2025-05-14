@@ -405,6 +405,12 @@
           showErrorPopup('The XYZ Hub service is waking up. Please try again in a minute');
         }
     });
+
+    map.on('sourcedata', (e) => {
+      if (e.sourceId === 'xyz' && e.tile && e.tile.state === 'errored') {
+        console.log('Tile load error for xyz source', e.tile);
+      }
+    });
       
     map.on('load', () => {
       console.log('using URL with',{clustering})                            
