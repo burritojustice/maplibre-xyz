@@ -37,6 +37,11 @@
     <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
   </div>
 
+  <div id="error-popup" style="display:none; position: absolute; top: 20px; left: 20px; background: #fff; border: 1px solid red; padding: 10px; z-index: 1000; font-family: sans-serif;">
+    <span id="error-message"></span>
+    <button onclick="document.getElementById('error-popup').style.display='none'">Close</button>
+  </div>
+
   <div id="map"></div>
   <script>
     let spaceID = 'stXc82l8';
@@ -374,6 +379,10 @@
 
     map.on('error', (e) => {
         console.log('ERROR', e);
+        if (e && e.error && e.error.status === 503) {
+          console.error('503 Service Unavailable error loading tiles:', e);
+          showErrorPopup('The tile server is currently unavailable (503). Please try again later.');
+        }
     });
       
     map.on('load', () => {
@@ -512,6 +521,11 @@
       console.log('removing',(sourceId))
       map.removeSource(sourceId);
     }
+  }
+
+  function showErrorPopup(message) {
+    document.getElementById('error-message').innerText = message;
+    document.getElementById('error-popup').style.display = 'block';
   }
 
     
