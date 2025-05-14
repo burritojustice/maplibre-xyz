@@ -288,6 +288,7 @@
         id: 'xyz_polygons',
         type: 'fill',
         source: 'xyz',
+        'source-layer': spaceID,
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
@@ -303,10 +304,11 @@
         id: 'xyz_polygons_outline',
         type: 'line',
         source: 'xyz',
+        'source-layer': spaceID,
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["!", ["has", "qk"]],
+          ["!has", "qk"],
           ["==", "$type", "Polygon"]
         ],
         paint: {
@@ -318,10 +320,11 @@
         id: 'xyz_lines_casing',
         type: 'line',
         source: 'xyz',
+        'source-layer': spaceID,
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["!", ["has", "qk"]],
+          ["!has", "qk"],
           ["==", "$type", "LineString"]
         ],
         paint: {
@@ -333,10 +336,11 @@
         id: 'xyz_lines',
         type: 'line',
         source: 'xyz',
+        'source-layer': spaceID,
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["!", ["has", "qk"]],
+          ["!has", "qk"],
           ["==", "$type", "LineString"]
         ],
         paint: {
@@ -349,13 +353,12 @@
         id: 'xyz_points',
         type: 'circle',
         source: 'xyz',
+        'source-layer': spaceID,
         filter: [
           "all",
-          ["any",
-            ["!=", ["get", "kind"], "H3"],
-            ["!", ["has", "qk"]]
-          ],
-          ["==", "$type", "Point"]
+          ["!=", ["get", "kind"], "H3"],
+          ["!has", "qk"],
+          ["==", "$type", "LineString"]
         ],
         paint: {
           "circle-radius": 5,
