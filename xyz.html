@@ -274,13 +274,11 @@
         },
         filter: [
           "all",
+          ['==', '$type', 'Polygon'],
           [
-            ['==', '$type', 'Polygon'],
-            [
-              "any",
-              ["==", "kind", "H3"],
-              ["has", "qk"]
-            ]
+            "any",
+            ["==", "kind", "H3"],
+            ["has", "qk"]
           ]
         ]
       },
