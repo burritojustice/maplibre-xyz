@@ -382,6 +382,18 @@
         input.addEventListener('change', event => {
           clustering = event.target.value;
           console.log('clicked',clustering)
+          // Update the URL parameter when a new layer is selected
+          const urlParams = new URLSearchParams(window.location.search);
+          urlParams.set('clustering', clustering);
+      
+          // ensure spaceID and hubApi persist
+          urlParams.set('space', spaceID);
+          urlParams.set('hubApi', hubApi);
+      
+          // Update the browser URL without reloading the page
+          const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
+          window.history.replaceState(null, '', newRelativePathQuery);
+          
           loadXYZSource(clustering);
         });
       });
