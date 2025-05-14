@@ -489,6 +489,11 @@
         // probably need to handle rez
         map.addLayer(xyzLayers.bin_labels, firstSymbolId); //no firstSymbolId here but then below city labels? layer order is weird
         map.addLayer(xyzLayers.outlines, firstSymbolId);
+        const binLabelCheckbox = document.getElementById('toggle-bin-labels');
+        if (!binLabelCheckbox.checked) {
+          map.setLayoutProperty('bin_labels', 'visibility', 'none');
+        }
+
       }
     }
 
