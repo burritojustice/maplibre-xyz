@@ -279,19 +279,19 @@
         filter: ['==', '$type', 'Polygon']
       },
       xyz_polygons: {
-      id: 'xyz_polygons',
-      type: 'fill',
-      source: 'xyz',
-      filter: [
-        "all",
-        ["!=", ["get", "kind"], "H3"],
-        ["!", ["has", "qk"]],
-        ["==", "$type", "Polygon"]
-      ],
-      paint: {
-        "fill-color": "aqua",
-        "fill-opacity": 0.3
-      }
+        id: 'xyz_polygons',
+        type: 'fill',
+        source: 'xyz',
+        filter: [
+          "all",
+          ["!=", ["get", "kind"], "H3"],
+          ["!", ["has", "qk"]],
+          ["==", "$type", "Polygon"]
+        ],
+        paint: {
+          "fill-color": "aqua",
+          "fill-opacity": 0.3
+        }
       },
       xyz_polygons_outline: {
         id: 'xyz_polygons_outline',
@@ -364,11 +364,10 @@
     });
       
     map.on('load', () => {
-      console.log('using URL with',{clustering})
+      console.log('using URL with',{clustering
+                                   
       loadXYZSource(clustering)
-
-
-
+      
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
         input.addEventListener('change', event => {
           clustering = event.target.value;
@@ -380,6 +379,7 @@
     });
       
     function getSymbolLayerOrder(){
+      // using address_label for now but still handy to have 
       const layers = map.getStyle().layers;
       let layer_ids = [];
       for (let i = 0; i < layers.length; i++) {
@@ -398,7 +398,6 @@
       // pmtiles symbol layer order for future reference:
       // layer_ids: ["address_label", "water_waterway_label", "roads_labels_minor", "water_label_ocean", "earth_label_islands", "water_label_lakes", "roads_labels_major", "places_subplace", "places_region", "places_locality", "places_country"] 
       let firstSymbolId = 'address_label';
-
       // for reference: sometimes bin_labels got interpreted as the first symbol layer which messed up the ordering, more reliable to just set it
       // const layers = map.getStyle().layers;
       // let firstSymbolId;
@@ -442,7 +441,6 @@
 
   function removeSourceAndLayers(map, sourceId) {
     if (!map || !sourceId) return;
-  
     const allLayerIds = map.getStyle().layers.map(l => l.id);
     allLayerIds.forEach(layerId => {
       const layer = map.getLayer(layerId);
