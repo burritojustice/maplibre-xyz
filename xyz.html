@@ -32,6 +32,9 @@
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label><br>
     <label><input type="radio" name="layer-toggle" value="none" checked> None</label>
+    <strong>Labels:</strong><br>
+    <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
+    <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
   </div>
 
   <div id="map"></div>
@@ -374,10 +377,10 @@
     });
       
     map.on('load', () => {
-      console.log('using URL with',{clustering})
-                                   
+      console.log('using URL with',{clustering})                            
       loadXYZSource(clustering)
       
+      // listeners for clustiner options
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
         input.addEventListener('change', event => {
           clustering = event.target.value;
@@ -397,6 +400,33 @@
           loadXYZSource(clustering);
         });
       });
+
+      // Toggle visibility of bin labels
+      document.getElementById('toggle-bin-labels').addEventListener('change', (e) => {
+        const visible = e.target.checked ? 'visible' : 'none';
+        if (map.getLayer('bin_labels')) {
+          map.setLayoutProperty('bin_labels', 'visibility', visible);
+        }
+      });
+      
+      // Toggle visibility of basemap place labels
+      const placeLabelLayers = [
+        "places_subplace",
+        "places_region",
+        "places_locality",
+        "places_country"
+      ];
+      
+      document.getElementById('toggle-place-labels').addEventListener('change', (e) => {
+        const visible = e.target.checked ? 'visible' : 'none';
+        placeLabelLayers.forEach(layerId => {
+          if (map.getLayer(layerId)) {
+            map.setLayoutProperty(layerId, 'visibility', visible);
+          }
+        });
+      });
+
+      
 
     });
       
