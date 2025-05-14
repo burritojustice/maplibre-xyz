@@ -291,7 +291,7 @@
         filter: [
           "all",
           ["!=", ["get", "kind"], "H3"],
-          ["!", ["has", "qk"]],
+          ["!has", "qk"],
           ["==", "$type", "Polygon"]
         ],
         paint: {
