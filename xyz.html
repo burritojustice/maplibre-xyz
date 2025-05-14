@@ -42,7 +42,8 @@
     <button onclick="document.getElementById('error-popup').style.display='none'">Close</button>
   </div>
 
-  <div id="map"></div>
+  <div id="map"></div> 
+  
   <script>
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
@@ -381,7 +382,7 @@
         console.log('ERROR', e);
         if (e && e.error && e.error.status === 503) {
           console.error('503 Service Unavailable error loading tiles:', e);
-          showErrorPopup('The tile server is currently unavailable (503). Please try again later.');
+          showErrorPopup('The XYZ Hub service is waking up. Please try again in a minute');
         }
     });
       
