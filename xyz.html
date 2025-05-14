@@ -351,8 +351,10 @@
         source: 'xyz',
         filter: [
           "all",
-          ["!=", ["get", "kind"], "H3"],
-          ["!", ["has", "qk"]],
+          ["any",
+            ["!=", ["get", "kind"], "H3"],
+            ["!", ["has", "qk"]]
+          ],
           ["==", "$type", "Point"]
         ],
         paint: {
@@ -426,18 +428,7 @@
       });
 
       if (clusterType == 'none'){
-        const layersToAdd = [
-          xyzLayers.xyz_polygons,
-          xyzLayers.xyz_polygons_outline,
-          xyzLayers.xyz_lines_casing,
-          xyzLayers.xyz_lines,
-          xyzLayers.xyz_points
-        ];
-      
-        for (const layer of layersToAdd) {
-          map.addLayer(layer, firstSymbolId);
-        }
-        // addNonClusterLayers()
+        addNonClusterLayers()
       }
       else {
         let layer = xyzLayers[clusterType];
