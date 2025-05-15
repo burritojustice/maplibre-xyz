@@ -151,7 +151,7 @@
       // wanted to use URLSearchParams but need to figure out how to handle hubApi and spaceID and {z}_{x}_{y} in xyz_url path..
 
       var xyz_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
-      var xyz_hexbin = '&clustering=hexbin&clustering.countmode=estimated&clustering.sampling=high'; 
+      var xyz_hexbin = '&clustering=hexbin&clustering.countmode=estimated&clustering.sampling=medhigh'; 
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
       if (clusterType != 'none'){
