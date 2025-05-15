@@ -89,7 +89,6 @@
       if (valid_centroids.includes(clusteringParam)) {
         clustering = 'centroids'}
       console.log({clustering})
-      document.getElementById('layer-toggle').value = clustering
       // const rezParam = parseInt(urlParams.get('rez'));
       // if (urlParams.get('rez')) {
       //     rezParams = urlParams.get('rez');
@@ -418,6 +417,10 @@
     map.on('load', () => {
       console.log('using URL with',{clustering})                            
       loadXYZSource(clustering)
+      const radioToCheck = document.querySelector(`input[name="layer-toggle"][value="${clustering}"]`);
+        if (radioToCheck) {
+          radioToCheck.checked = true;
+        }
       
       // listeners for cluster options
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
