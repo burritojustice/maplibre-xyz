@@ -38,6 +38,22 @@
       max-width: 400px;
       text-align: center;
     }
+
+    #warning-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border: 2px solid red;
+      padding: 20px;
+      z-index: 1000;
+      font-family: sans-serif;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      text-align: center;
+    }
   
     #error-popup button {
       margin-top: 10px;
@@ -63,7 +79,7 @@
     <button onclick="location.reload()">Reload</button>
   </div>
 
-  <div id="timeout-popup">
+  <div id="warning-popup">
     <span id="error-message"></span>
     <button onclick="document.getElementById('error-popup').style.display='none'">Close</button>
   </div>
@@ -418,7 +434,7 @@
               if (radioToCheck) {
                 radioToCheck.checked = true;
               }
-              showDisappearingPopup('H3 hexbins timing out, switching to quadbins.')
+              showWarningPopup('H3 hexbins timing out, switching to quadbins.')
               loadXYZSource('quadbins');
             }
         }
@@ -583,9 +599,9 @@
       }, 45000); // 45000 ms = 45 seconds
   }
 
-  function showDisappearingPopup(message) {
+  function showWarningPopup(message) {
     document.getElementById('error-message').innerText = message;
-    document.getElementById('error-popup').style.display = 'block';
+    document.getElementById('warning-popup').style.display = 'block';
     setTimeout(() => {popup.style.display = 'none';}, 5000); 
   }
     
