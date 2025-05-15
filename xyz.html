@@ -80,7 +80,7 @@
   </div>
 
   <div id="warning-popup">
-    <span id="error-message"></span>
+    <span id="warning-message"></span>
     <button onclick="document.getElementById('error-popup').style.display='none'">Close</button>
   </div>
 
@@ -600,7 +600,7 @@
   }
 
   function showWarningPopup(message) {
-    document.getElementById('error-message').innerText = message;
+    document.getElementById('warning-message').innerText = message;
     document.getElementById('warning-popup').style.display = 'block';
     setTimeout(() => {popup.style.display = 'none';}, 5000); 
   }
