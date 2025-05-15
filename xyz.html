@@ -515,7 +515,6 @@
         urlParams.set('hubApi', hubApi);
         const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
         window.history.replaceState(null, '', newRelativePathQuery);
-      
         loadXYZSource(clustering); 
       });
 
