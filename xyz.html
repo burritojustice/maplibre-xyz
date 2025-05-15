@@ -402,15 +402,16 @@
 
     map.on('error', (e) => {
         console.log('ERROR', e, "Status", e.error.status);
-        if (e && e.error && (e.error.status != 500 && e.error.status != 504)) { // 503 doesn't show up in the status don't think || works here
+        if (e && e.error && e.error.status == 0 && e.error.statusText == "Load failed")) { // 503 doesn't show up in the status when the service is waking up)
           console.error("not 500 or 504", e.error.statusText, e.error.message, e.tile.state);
+          showErrorPopup('The XYZ Hub service is waking up \r Please try again in a minute');
+
         }
     });
 
     map.on('sourcedata', (e) => {
       if (e.sourceId === 'xyz' && e.tile && e.tile.state === 'errored') {
         console.log('Tile load error for xyz source', e.tile);
-        showErrorPopup('The XYZ Hub service is waking up. \r Please try again in a minute');
       }
     });
       
