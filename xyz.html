@@ -165,10 +165,6 @@
           xyz_url += '&clustering.relativeResolution=' + rez;
         }
       }
-      if (sampling) {
-        console.log({sampling})
-        xyz_url += '&clustering.sampling=med'
-      };
       console.log({xyz_url})
       return xyz_url
     }
@@ -441,9 +437,9 @@
             }
             if (e.error.status == 500){
               console.error("500, tiles probably too large", e.error.statusText, e.error.message, e.tile.state);
-              showWarningPopup('Tile load timing out, trying sampling.')
-              sampling = 'med';
-              loadXYZSource(clustering);
+              // showWarningPopup('Tile load timing out, trying sampling.')
+              // sampling = 'med';
+              // loadXYZSource(clustering);
 
             }
 
