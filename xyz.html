@@ -89,7 +89,8 @@
       if (valid_centroids.includes(clusteringParam)) {
         clustering = 'centroids'}
       console.log({clustering})
-      document.getElementById('layer-toggle') = clustering
+      var t = document.getElementById('layer-toggle') 
+      t = clustering
       // const rezParam = parseInt(urlParams.get('rez'));
       // if (urlParams.get('rez')) {
       //     rezParams = urlParams.get('rez');
