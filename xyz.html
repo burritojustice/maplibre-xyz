@@ -400,8 +400,8 @@
 
     map.on('error', (e) => {
         console.log('ERROR', e);
-        if (e && e.error && e.error.status === 503) {
-          console.error('503 Service Unavailable error loading tiles:', e);
+        if (e && e.error) {
+          console.error(e.error.statusText, e.error.statusText, e.tile.state);
           showErrorPopup('The XYZ Hub service is waking up. Please try again in a minute');
         }
     });
