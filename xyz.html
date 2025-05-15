@@ -157,11 +157,12 @@
       if (clusterType != 'none'){
         if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin};
-        if (clusterType == 'hexbins') {
+        if (clusterType === 'hexbins') {
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
           xyz_url += xyz_centroid};
         if (sampling) {
+          console.log({sampling})
           xyz_url += '&sampling=med'
         };
         if (rez) {
