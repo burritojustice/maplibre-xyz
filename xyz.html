@@ -164,6 +164,8 @@
         if (rez) {
           xyz_url += '&clustering.relativeResolution=' + rez;
         }
+      } else {
+        xyz_url += '&mode=viz'
       }
       console.log({xyz_url})
       return xyz_url
