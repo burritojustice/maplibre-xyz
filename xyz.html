@@ -400,8 +400,8 @@
 
     map.on('error', (e) => {
         console.log('ERROR', e);
-        if (e && e.error && e.error.status != 500) {
-          console.error(e.error.statusText, e.error.statusText, e.tile.state);
+        if (e && e.error && e.error.status != 500) { // 503 doesn't show up in the status
+          console.error(e.error.statusText, e.error.message, e.tile.state);
           showErrorPopup('The XYZ Hub service is waking up. Please try again in a minute');
         }
     });
