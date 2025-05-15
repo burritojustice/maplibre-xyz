@@ -402,12 +402,20 @@
 
     map.on('error', (e) => {
         console.log('ERROR', e, "Status:", e.error.status);
-        if (e && e.error && ((e.error.status == 0 && e.error.statusText == "Load failed"))) { // 503 doesn't show up in the status when the service is waking up)
-          console.error("not 500 or 504", e.error.statusText, e.error.message, e.tile.state);
-          showErrorPopup('The XYZ Hub service is waking up! \r This page will reload automatically in 30 seconds. \r');
-
+        if (e && e.error) {
+            if (e.error.status == 0 && e.error.statusText == "Load failed") { // 503 doesn't show up in the status when the service is waking up)
+              console.error("503? server probably waking up", e.error.statusText, e.error.message, e.tile.state);
+              showErrorPopup('The XYZ Hub service is waking up! \r This page will reload automatically in 30 seconds. \r');
+            }
+            if (e.error.status == 502){
+              console.error("502 hexbins probably failing, try quadbins", e.error.statusText, e.error.message, e.tile.state);
+              loadXYZSource('quadbins');
+            }
         }
+    
     });
+
+    
 
     map.on('sourcedata', (e) => {
       if (e.sourceId === 'xyz' && e.tile && e.tile.state === 'errored') {
