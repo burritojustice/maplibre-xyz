@@ -48,8 +48,8 @@
 <body>
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
     <strong>Clustering:</strong><br>
-    <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
+    <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
     <label><input type="radio" name="layer-toggle" value="none" checked> None</label><br><br>
     <strong>Labels:</strong><br>
@@ -404,7 +404,7 @@
         console.log('ERROR', e, "Status", e.error.status);
         if (e && e.error && e.error.status == 0 && e.error.statusText == "Load failed") { // 503 doesn't show up in the status when the service is waking up)
           console.error("not 500 or 504", e.error.statusText, e.error.message, e.tile.state);
-          showErrorPopup('The XYZ Hub service is waking up \r Please try again in a minute');
+          showErrorPopup('The XYZ Hub service is waking up! \r This page will reload automatically in 30 seconds. \r');
 
         }
     });
@@ -560,6 +560,9 @@
   function showErrorPopup(message) {
     document.getElementById('error-message').innerText = message;
     document.getElementById('error-popup').style.display = 'block';
+    setTimeout(() => {
+      window.location.reload();
+      }, 30000); // 30000 ms = 30 seconds
   }
 
     
