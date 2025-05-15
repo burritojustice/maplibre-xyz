@@ -57,13 +57,18 @@
     <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
   </div>
 
-<!--   <div id="error-popup" style="display:none; position: absolute; top: 20px; left: 20px; background: #fff; border: 1px solid red; padding: 10px; z-index: 1000; font-family: sans-serif;"> -->
-<div id="error-popup">
+  <div id="error-popup">
     <span id="error-message"></span>
 <!--     <button onclick="document.getElementById('error-popup').style.display='none'">Close</button> -->
     <button onclick="location.reload()">Reload</button>
   </div>
 
+  <div id="timeout-popup">
+    <span id="error-message"></span>
+    <button onclick="document.getElementById('error-popup').style.display='none'">Close</button>
+  </div>
+
+  
   <div id="map"></div> 
   
   <script>
@@ -413,7 +418,7 @@
               if (radioToCheck) {
                 radioToCheck.checked = true;
               }
-              showDisappearingPopup('Data is too dense for H3 hexbins, switching to quadbins.')
+              showDisappearingPopup('H3 hexbins timing out, switching to quadbins.')
               loadXYZSource('quadbins');
             }
         }
@@ -581,7 +586,7 @@
   function showDisappearingPopup(message) {
     document.getElementById('error-message').innerText = message;
     document.getElementById('error-popup').style.display = 'block';
-    setTimeout(() => {}, 5000); // 30000 ms = 5 seconds
+    setTimeout(() => {popup.style.display = 'none';}, 5000); 
   }
     
   </script>
