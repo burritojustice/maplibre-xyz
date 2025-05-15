@@ -607,6 +607,7 @@
   }
 
   function updateURLParams({ clustering, spaceID, hubApi, updateRadio = false }) {
+    console.log('updating url')
     const urlParams = new URLSearchParams(window.location.search);
     if (clustering) urlParams.set('clustering', clustering);
     if (spaceID) urlParams.set('space', spaceID);
