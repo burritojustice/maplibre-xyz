@@ -48,9 +48,9 @@
 <body>
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
     <strong>Clustering:</strong><br>
-    <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
+    <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
-    <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label><br>
+    <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
     <label><input type="radio" name="layer-toggle" value="none" checked> None</label><br><br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
@@ -89,6 +89,7 @@
       if (valid_centroids.includes(clusteringParam)) {
         clustering = 'centroids'}
       console.log({clustering})
+      document.getElementById('layer-toggle') = clustering
       // const rezParam = parseInt(urlParams.get('rez'));
       // if (urlParams.get('rez')) {
       //     rezParams = urlParams.get('rez');
@@ -418,7 +419,7 @@
       console.log('using URL with',{clustering})                            
       loadXYZSource(clustering)
       
-      // listeners for clustiner options
+      // listeners for cluster options
       document.querySelectorAll('input[name="layer-toggle"]').forEach(input => {
         input.addEventListener('change', event => {
           clustering = event.target.value;
