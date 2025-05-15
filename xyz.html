@@ -64,12 +64,9 @@
 <body>
   
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
-    <strong>Clustering:</strong><br>
-    <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
+    <strong>H3:</strong><br>
     <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
     <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
-    <label><input type="radio" name="layer-toggle" value="none" checked> None</label><br>
-    <br>
     <strong>Sampling:</strong><br>
     <select id="sampling-select">
       <option value="off">off (1/1)</option>
@@ -79,7 +76,14 @@
       <option value="medhigh">medhigh (1/1024)</option>
       <option value="high">high (1/4096)</option>
     </select><br>
-    <br>
+    
+    <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
+      <strong>Quad resolution:</strong><br>
+      <input type="range" id="quad-resolution" min="0" max="4" step="1" value="4">
+      <span id="quad-resolution-value">4</span>
+    <br><br>
+    <label><input type="radio" name="layer-toggle" value="none" checked> No clustering</label><br>
+    <br><br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
     <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
@@ -104,7 +108,8 @@
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
-    let rez, viz, sampling; 
+    let rez, viz, sampling
+    let quadResolution = 4;
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
@@ -162,14 +167,18 @@
       // could check clustering global or clusterType function parameter better?
       // will need to be able to change these xyz url paramas later if we add more clustering options 
       // wanted to use URLSearchParams but need to figure out how to handle hubApi and spaceID and {z}_{x}_{y} in xyz_url path..
+      // var xyz_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
 
-      var xyz_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
+      var xyz_quadbin = '&clustering=quadbin&clustering.countmode=mixed';
       var xyz_hexbin = '&clustering=hexbin&clustering.countmode=estimated'; 
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
       if (clusterType != 'none'){
         if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin};
+          if (quadResolution !== '') {
+            xyz_url += `&clustering.relativeResolution=${quadResolution}`;
+          }
         if (clusterType === 'hexbins') {
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
@@ -503,6 +512,15 @@
           
           loadXYZSource(clustering);
         });
+      });
+
+      const quadResInput = document.getElementById('quad-resolution');
+      const quadResLabel = document.getElementById('quad-resolution-value');
+      quadResInput.addEventListener('input', (e) => {
+        quadResolution = e.target.value;
+        quadResLabel.textContent = quadResolution;
+        updateURLParams();
+        loadXYZSource(clustering);
       });
 
       document.getElementById('sampling-select').addEventListener('change', (e) => {
