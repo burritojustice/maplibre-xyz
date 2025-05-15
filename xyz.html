@@ -91,7 +91,7 @@
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
-    let rez; 
+    let rez, sampling; 
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
@@ -161,6 +161,9 @@
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
           xyz_url += xyz_centroid};
+        if (sampling) {
+          xyz_url += '&sampling=med'
+        };
         if (rez) {
           xyz_url += '&clustering.relativeResolution=' + rez;
         }
@@ -428,13 +431,21 @@
               console.error("503? server probably waking up", e.error.statusText, e.error.message, e.tile.state);
               showErrorPopup('The XYZ Hub service is waking up! \r This page will reload automatically in 45 seconds. \r');
             }
-            if (e.error.status == 502){
+            if (e.error.status == 502) && (clustering == 'hexbins' || clustering == 'centroids'){
               console.error("502 hexbins probably failing, try quadbins", e.error.statusText, e.error.message, e.tile.state);
               clustering = 'quadbins';
               updateURLParams({ clustering, spaceID, hubApi, updateRadio: true });
-              showWarningPopup('Tile load timing out, switching to quadbins.')
+              showWarningPopup('Hexbins timing out, switching to quadbins.')
               loadXYZSource(clustering);
             }
+            if (e.error.status == 500){
+              console.error("500, tiles probably too large", e.error.statusText, e.error.message, e.tile.state);
+              showWarningPopup('Tile load timing out, trying sampling.')
+              sampling = 'med';
+              loadXYZSource(clustering);
+
+            }
+
         }
     
     });
