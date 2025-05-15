@@ -46,7 +46,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: #fff;
-      border: 2px solid red;
+      border: 2px solid orange;
       padding: 20px;
       z-index: 1000;
       font-family: sans-serif;
@@ -81,7 +81,7 @@
 
   <div id="warning-popup">
     <span id="warning-message"></span>
-    <button onclick="document.getElementById('error-popup').style.display='none'">Close</button>
+    <button onclick="document.getElementById('warning-popup').style.display='none'">Close</button>
   </div>
 
   
@@ -430,12 +430,13 @@
             }
             if (e.error.status == 502){
               console.error("502 hexbins probably failing, try quadbins", e.error.statusText, e.error.message, e.tile.state);
+              clustering = 'quadbins';
               const radioToCheck = document.querySelector(`input[name="layer-toggle"][value="${clustering}"]`);
               if (radioToCheck) {
                 radioToCheck.checked = true;
               }
               showWarningPopup('H3 hexbins timing out, switching to quadbins.')
-              loadXYZSource('quadbins');
+              loadXYZSource('clustering');
             }
         }
     
