@@ -76,14 +76,14 @@
       <option value="medhigh">medhigh (1/1024)</option>
       <option value="high">high (1/4096)</option>
     </select><br>
-    
+    <br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
       <strong>Quad resolution:</strong><br>
       <input type="range" id="quad-resolution" min="0" max="4" step="1" value="4">
       <span id="quad-resolution-value">4</span>
-    <br><br>
+    <br>
     <label><input type="radio" name="layer-toggle" value="none" checked> No clustering</label><br>
-    <br><br>
+    <br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
     <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
@@ -108,8 +108,8 @@
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
-    let rez, viz, sampling
-    let quadResolution = 4;
+    let rez, viz, sampling, quadResolution
+    // let quadResolution = 4;
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
