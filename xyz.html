@@ -409,6 +409,11 @@
             }
             if (e.error.status == 502){
               console.error("502 hexbins probably failing, try quadbins", e.error.statusText, e.error.message, e.tile.state);
+              const radioToCheck = document.querySelector(`input[name="layer-toggle"][value="${clustering}"]`);
+              if (radioToCheck) {
+                radioToCheck.checked = true;
+              }
+              showDisappearingPopup('Data is too dense for H3 hexbins, switching to quadbins.')
               loadXYZSource('quadbins');
             }
         }
@@ -573,6 +578,11 @@
       }, 30000); // 30000 ms = 30 seconds
   }
 
+  function showDisappearingPopup(message) {
+    document.getElementById('error-message').innerText = message;
+    document.getElementById('error-popup').style.display = 'block';
+    setTimeout(() => {}, 5000); // 30000 ms = 5 seconds
+  }
     
   </script>
 </body>
