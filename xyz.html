@@ -161,15 +161,14 @@
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
           xyz_url += xyz_centroid};
-        console.log({sampling})
-        if (sampling) {
-          console.log({sampling})
-          xyz_url += '&clustering.sampling=med'
-        };
         if (rez) {
           xyz_url += '&clustering.relativeResolution=' + rez;
         }
       }
+      if (sampling) {
+        console.log({sampling})
+        xyz_url += '&clustering.sampling=med'
+      };
       console.log({xyz_url})
       return xyz_url
     }
