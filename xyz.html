@@ -179,11 +179,11 @@
         }
         if (sampling) {
           console.log({sampling})
-          const samplingParam = '&clustering.' + sampling
-          xyz_url += sampling
+          const samplingParam = '&clustering.sampling=' + sampling
+          xyz_url += samplingParam
         }
       } else {
-        console.log('no clustering'}
+        console.log('no clustering')
         // xyz_url += '&mode=viz'
       }
       console.log({xyz_url})
