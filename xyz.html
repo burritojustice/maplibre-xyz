@@ -600,9 +600,12 @@
   }
 
   function showWarningPopup(message) {
+    const popup = document.getElementById('warning-popup');
     document.getElementById('warning-message').innerText = message;
-    document.getElementById('warning-popup').style.display = 'block';
-    setTimeout(() => {popup.style.display = 'none';}, 5000); 
+    popup.style.display = 'block';
+    setTimeout(() => {
+      popup.style.display = 'none';
+    }, 5000); 
   }
     
   </script>
