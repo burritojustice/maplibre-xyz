@@ -431,11 +431,8 @@
             if (e.error.status == 502){
               console.error("502 hexbins probably failing, try quadbins", e.error.statusText, e.error.message, e.tile.state);
               clustering = 'quadbins';
-              const radioToCheck = document.querySelector(`input[name="layer-toggle"][value="${clustering}"]`);
-              if (radioToCheck) {
-                radioToCheck.checked = true;
-              }
-              showWarningPopup('H3 hexbins timing out, switching to quadbins.')
+              updateURLParams({ clustering, spaceID, hubApi, updateRadio: true });
+              showWarningPopup('Tile load timing out, switching to quadbins.')
               loadXYZSource(clustering);
             }
         }
@@ -607,6 +604,23 @@
     setTimeout(() => {
       popup.style.display = 'none';
     }, 5000); 
+  }
+
+  function updateURLParams({ clustering, spaceID, hubApi, updateRadio = false }) {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (clustering) urlParams.set('clustering', clustering);
+    if (spaceID) urlParams.set('space', spaceID);
+    if (hubApi) urlParams.set('hubApi', hubApi);
+  
+    const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
+    window.history.replaceState(null, '', newRelativePathQuery);
+  
+    // Update radio UI without triggering a change event
+    if (updateRadio) {
+      const radioToCheck = document.querySelector(`input[name="layer-toggle"][value="${clustering}"]`);
+      if (radioToCheck) {
+        radioToCheck.checked = true;
+      }
   }
     
   </script>
