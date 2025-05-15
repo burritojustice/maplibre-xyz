@@ -91,7 +91,7 @@
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
-    let rez, sampling; 
+    let rez, viz, sampling; 
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
@@ -151,7 +151,7 @@
       // wanted to use URLSearchParams but need to figure out how to handle hubApi and spaceID and {z}_{x}_{y} in xyz_url path..
 
       var xyz_quadbin = '&clustering=quadbin&clustering.countmode=mixed&clustering.relativeResolution=4';
-      var xyz_hexbin = '&clustering=hexbin&&clustering.countmode=estimated'; 
+      var xyz_hexbin = '&clustering=hexbin&clustering.countmode=estimated&sampling=high'; 
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
       if (clusterType != 'none'){
