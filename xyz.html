@@ -123,6 +123,11 @@
       clusteringParam = urlParams.get('clustering')
       if (valid_quadbins.includes(clusteringParam)) {
         clustering = 'quadbins'}
+      if (urlParams.get('quadResolution')) {
+        quadResolution = urlParams.get('quadResolution');
+        document.getElementById('quad-resolution').value = quadResolution;
+        document.getElementById('quad-resolution-value').textContent = quadResolution;
+      }
       if (valid_hexbins.includes(clusteringParam)) {
         clustering = 'hexbins'}
       if (valid_centroids.includes(clusteringParam)) {
@@ -174,11 +179,11 @@
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
       if (clusterType != 'none'){
-        if (clusterType === 'quadbins') {
+        if (clusterType === 'quadbins') {{
           xyz_url += xyz_quadbin};
-          if (quadResolution !== '') {
+          if (quadResolution != null) {
             xyz_url += `&clustering.relativeResolution=${quadResolution}`;
-          }
+          }}
         if (clusterType === 'hexbins') {
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
@@ -674,6 +679,7 @@
     if (clustering) urlParams.set('clustering', clustering);
     if (spaceID) urlParams.set('space', spaceID);
     if (hubApi) urlParams.set('hubApi', hubApi);
+    if (quadResolution !== undefined) urlParams.set('quadResolution', quadResolution);
   
     const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
     window.history.replaceState(null, '', newRelativePathQuery);
