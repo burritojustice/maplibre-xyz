@@ -539,7 +539,7 @@
       quadResInput.addEventListener('input', (e) => {
         quadResolution = e.target.value;
         quadResLabel.textContent = quadResolution;
-        updateURLParams();
+        updateURLParams({ clustering, spaceID, hubApi, updateRadio: true });
         loadXYZSource(clustering);
       });
 
