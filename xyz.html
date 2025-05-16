@@ -109,6 +109,9 @@
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
     <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
+    <label><input type="checkbox" id="toggle-outlines" checked> Show Outlines</label><br>
+
+    
     
   </div>
 
@@ -606,7 +609,14 @@
           }
         });
       });
-
+      
+      // Toggle visibility of outlines
+      document.getElementById('toggle-outlines').addEventListener('change', (e) => {
+        const visible = e.target.checked ? 'visible' : 'none';
+        if (map.getLayer('outlines')) {
+          map.setLayoutProperty('outlines', 'visibility', visible);
+      }
+});
       
 
     });
@@ -669,7 +679,13 @@
         }      
         // probably need to handle rez
         map.addLayer(xyzLayers.bin_labels, firstSymbolId); //no firstSymbolId here but then below city labels? layer order is weird
+        
         map.addLayer(xyzLayers.outlines, firstSymbolId);
+        const outlineCheckbox = document.getElementById('toggle-outlines');
+        if (!outlineCheckbox.checked) {
+          map.setLayoutProperty('outlines', 'visibility', 'none');
+        }
+
         const binLabelCheckbox = document.getElementById('toggle-bin-labels');
         if (!binLabelCheckbox.checked) {
           map.setLayoutProperty('bin_labels', 'visibility', 'none');
