@@ -68,6 +68,11 @@
       font-size: 12px;
       padding-top: 2px;
     }
+    strong span {
+      margin-left: 5px;
+      font-weight: normal;
+    }
+
     
     </style>
 </head>
@@ -78,7 +83,7 @@
     <strong>H3:</strong><br>
       <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
       <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
-    <strong>H3 Resolution:span id="h3-resolution-value">0</span></strong><br>
+    <strong>H3 Resolution:span id="h3-resolution-value">0</span></strong>
       <input type="range" id="h3-resolution" min="-2" max="2" step="1" value="0">
       <div class="slider-labels">
         <span>Coarse</span>
@@ -108,7 +113,7 @@
     <br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
-    <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label>
+    <label><input type="checkbox" id="toggle-place-labels" checked> Show Places</label><br>
     <label><input type="checkbox" id="toggle-outlines" checked> Show Outlines</label><br>
 
     
