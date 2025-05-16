@@ -21,6 +21,8 @@
       font-size: 14px;
       border-radius: 4px;
       box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      max-width: 220px; /* adjust this as needed */
+      width: max-content; /* shrink to fit content */
     }
     
     #error-popup {
@@ -72,7 +74,10 @@
       margin-left: 5px;
       font-weight: normal;
     }
-
+    input[type="range"] {
+      width: 100%;
+      max-width: 200px;
+    }
     
     </style>
 </head>
