@@ -76,17 +76,24 @@
   
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
     <strong>H3:</strong><br>
-    <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
-    <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
+      <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
+      <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
+    <strong>H3 Resolution:</strong><br>
+      <input type="range" id="h3-resolution" min="-2" max="2" step="1" value="0">
+      <div class="slider-labels">
+        <span>Coarse</span>
+        <span>Fine</span>
+      </div>
+      <span id="h3-resolution-value">0</span><br>
     <strong>Sampling:</strong><br>
-    <select id="sampling-select">
-      <option value="off">off (1/1)</option>
-      <option value="low">low (1/8)</option>
-      <option value="lowmed">lowmed (1/32)</option>
-      <option value="med">med (1/128)</option>
-      <option value="medhigh">medhigh (1/1024)</option>
-      <option value="high">high (1/4096)</option>
-    </select><br>
+      <select id="sampling-select">
+        <option value="off">off (1/1)</option>
+        <option value="low">low (1/8)</option>
+        <option value="lowmed">lowmed (1/32)</option>
+        <option value="med">med (1/128)</option>
+        <option value="medhigh">medhigh (1/1024)</option>
+        <option value="high">high (1/4096)</option>
+      </select><br>
     <br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
       <strong>Quad resolution:</strong><br>
@@ -123,8 +130,9 @@
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
-    let rez, viz, sampling, quadResolution
-    quadResolution = 4;
+    let rez = 0
+    let viz, sampling,
+    let quadResolution = 4;
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
@@ -147,6 +155,12 @@
         clustering = 'hexbins'}
       if (valid_centroids.includes(clusteringParam)) {
         clustering = 'centroids'}
+      if (urlParams.get('rez')) {
+        rez = parseInt(urlParams.get('rez'), 10);
+        document.getElementById('h3-resolution').value = rez;
+        document.getElementById('h3-resolution-value').textContent = rez;
+      }
+
       console.log({clustering})
       // const rezParam = parseInt(urlParams.get('rez'));
       // if (urlParams.get('rez')) {
@@ -543,6 +557,16 @@
         loadXYZSource(clustering);
       });
 
+      const h3ResInput = document.getElementById('h3-resolution');
+      const h3ResLabel = document.getElementById('h3-resolution-value');
+      h3ResInput.addEventListener('input', (e) => {
+        rez = parseInt(e.target.value, 10);
+        h3ResLabel.textContent = rez;
+        updateURLParams({ clustering, spaceID, hubApi });
+        loadXYZSource(clustering);
+      });
+
+
       document.getElementById('sampling-select').addEventListener('change', (e) => {
         sampling = e.target.value;
         console.log('Sampling level selected:', sampling);
@@ -695,6 +719,8 @@
     if (spaceID) urlParams.set('space', spaceID);
     if (hubApi) urlParams.set('hubApi', hubApi);
     if (quadResolution !== undefined) urlParams.set('quadResolution', quadResolution);
+    if (rez !== undefined) urlParams.set('rez', rez);
+
   
     const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
     window.history.replaceState(null, '', newRelativePathQuery);
