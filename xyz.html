@@ -641,8 +641,11 @@
         const visible = e.target.checked ? 'visible' : 'none';
         if (map.getLayer('outlines')) {
           map.setLayoutProperty('outlines', 'visibility', visible);
-      }
-});
+        }
+        if (map.getLayer('centroids')) {
+          map.setPaintProperty('centroids', 'circle-stroke-opacity', strokeOpacity);
+        }   
+    });
       
 
     });
