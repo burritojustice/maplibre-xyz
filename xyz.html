@@ -58,6 +58,17 @@
     #error-popup button {
       margin-top: 10px;
     }
+    input[type="range"] {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding-top: 2px;
+    }
+    
     </style>
 </head>
 
@@ -80,7 +91,11 @@
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
       <strong>Quad resolution:</strong><br>
       <input type="range" id="quad-resolution" min="0" max="4" step="1" value="4">
-      <span id="quad-resolution-value">4</span>
+      <div class="slider-labels">
+        <span>Coarse</span>
+        <span>Fine</span>
+      </div>
+      <span id="quad-resolution-value">4</span><br>
     <br>
     <label><input type="radio" name="layer-toggle" value="none" checked> No clustering</label><br>
     <br>
@@ -179,11 +194,11 @@
       var xyz_centroid = '&clustering=hexbin&clustering.pointmode=true';
       
       if (clusterType != 'none'){
-        if (clusterType === 'quadbins') {{
+        if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin};
           if (quadResolution != null) {
             xyz_url += `&clustering.relativeResolution=${quadResolution}`;
-          }}
+          }
         if (clusterType === 'hexbins') {
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
