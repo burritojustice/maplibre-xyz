@@ -101,17 +101,17 @@
 <body>
   
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
-    <strong>H3:</strong><br>
-      <label><input type="radio" name="layer-toggle" value="hexbins"> H3 hexbins</label><br>
-      <label><input type="radio" name="layer-toggle" value="centroids"> H3 centroids</label><br>
+    
+    <strong>H3 clustering:</strong><br>
+      <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
+      <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label><br>
     <strong>H3 Resolution: <span id="h3-resolution-value">0</span></strong>
       <div class="slider-wrapper">
         <span>Coarse</span>
         <input type="range" id="h3-resolution" min="-2" max="2" step="1" value="0">
         <span>Fine</span>
       </div>
-      <span id="h3-resolution-value">0</span><br>
-    <strong>Sampling:</strong><br>
+    <strong>H3 Sampling:</strong><br>
       <select id="sampling-select">
         <option value="off">off (1/1)</option>
         <option value="low">low (1/8)</option>
@@ -120,17 +120,25 @@
         <option value="medhigh">medhigh (1/1024)</option>
         <option value="high">high (1/4096)</option>
       </select><br>
-    <br>
+    <br><strong>Quadbin Clustering:</strong><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
-      <strong>Quad resolution:<span id="quad-resolution-value">4</span></strong><br>
+      <strong>Quadbin resolution:<span id="quad-resolution-value">4</span></strong><br>
       <div class="slider-wrapper">
         <span>Coarse</span>
         <input type="range" id="quad-resolution" min="0" max="4" step="1" value="4">
         <span>Fine</span>
       </div>
       
-    <br>
-    <label><input type="radio" name="layer-toggle" value="none" checked> No clustering</label><br>
+    <br><strong>No Clustering:</strong><br>
+    <label><input type="radio" name="layer-toggle" value="none" checked> Regular tiles</label><br>
+    
+    <strong>Viz Sampling:</strong><br>
+      <select id="viz-select">
+        <option value="off">off</option>
+        <option value="low">low</option>
+        <option value="med">med</option>
+        <option value="high">high</option>
+      </select><br>
     <br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
@@ -160,7 +168,7 @@
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
     let rez = 0
-    let viz, sampling
+    let viz, sampling // sampling is just for h3, vizSampling *not* for clustering, raw/viz -> low|med|high|off
     let quadResolution = 4;
 
     const valid_quadbins = ['quadbin','quadbins']
@@ -246,17 +254,18 @@
           xyz_url += xyz_hexbin};
         if (clusterType === 'centroids') {
           xyz_url += xyz_centroid};
+          
         if (rez) {
           xyz_url += '&clustering.relativeResolution=' + rez;
         }
-        if (sampling) {
+        if (sampling) { 
           console.log({sampling})
           const samplingParam = '&clustering.sampling=' + sampling
           xyz_url += samplingParam
         }
       } else {
         console.log('no clustering')
-        // xyz_url += '&mode=viz'
+        xyz_url += `&mode=viz&vizSampling=${viz}`
       }
       console.log({xyz_url})
       return xyz_url
@@ -598,7 +607,7 @@
 
       document.getElementById('sampling-select').addEventListener('change', (e) => {
         sampling = e.target.value;
-        console.log('Sampling level selected:', sampling);
+        console.log('H3 Sampling level selected:', sampling);
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.set('sampling', sampling);
         urlParams.set('clustering', clustering);
@@ -608,6 +617,21 @@
         window.history.replaceState(null, '', newRelativePathQuery);
         loadXYZSource(clustering); 
       });
+
+      document.getElementById('viz-select').addEventListener('change', (e) => {
+        viz = e.target.value;
+        sampling = 'none'
+        console.log('Viz sampling level selected:', viz);
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('viz', sampling);
+        urlParams.set('clustering', clustering);
+        urlParams.set('space', spaceID);
+        urlParams.set('hubApi', hubApi);
+        const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
+        window.history.replaceState(null, '', newRelativePathQuery);
+        loadXYZSource(clustering); 
+      });
+      
 
       // Toggle visibility of bin labels
       document.getElementById('toggle-bin-labels').addEventListener('change', (e) => {
