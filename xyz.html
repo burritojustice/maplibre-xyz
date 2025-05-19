@@ -119,7 +119,7 @@
         <option value="med">med (1/128)</option>
         <option value="medhigh">medhigh (1/1024)</option>
         <option value="high">high (1/4096)</option>
-      </select><br>
+      </select>
     <hr>
     <br><strong>Quadbin Clustering:</strong><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
@@ -168,9 +168,9 @@
     let spaceID = 'stXc82l8';
     let hubApi = 'api.think-with-me.com';
     let clustering = 'none'
-    let rez = 0
-    let viz, sampling // sampling is just for h3, vizSampling *not* for clustering, raw/viz -> low|med|high|off
-    let quadResolution = 4;
+    let rez = 0 // -2 to 2 for h3
+    let viz, sampling // sampling is just for h3; viz = vizSampling, *not* for clustering, raw/viz -> low|med|high|off
+    let quadResolution = 4; // 0 tp 4 for quadbins
 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
@@ -605,7 +605,7 @@
         loadXYZSource(clustering);
       });
 
-
+      // h3 sampling
       document.getElementById('sampling-select').addEventListener('change', (e) => {
         sampling = e.target.value;
         console.log('H3 Sampling level selected:', sampling);
@@ -619,9 +619,11 @@
         loadXYZSource(clustering); 
       });
 
+      // regular tile sampling
       document.getElementById('viz-select').addEventListener('change', (e) => {
         viz = e.target.value;
-        sampling = 'none'
+        clustering = 'none' 
+        sampling = 'none' // this is to disable h3 sampling
         console.log('Viz sampling level selected:', viz);
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.set('viz', sampling);
