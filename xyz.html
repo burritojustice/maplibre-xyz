@@ -120,6 +120,7 @@
         <option value="medhigh">medhigh (1/1024)</option>
         <option value="high">high (1/4096)</option>
       </select>
+    <br>
     <hr>
     <br><strong>Quadbin Clustering:</strong><br>
     <label><input type="radio" name="layer-toggle" value="quadbins"> Quadbins</label><br>
@@ -129,17 +130,20 @@
         <input type="range" id="quad-resolution" min="0" max="4" step="1" value="4">
         <span>Fine</span>
       </div>
-      
+    <br>
+    <hr>   
     <br><strong>No Clustering:</strong><br>
     <label><input type="radio" name="layer-toggle" value="none" checked> Regular tiles</label><br>
     
-    <strong>Viz Sampling:</strong><br>
+    <strong>Tile Viz Sampling:</strong><br>
       <select id="viz-select">
         <option value="off">off</option>
         <option value="low">low</option>
         <option value="med">med</option>
         <option value="high">high</option>
       </select><br>
+    <br>
+    <hr>
     <br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
