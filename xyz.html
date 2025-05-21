@@ -525,7 +525,7 @@
         if (e && e.error) {
             if (e.error.status == 0 && e.error.statusText == "Load failed") { // 503 doesn't show up in the status when the service is waking up)
               console.error("503? server probably waking up", e.error.statusText, e.error.message, e.tile.state);
-              showErrorPopup('The XYZ Hub service is waking up! \r This page will reload automatically in 45 seconds. \r');
+              showErrorPopup('The XYZ Hub service is waking up! \r This page will reload automatically in 60 seconds. \r');
             }
             if (e.error.status == 502 && (clustering == 'hexbins' || clustering == 'centroids')){
               console.error("502 hexbins probably failing, try quadbins", e.error.statusText, e.error.message, e.tile.state);
