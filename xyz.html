@@ -175,8 +175,9 @@
     let rez = 0 // -2 to 2 for h3
     let viz = 'off'
     let sampling // sampling is just for h3; viz is vizSampling for regular tiles, *not* for clustering, raw/viz -> low|med|high|off
-    let quadResolution = 4; // 0 tp 4 for quadbins
+    let quadResolution; // 0 tp 4 for quadbins, 4 is the default, 
 
+    // 
     const valid_quadbins = ['quadbin','quadbins']
     const valid_hexbins = ['hexbin','hexbins','h3','H3']
     const valid_centroids = ['centroid','centroids','h3_centroids']
@@ -204,17 +205,7 @@
         document.getElementById('h3-resolution-value').textContent = rez;
       }
 
-      console.log({clustering})
-      // const rezParam = parseInt(urlParams.get('rez'));
-      // if (urlParams.get('rez')) {
-      //     rezParams = urlParams.get('rez');
-      // }
-      // if (!isNaN(rezParam) && rezParam <= 4 && rezParam >= -2){
-      //   rez = rezParam
-      // } else {
-      //   rez = '';
-      //   console.log("relative rez of",rezParam,"is a bad idea, keep it between 2 and -2 for hexbins and 0 to 4 for quadbins")
-    }
+      console.log({clustering})    }
     
     console.log("url params",{spaceID},{hubApi},{clustering},{rez});
 
@@ -777,7 +768,7 @@
     document.getElementById('error-popup').style.display = 'block';
     setTimeout(() => {
       window.location.reload();
-      }, 45000); // 45000 ms = 45 seconds
+      }, 50000); // 50000 ms = 50 seconds
   }
 
   function showWarningPopup(message) {
@@ -795,7 +786,7 @@
     if (clustering) urlParams.set('clustering', clustering);
     if (spaceID) urlParams.set('space', spaceID);
     if (hubApi) urlParams.set('hubApi', hubApi);
-    if (quadResolution !== undefined) urlParams.set('quadResolution', quadResolution);
+    if ((clustering == 'quadbins') && (quadResolution !== undefined)) urlParams.set('quadResolution', quadResolution);
     if (rez !== undefined) urlParams.set('rez', rez);
 
   
