@@ -247,10 +247,10 @@
         h3 = true
       }
       
-      if (clusterType != 'none'){
+      if (clusterType !== 'none'){
         if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin;
-          if ((quadResolution != null) && (quadResolution < 4) && (quadResolution >= 0)) { // 4 is the default so no point sending that along
+          if ((quadResolution !== null) && (quadResolution < 4) && (quadResolution >= 0)) { // 4 is the default so no point sending that along
             xyz_url += `&clustering.relativeResolution=${quadResolution}`;
           }
         }
@@ -273,9 +273,11 @@
       } else {
         console.log('no clustering')
         if (viz) {
+          console.log({viz})
+          if (viz != 'off'){
           xyz_url += `&mode=viz&vizSampling=${viz}`
+          }
         }
-      }
       console.log({xyz_url})
       return xyz_url
     }
