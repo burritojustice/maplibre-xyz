@@ -188,7 +188,7 @@
     if (urlParams.get('hubApi')) {hubApi = urlParams.get('hubApi')};
     if (urlParams.get('clustering')) {
       clusteringParam = urlParams.get('clustering')
-      if (clusteringParam = 'quadbins') {
+      if (clusteringParam === 'quadbins') {
         clustering = 'quadbins'
         if (urlParams.get('quadResolution')) { 
           // only look for quadbin rez if quadbins are selected
@@ -197,8 +197,8 @@
           document.getElementById('quad-resolution').value = quadResolution;
           document.getElementById('quad-resolution-value').textContent = quadResolution;
         }
-      } end qbin
-      if (clusteringParam = hexbins' || clusteringParam = 'centroids') {
+      } // end qbin
+      if (clusteringParam === 'hexbins' || clusteringParam === 'centroids') {
         clustering = clusteringParam
         if (urlParams.get('rez')) { 
           rez = parseInt(urlParams.get('rez'), 10);
@@ -599,7 +599,7 @@
       const quadResLabel = document.getElementById('quad-resolution-value');
       quadResInput.addEventListener('input', (e) => {
         quadResolution = e.target.value;
-        if (quadResolution < 4 || quadResolution >== 0 )
+        if (quadResolution < 4 || quadResolution >= 0 )
         quadResLabel.textContent = quadResolution;
         updateURLParams({ clustering, spaceID, hubApi, updateRadio: true });
         loadXYZSource(clustering);
