@@ -245,6 +245,7 @@
       let h3 = false;
       if (clusterType == 'hexbins' || clusterType == 'centroids'){ 
         h3 = true
+        console.log({h3})
       }
       
       if (clusterType !== 'none'){
@@ -275,9 +276,10 @@
         if (viz) {
           console.log({viz})
           if (viz != 'off'){
-          xyz_url += `&mode=viz&vizSampling=${viz}`
+            xyz_url += `&mode=viz&vizSampling=${viz}`
           }
         }
+      }
       console.log({xyz_url})
       return xyz_url
     }
