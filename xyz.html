@@ -101,7 +101,16 @@
 <body>
   
   <div id="layer-controls" style="position:absolute; top:10px; left:10px; background:white; padding:10px; z-index:1;">
-    
+    <strong>XYZ Explorer:</strong><br>
+    <label><input type="radio" name="layer-toggle" value="none" checked> No clustering</label><br>
+    <strong>Tile Sampling:</strong><br>
+      <select id="viz-select">
+        <option value="off">off</option>
+        <option value="low">low</option>
+        <option value="med">med</option>
+        <option value="high">high</option>
+      </select><br>
+    <hr>
     <strong>H3 clustering:</strong><br>
       <label><input type="radio" name="layer-toggle" value="hexbins"> Hexbins</label><br>
       <label><input type="radio" name="layer-toggle" value="centroids"> Centroids</label><br>
@@ -132,18 +141,6 @@
       </div>
     <br>
     <hr>   
-    <br><strong>No Clustering:</strong><br>
-    <label><input type="radio" name="layer-toggle" value="none" checked> Regular tiles</label><br>
-    
-    <strong>Tile Viz Sampling:</strong><br>
-      <select id="viz-select">
-        <option value="off">off</option>
-        <option value="low">low</option>
-        <option value="med">med</option>
-        <option value="high">high</option>
-      </select><br>
-    <br>
-    <hr>
     <br>
     <strong>Labels:</strong><br>
     <label><input type="checkbox" id="toggle-bin-labels" checked> Show Counts</label><br>
@@ -209,6 +206,8 @@
       } // end h3
       console.log({clustering},{quadResolution},{h3rez})    
     } // end clustering
+
+    
     
     console.log("url params",{spaceID},{hubApi},{clustering},{h3rez});
 
@@ -253,6 +252,7 @@
         if (clusterType === 'quadbins') {
           xyz_url += xyz_quadbin;
           if ((quadResolution !== null) && (quadResolution < 4) && (quadResolution >= 0)) { // 4 is the default so no point sending that along
+            console.log('quadrez not 4?')
             xyz_url += `&clustering.relativeResolution=${quadResolution}`;
           }
         }
@@ -277,6 +277,7 @@
         if (viz) {
           console.log({viz})
           if (viz != 'off'){
+            document.getElementById('viz-select').value = viz
             xyz_url += `&mode=viz&vizSampling=${viz}`
           }
         }
@@ -604,9 +605,10 @@
       const quadResLabel = document.getElementById('quad-resolution-value');
       quadResInput.addEventListener('input', (e) => {
         quadResolution = e.target.value;
-        if (quadResolution < 4 || quadResolution >= 0 )
         quadResLabel.textContent = quadResolution;
-        updateURLParams({ clustering, spaceID, hubApi, updateRadio: true });
+        if (quadResolution <= 4 || quadResolution >= 0 ){ // don't send 4 as that's the default
+          updateURLParams({ clustering, spaceID, hubApi, updateRadio: true }); 
+        }
         loadXYZSource(clustering);
       });
 
@@ -804,7 +806,7 @@
     if (spaceID) urlParams.set('space', spaceID);
     if (hubApi) urlParams.set('hubApi', hubApi);
     if ((clustering == 'quadbins') && (quadResolution !== undefined) && (quadResolution < 4)) urlParams.set('quadResolution', quadResolution);
-    if (h3(rez !== undefined) && h3rez !== 0) urlParams.set('h3rez', h3rez);
+    if ((h3rez !== undefined) && h3rez !== 0) urlParams.set('h3rez', h3rez);
 
   
     const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
