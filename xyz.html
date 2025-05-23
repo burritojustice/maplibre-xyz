@@ -183,7 +183,7 @@
     // const valid_centroids = ['centroid','centroids','h3_centroids']
 
     // check to see if we have clustering and space and hubApi options in the urlParams
-    const urlParams = new URLSearchP(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('space')) {spaceID = urlParams.get('space')};
     if (urlParams.get('hubApi')) {hubApi = urlParams.get('hubApi')};
     if (urlParams.get('clustering')) {
